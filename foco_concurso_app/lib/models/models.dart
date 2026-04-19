@@ -88,6 +88,8 @@ class QuizQuestion {
   final String correctAnswer;
   final String type;
   final String explanation;
+  final String? concurso;
+  final int? ano;
 
   QuizQuestion({
     required this.id,
@@ -98,15 +100,25 @@ class QuizQuestion {
     required this.correctAnswer,
     required this.type,
     required this.explanation,
+    this.concurso,
+    this.ano,
   });
 
   factory QuizQuestion.fromMap(Map<String, dynamic> map) {
     Map<String, String> parsedOptions = {};
     if (map['options'] != null) {
-      final dynMap = Map<String, dynamic>.from(map['options'] as Map);
-      dynMap.forEach((key, value) {
-        parsedOptions[key] = value.toString();
-      });
+      if (map['options'] is Map) {
+        final dynMap = Map<String, dynamic>.from(map['options'] as Map);
+        dynMap.forEach((key, value) {
+          parsedOptions[key] = value.toString();
+        });
+      } else if (map['options'] is List) {
+        final dynList = map['options'] as List;
+        final keys = ['a', 'b', 'c', 'd', 'e'];
+        for (var i = 0; i < dynList.length && i < keys.length; i++) {
+          parsedOptions[keys[i]] = dynList[i].toString();
+        }
+      }
     }
 
     return QuizQuestion(
@@ -118,6 +130,43 @@ class QuizQuestion {
       correctAnswer: map['correctAnswer'] as String? ?? '',
       type: map['type'] as String? ?? '',
       explanation: map['explanation'] as String? ?? '',
+      concurso: map['concurso'] as String?,
+      ano: map['ano'] as int?,
+    );
+  }
+}
+
+class ExamBoard {
+  final String id;
+  final String name;
+  final String difficulty;
+  final String style;
+  final String lawFocus;
+  final String mainFeature;
+  final String description;
+  final String tips;
+
+  ExamBoard({
+    required this.id,
+    required this.name,
+    required this.difficulty,
+    required this.style,
+    required this.lawFocus,
+    required this.mainFeature,
+    required this.description,
+    required this.tips,
+  });
+
+  factory ExamBoard.fromMap(Map<String, dynamic> map) {
+    return ExamBoard(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      difficulty: map['difficulty'] as String? ?? '',
+      style: map['style'] as String? ?? '',
+      lawFocus: map['lawFocus'] as String? ?? '',
+      mainFeature: map['mainFeature'] as String? ?? '',
+      description: map['description'] as String? ?? '',
+      tips: map['tips'] as String? ?? '',
     );
   }
 }

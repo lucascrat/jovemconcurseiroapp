@@ -57,9 +57,40 @@ app.get('/api/questions/:topicId', async (req, res) => {
   try {
     const { topicId } = req.params;
     const result = await pool.query(
-      'SELECT id, "topicId", banca, statement, options, "correctAnswer", type, explanation FROM "Question" WHERE "topicId" = $1',
+      'SELECT id, "topicId", banca, statement, options, "correctAnswer", type, explanation, concurso, ano FROM "Question" WHERE "topicId" = $1',
       [topicId]
     );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.get('/api/questions/filter/:concurso', async (req, res) => {
+  try {
+    const { concurso } = req.params;
+    const { ano } = req.query;
+    
+    let query = 'SELECT * FROM "Question" WHERE concurso = $1';
+    let params = [concurso];
+    
+    if (ano) {
+      query += ' AND ano = $2';
+      params.push(parseInt(ano));
+    }
+    
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.get('/api/boards', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM "ExamBoard" ORDER BY name');
     res.json(result.rows);
   } catch (err) {
     console.error(err);

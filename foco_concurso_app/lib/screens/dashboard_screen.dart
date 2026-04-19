@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/study_provider.dart';
 import '../theme/app_theme.dart';
+import './exam_boards_screen.dart';
+import './exam_board_detail_screen.dart';
+import '../models/models.dart';
+import './prf_module_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -37,6 +41,10 @@ class DashboardScreen extends StatelessWidget {
                   _buildHeader(context),
                   const SizedBox(height: 30),
                   _buildResumeSearch(context),
+                  const SizedBox(height: 30),
+                  _buildPrfBanner(context),
+                  const SizedBox(height: 30),
+                  _buildExamBoardsSection(context, studyProvider),
                   const SizedBox(height: 30),
                   _buildSubjectsTitle(context),
                   const SizedBox(height: 20),
@@ -312,6 +320,157 @@ class DashboardScreen extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildExamBoardsSection(BuildContext context, StudyProvider studyProvider) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Perfis de Bancas',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primaryColor,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ExamBoardsScreen()),
+                );
+              },
+              child: const Text('Ver todas'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: studyProvider.boards.length,
+            itemBuilder: (context, index) {
+              final board = studyProvider.boards[index];
+              return _buildBoardCardSmall(context, board);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrfBanner(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PrfModuleScreen()),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.blue, Colors.green],
+          ),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: const Row(
+          children: [
+            Icon(Icons.security, color: Colors.white, size: 40),
+            SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'MODO FOCO: PRF',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Text(
+                    'Simulados históricos e conteúdos específicos baseados no seu edital.',
+                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBoardCardSmall(BuildContext context, ExamBoard board) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ExamBoardDetailScreen(board: board),
+          ),
+        );
+      },
+      child: Container(
+        width: 160,
+        margin: const EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              board.name,
+              style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor, fontSize: 13),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              board.difficulty,
+              style: TextStyle(
+                fontSize: 11,
+                color: board.difficulty.contains('Alt') ? Colors.red : Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              board.style,
+              style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }

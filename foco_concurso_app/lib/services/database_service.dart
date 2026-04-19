@@ -55,6 +55,28 @@ class DatabaseService {
     throw Exception('Failed to load questions');
   }
 
+  Future<List<QuizQuestion>> getQuestionsByExam(String concurso, {int? ano}) async {
+    String url = '$baseUrl/api/questions/filter/$concurso';
+    if (ano != null) {
+      url += '?ano=$ano';
+    }
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => QuizQuestion.fromMap(json)).toList();
+    }
+    throw Exception('Failed to load questions for $concurso');
+  }
+
+  Future<List<ExamBoard>> getExamBoards() async {
+    final response = await http.get(Uri.parse('$baseUrl/api/boards'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => ExamBoard.fromMap(json)).toList();
+    }
+    throw Exception('Failed to load exam boards');
+  }
+
   Future<void> close() async {
     // Nothing to close for HTTP
   }
