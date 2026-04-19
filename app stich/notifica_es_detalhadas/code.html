@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#a8c8ff",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c3c6d0",
+                    "surface-container": "#eaeef7",
+                    "on-primary-container": "#8caee7",
+                    "surface-variant": "#dee3eb",
+                    "secondary-container": "#93f6ce",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "on-primary-fixed-variant": "#224779",
+                    "on-surface-variant": "#43474f",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#3c5f93",
+                    "error-container": "#ffdad6",
+                    "on-background": "#171c22",
+                    "surface-container-low": "#f0f4fd",
+                    "tertiary-container": "#3d4143",
+                    "on-surface": "#171c22",
+                    "on-secondary-container": "#007255",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "secondary": "#006c50",
+                    "secondary-fixed": "#93f6ce",
+                    "on-tertiary-fixed": "#181c1e",
+                    "on-primary-fixed": "#001b3c",
+                    "inverse-on-surface": "#edf1fa",
+                    "primary": "#002b57",
+                    "surface-container-highest": "#dee3eb",
+                    "inverse-primary": "#a8c8ff",
+                    "secondary-fixed-dim": "#77d9b3",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "surface": "#f8f9ff",
+                    "primary-fixed": "#d5e3ff",
+                    "primary-container": "#1a4173",
+                    "on-secondary-fixed": "#002116",
+                    "outline": "#737780",
+                    "tertiary-fixed": "#e0e3e5",
+                    "inverse-surface": "#2c3137",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "tertiary": "#272b2d",
+                    "on-tertiary-container": "#a9adaf",
+                    "surface-dim": "#d6dae3",
+                    "surface-container-high": "#e4e8f1",
+                    "background": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-secondary-container">
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200 text-blue-900 dark:text-blue-200">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-manrope font-bold text-xl tracking-tight text-blue-900 dark:text-blue-200">Notificações</h1>
+</div>
+<button class="hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200 text-blue-900 dark:text-blue-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+<div class="bg-slate-200/50 dark:bg-slate-800/50 h-px w-full"></div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto space-y-8">
+<section class="flex justify-between items-end mb-2">
+<div>
+<h2 class="text-sm font-semibold text-secondary uppercase tracking-widest">Configurações Ativas</h2>
+<p class="text-on-surface-variant text-sm">Personalize como você recebe seus alertas.</p>
+</div>
+<button class="text-primary font-semibold text-sm hover:underline decoration-2 underline-offset-4">
+                Marcar todas como lidas
+            </button>
+</section>
+<div class="space-y-4">
+<div class="bg-surface-container-low rounded-xl p-6 transition-all border border-transparent hover:border-outline-variant/20">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="book_5">book_5</span>
+</div>
+<h3 class="font-bold text-lg text-primary">Estudo &amp; Flashcards</h3>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="grid gap-4">
+<div class="flex justify-between items-center group">
+<span class="text-on-surface text-sm font-medium">Lembretes de revisão</span>
+<div class="flex items-center gap-2">
+<span class="text-xs text-on-surface-variant italic">Diário</span>
+<span class="material-symbols-outlined text-secondary scale-75" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="flex justify-between items-center group">
+<span class="text-on-surface text-sm font-medium">Novos cartões adicionados</span>
+<span class="material-symbols-outlined text-secondary scale-75" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 transition-all border border-transparent hover:border-outline-variant/20">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="bg-secondary/10 p-2 rounded-lg text-secondary">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+</div>
+<h3 class="font-bold text-lg text-primary">Simulados &amp; Desempenho</h3>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="grid gap-4">
+<div class="flex justify-between items-center">
+<span class="text-on-surface text-sm font-medium">Resultados de simulados</span>
+<span class="material-symbols-outlined text-secondary scale-75" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface text-sm font-medium">Metas semanais batidas</span>
+<span class="material-symbols-outlined text-secondary scale-75" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 transition-all border border-transparent hover:border-outline-variant/20">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="bg-tertiary-container/10 p-2 rounded-lg text-on-surface">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</div>
+<h3 class="font-bold text-lg text-primary">Social &amp; Rankings</h3>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="grid gap-4 opacity-60">
+<div class="flex justify-between items-center">
+<span class="text-on-surface text-sm font-medium">Mudança de posição no ranking</span>
+<span class="text-xs font-semibold text-outline">DESATIVADO</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface text-sm font-medium">Novos desafios da comunidade</span>
+<span class="text-xs font-semibold text-outline">DESATIVADO</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 transition-all border border-transparent hover:border-outline-variant/20">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="bg-primary-container/10 p-2 rounded-lg text-primary-container">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+</div>
+<h3 class="font-bold text-lg text-primary">Geral</h3>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="grid gap-4">
+<div class="flex justify-between items-center">
+<span class="text-on-surface text-sm font-medium">Atualizações do aplicativo</span>
+<span class="material-symbols-outlined text-secondary scale-75" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface text-sm font-medium">Avisos de editais e concursos</span>
+<span class="material-symbols-outlined text-secondary scale-75" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<section class="bg-primary text-on-primary rounded-2xl overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-br from-primary to-primary-container opacity-50"></div>
+<div class="relative p-6 z-10">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="do_not_disturb_on">do_not_disturb_on</span>
+<h3 class="font-bold text-lg">Horário Silencioso</h3>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<p class="text-primary-fixed-dim text-sm mb-6 leading-relaxed">Pausar todas as notificações durante o seu período de foco profundo ou sono.</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/10 rounded-lg p-3">
+<span class="text-[10px] uppercase font-bold tracking-widest text-white/60">Início</span>
+<p class="text-lg font-bold">22:00</p>
+</div>
+<div class="bg-white/10 rounded-lg p-3">
+<span class="text-[10px] uppercase font-bold tracking-widest text-white/60">Término</span>
+<p class="text-lg font-bold">07:00</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-2xl rounded-t-3xl border-t border-slate-200/20 dark:border-slate-800/20 shadow-[0_-8px_24px_rgba(23,28,34,0.06)]">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-500 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="book_5">book_5</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Estudo</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-500 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="leaderboard">leaderboard</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Desempenho</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-5 py-2 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Alertas</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-500 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-inter text-[11px] font-semibold uppercase tracking-wider">Perfil</span>
+</a>
+</nav>
+</body></html>

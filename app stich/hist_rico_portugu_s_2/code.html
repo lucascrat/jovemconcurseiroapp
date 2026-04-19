@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#a9adaf",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "outline": "#737780",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "surface-container-high": "#e4e8f1",
+                    "surface-container": "#eaeef7",
+                    "inverse-on-surface": "#edf1fa",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#43474f",
+                    "inverse-surface": "#2c3137",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#d5e3ff",
+                    "outline-variant": "#c3c6d0",
+                    "secondary": "#006c50",
+                    "on-tertiary-fixed": "#181c1e",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#a8c8ff",
+                    "tertiary-container": "#3d4143",
+                    "surface-container-highest": "#dee3eb",
+                    "on-primary-fixed-variant": "#224779",
+                    "surface-variant": "#dee3eb",
+                    "primary-container": "#1a4173",
+                    "surface-tint": "#3c5f93",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-surface": "#171c22",
+                    "secondary-fixed-dim": "#77d9b3",
+                    "on-primary-container": "#8caee7",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#f0f4fd",
+                    "on-background": "#171c22",
+                    "surface-dim": "#d6dae3",
+                    "secondary-container": "#93f6ce",
+                    "primary": "#002b57",
+                    "on-secondary-fixed": "#002116",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#a8c8ff",
+                    "tertiary": "#272b2d",
+                    "on-primary-fixed": "#001b3c",
+                    "secondary-fixed": "#93f6ce",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-secondary-container": "#007255"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; }
+      .font-headline { font-family: 'Manrope', sans-serif; }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl">
+<div class="flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-150 ease-in-out rounded-full">
+<span class="material-symbols-outlined text-[#002b57] dark:text-blue-400">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-bold text-xl text-[#002b57] dark:text-blue-400">Histórico: Português</h1>
+</div>
+<button class="p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-150 ease-in-out rounded-full">
+<span class="material-symbols-outlined text-[#002b57] dark:text-blue-400">filter_list</span>
+</button>
+</div>
+</header>
+<main class="pt-20 pb-28 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Performance Evolution Chart Section -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-4 bg-surface-container-lowest border-none rounded-2xl text-sm font-medium focus:ring-2 focus:ring-primary/20 shadow-[0_8px_24px_rgba(23,28,34,0.04)] transition-all placeholder:text-outline/60" placeholder="Buscar simulado por título..." type="text"/>
+</div><section class="flex flex-col gap-3 mt-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-outline px-1">Filtrar por Banca</span>
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-md shadow-primary/20 transition-all active:scale-95">Ver todos</button>
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface-variant font-bold text-xs hover:bg-surface-container-highest transition-colors active:scale-95">FGV</button>
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface-variant font-bold text-xs hover:bg-surface-container-highest transition-colors active:scale-95">Cebraspe</button>
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface-variant font-bold text-xs hover:bg-surface-container-highest transition-colors active:scale-95">Vunesp</button>
+</div>
+</section><section class="space-y-4">
+<div class="flex items-end justify-between">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-outline">Evolução</span>
+<h2 class="text-2xl font-headline font-extrabold text-primary">Desempenho</h2>
+</div>
+<div class="flex items-center gap-1 bg-secondary-container px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-on-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="text-xs font-bold text-on-secondary-container">+12%</span>
+</div>
+</div>
+<!-- Bento-style Graph Card -->
+<div class="relative bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_24px_rgba(23,28,34,0.04)] overflow-hidden">
+<div class="flex justify-between items-end h-40 gap-2 mb-4">
+<!-- Fake Line Chart Visualization -->
+<div class="flex-1 bg-surface-container-low rounded-t-lg h-[60%] relative group">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-primary text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">72%</div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg h-[75%] relative group">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-primary text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">78%</div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg h-[65%] relative group">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-primary text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">75%</div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg h-[82%] relative group">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-primary text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">82%</div>
+</div>
+<div class="flex-1 bg-primary rounded-t-lg h-[90%] relative group shadow-lg shadow-primary/20">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-primary text-white text-[10px] px-2 py-1 rounded opacity-100">88%</div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] font-bold text-outline uppercase tracking-tighter">
+<span>Sim. 01</span>
+<span>Sim. 02</span>
+<span>Sim. 03</span>
+<span>Sim. 04</span>
+<span>Sim. 05</span>
+</div>
+</div>
+</section>
+<!-- Filters Section -->
+<section class="flex flex-col gap-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-outline px-1">Filtrar por Banca</span>
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-md shadow-primary/20 transition-all active:scale-95">Ver todos</button>
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface-variant font-bold text-xs hover:bg-surface-container-highest transition-colors active:scale-95">FGV</button>
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface-variant font-bold text-xs hover:bg-surface-container-highest transition-colors active:scale-95">Cebraspe</button>
+<button class="whitespace-nowrap px-6 py-2.5 rounded-xl bg-surface-container-high text-on-surface-variant font-bold text-xs hover:bg-surface-container-highest transition-colors active:scale-95">Vunesp</button>
+</div>
+</section>
+<!-- Mock Exam List -->
+<section class="space-y-4">
+<h3 class="font-headline font-bold text-lg text-primary px-1">Simulados Realizados</h3>
+<div class="space-y-3">
+<!-- Card 1 -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl flex items-center justify-between hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+<div class="space-y-1">
+<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">FGV</span>
+<h4 class="font-headline font-bold text-on-surface">Simulado FGV - Morfologia</h4>
+<div class="flex items-center gap-3 text-xs text-outline font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> 12 de Outubro</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 42 min</span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-2xl font-headline font-extrabold text-primary">88%</div>
+<div class="text-[10px] font-bold text-outline uppercase">Acertos</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl flex items-center justify-between hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+<div class="space-y-1">
+<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Cebraspe</span>
+<h4 class="font-headline font-bold text-on-surface">Português: Sintaxe do Período</h4>
+<div class="flex items-center gap-3 text-xs text-outline font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> 08 de Outubro</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 55 min</span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-2xl font-headline font-extrabold text-primary">82%</div>
+<div class="text-[10px] font-bold text-outline uppercase">Acertos</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl flex items-center justify-between hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+<div class="space-y-1">
+<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Geral</span>
+<h4 class="font-headline font-bold text-on-surface">Revisão: Concordância e Regência</h4>
+<div class="flex items-center gap-3 text-xs text-outline font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> 30 de Setembro</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 38 min</span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-2xl font-headline font-extrabold text-primary">75%</div>
+<div class="text-[10px] font-bold text-outline uppercase">Acertos</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl flex items-center justify-between hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+<div class="space-y-1">
+<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">FGV</span>
+<h4 class="font-headline font-bold text-on-surface">Interpretação de Textos</h4>
+<div class="flex items-center gap-3 text-xs text-outline font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> 22 de Setembro</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 1h 05min</span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-2xl font-headline font-extrabold text-primary">78%</div>
+<div class="text-[10px] font-bold text-outline uppercase">Acertos</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-3 pb-6 bg-white/90 dark:bg-slate-950/90 backdrop-blur-2xl rounded-t-[1.5rem] border-t border-slate-100 dark:border-slate-800 shadow-[0_-8px_24px_rgba(23,28,34,0.06)]">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 px-4 py-2 hover:text-[#002b57] dark:hover:text-blue-300 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[11px] font-semibold">Início</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#002b57] dark:text-blue-300 bg-[#1A4173]/10 dark:bg-blue-900/30 rounded-2xl px-4 py-2 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-['Inter'] text-[11px] font-semibold">Estudos</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 px-4 py-2 hover:text-[#002b57] dark:hover:text-blue-300 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-['Inter'] text-[11px] font-semibold">Simulados</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 px-4 py-2 hover:text-[#002b57] dark:hover:text-blue-300 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[11px] font-semibold">Perfil</span>
+</a>
+</nav>
+</body></html>

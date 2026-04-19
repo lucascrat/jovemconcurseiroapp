@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Busca Avançada - Foco no Concurso</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#dee3eb",
+                    "surface-container-low": "#f0f4fd",
+                    "on-surface": "#171c22",
+                    "inverse-on-surface": "#edf1fa",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#224779",
+                    "primary-fixed": "#d5e3ff",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#3d4143",
+                    "on-primary-container": "#8caee7",
+                    "surface-tint": "#3c5f93",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#93f6ce",
+                    "on-surface-variant": "#43474f",
+                    "inverse-primary": "#a8c8ff",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary-container": "#007255",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#dee3eb",
+                    "primary-fixed-dim": "#a8c8ff",
+                    "outline": "#737780",
+                    "secondary": "#006c50",
+                    "tertiary": "#272b2d",
+                    "surface-dim": "#d6dae3",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-tertiary-fixed": "#181c1e",
+                    "on-secondary-fixed": "#002116",
+                    "inverse-surface": "#2c3137",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#93f6ce",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "surface-container-high": "#e4e8f1",
+                    "on-background": "#171c22",
+                    "outline-variant": "#c3c6d0",
+                    "primary": "#002b57",
+                    "on-tertiary-container": "#a9adaf",
+                    "surface-container": "#eaeef7",
+                    "background": "#f8f9ff",
+                    "secondary-fixed-dim": "#77d9b3",
+                    "primary-container": "#1a4173",
+                    "on-primary-fixed": "#001b3c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.5rem",
+                    "lg": "0.5rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .glass-header {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl flex items-center px-4 py-3 gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-200" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-manrope font-bold text-lg tracking-tight text-blue-900 dark:text-blue-200">Advanced Search</h1>
+<div class="ml-auto">
+<button class="text-sm font-semibold text-primary hover:opacity-70">Limpar</button>
+</div>
+</header>
+<div class="bg-slate-200/50 dark:bg-slate-800/50 h-[1px] w-full"></div>
+<main class="max-w-3xl mx-auto px-4 py-6 space-y-8">
+<!-- Search Section -->
+<section class="space-y-3">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-outline" placeholder="Palavra-chave ou código da questão" type="text"/>
+</div>
+</section>
+<!-- Bento Grid Filter Groups -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Disciplina e Assunto (Stacked) -->
+<div class="space-y-4 md:col-span-2">
+<div class="bg-surface-container-low p-6 rounded-xl space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="menu_book">menu_book</span>
+<h2 class="text-sm font-bold font-headline uppercase tracking-wider text-on-surface-variant">Conteúdo Acadêmico</h2>
+</div>
+<div class="space-y-4">
+<div class="relative">
+<label class="block text-xs font-bold text-primary mb-1 ml-1 uppercase">Disciplina</label>
+<select class="w-full p-4 bg-surface-container-lowest rounded-lg border-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option>Língua Portuguesa</option>
+<option>Direito Constitucional</option>
+<option>Direito Administrativo</option>
+<option>Raciocínio Lógico</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 bottom-4 pointer-events-none text-outline" data-icon="expand_more">expand_more</span>
+</div>
+<div class="relative opacity-60">
+<label class="block text-xs font-bold text-primary mb-1 ml-1 uppercase">Assunto</label>
+<select class="w-full p-4 bg-surface-container-lowest rounded-lg border-none focus:ring-2 focus:ring-primary appearance-none cursor-not-allowed" disabled="">
+<option>Selecione uma disciplina primeiro</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 bottom-4 pointer-events-none text-outline" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Banca -->
+<div class="bg-surface-container-low p-6 rounded-xl space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="apartment">apartment</span>
+<h2 class="text-sm font-bold font-headline uppercase tracking-wider text-on-surface-variant">Banca Examinadora</h2>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary text-sm font-semibold transition-all">FGV</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant text-sm font-semibold hover:bg-surface-variant transition-all">Cebraspe</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant text-sm font-semibold hover:bg-surface-variant transition-all">FCC</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant text-sm font-semibold hover:bg-surface-variant transition-all">Vunesp</button>
+</div>
+</div>
+<!-- Nível -->
+<div class="bg-surface-container-low p-6 rounded-xl space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="leaderboard">leaderboard</span>
+<h2 class="text-sm font-bold font-headline uppercase tracking-wider text-on-surface-variant">Nível de Escolaridade</h2>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="p-3 flex flex-col items-center justify-center rounded-lg bg-surface-container-lowest hover:bg-primary hover:text-on-primary transition-all group">
+<span class="text-[10px] font-bold uppercase">Fund.</span>
+</button>
+<button class="p-3 flex flex-col items-center justify-center rounded-lg bg-primary text-on-primary transition-all">
+<span class="text-[10px] font-bold uppercase">Médio</span>
+</button>
+<button class="p-3 flex flex-col items-center justify-center rounded-lg bg-surface-container-lowest hover:bg-primary hover:text-on-primary transition-all">
+<span class="text-[10px] font-bold uppercase">Sup.</span>
+</button>
+</div>
+</div>
+<!-- Ano Slider Alternative (Visual Selection) -->
+<div class="bg-surface-container-low p-6 rounded-xl space-y-4 md:col-span-2">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="calendar_today">calendar_today</span>
+<h2 class="text-sm font-bold font-headline uppercase tracking-wider text-on-surface-variant">Ano da Questão</h2>
+</div>
+<span class="text-xs font-bold text-primary bg-primary-fixed px-2 py-1 rounded">2020 - 2024</span>
+</div>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" max="2024" min="2010" step="1" type="range" value="2024"/>
+<div class="flex justify-between text-[10px] font-bold text-outline uppercase tracking-tighter">
+<span>2010</span>
+<span>2015</span>
+<span>2020</span>
+<span>Hoje</span>
+</div>
+</div>
+<!-- Status -->
+<div class="bg-surface-container-low p-6 rounded-xl space-y-4 md:col-span-2">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="rule">rule</span>
+<h2 class="text-sm font-bold font-headline uppercase tracking-wider text-on-surface-variant">Seu Desempenho</h2>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<label class="relative cursor-pointer">
+<input checked="" class="peer sr-only" type="checkbox"/>
+<div class="p-3 rounded-lg bg-surface-container-lowest text-center border-2 border-transparent peer-checked:border-primary peer-checked:bg-primary-fixed transition-all">
+<span class="text-[10px] font-bold uppercase block text-on-surface">Não resolvidas</span>
+</div>
+</label>
+<label class="relative cursor-pointer">
+<input class="peer sr-only" type="checkbox"/>
+<div class="p-3 rounded-lg bg-surface-container-lowest text-center border-2 border-transparent peer-checked:border-primary peer-checked:bg-primary-fixed transition-all">
+<span class="text-[10px] font-bold uppercase block text-on-surface">Resolvidas</span>
+</div>
+</label>
+<label class="relative cursor-pointer">
+<input class="peer sr-only" type="checkbox"/>
+<div class="p-3 rounded-lg bg-surface-container-lowest text-center border-2 border-transparent peer-checked:border-primary peer-checked:bg-primary-fixed transition-all">
+<span class="text-[10px] font-bold uppercase block text-on-surface">Meus Erros</span>
+</div>
+</label>
+<label class="relative cursor-pointer">
+<input class="peer sr-only" type="checkbox"/>
+<div class="p-3 rounded-lg bg-surface-container-lowest text-center border-2 border-transparent peer-checked:border-primary peer-checked:bg-primary-fixed transition-all">
+<span class="text-[10px] font-bold uppercase block text-on-surface">Favoritas</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Action Button Area -->
+<div class="fixed bottom-0 left-0 w-full p-4 bg-white/60 backdrop-blur-md z-40 border-t border-slate-200/50 md:p-6">
+<div class="max-w-3xl mx-auto flex items-center gap-4">
+<div class="hidden md:flex flex-col">
+<span class="text-[10px] font-extrabold uppercase text-outline tracking-widest">Resultados estimados</span>
+<span class="text-xl font-headline font-extrabold text-primary">12.450 questões</span>
+</div>
+<button class="flex-1 bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-bold py-4 rounded-xl shadow-[0_8px_24px_rgba(23,28,34,0.06)] hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+                Filtrar Questões
+            </button>
+</div>
+</div>
+<!-- BottomNavBar (Hidden on desktop, logic from JSON) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-6 pb-6 pt-3 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-2xl z-50 rounded-t-3xl shadow-[0_-8px_24px_rgba(23,28,34,0.06)]">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="book_2">book_2</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase">Study</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase">Practice</span>
+</a>
+<!-- ACTIVE NAVIGATION: Search -->
+<a class="flex flex-col items-center justify-center bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200 rounded-2xl px-5 py-2 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase">Rank</span>
+</a>
+</nav>
+</body></html>

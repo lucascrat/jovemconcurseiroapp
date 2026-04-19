@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Foco no Concurso - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#a8c8ff",
+                    "on-secondary-fixed": "#002116",
+                    "primary": "#002b57",
+                    "secondary-container": "#93f6ce",
+                    "surface-dim": "#d6dae3",
+                    "surface-container-low": "#f0f4fd",
+                    "on-background": "#171c22",
+                    "on-secondary-container": "#007255",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed": "#001b3c",
+                    "background": "#f8f9ff",
+                    "secondary-fixed": "#93f6ce",
+                    "tertiary": "#272b2d",
+                    "tertiary-fixed": "#e0e3e5",
+                    "surface-variant": "#dee3eb",
+                    "primary-container": "#1a4173",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#3c5f93",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#8caee7",
+                    "secondary-fixed-dim": "#77d9b3",
+                    "on-surface": "#171c22",
+                    "on-surface-variant": "#43474f",
+                    "inverse-surface": "#2c3137",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#a8c8ff",
+                    "surface-container-highest": "#dee3eb",
+                    "tertiary-container": "#3d4143",
+                    "on-primary-fixed-variant": "#224779",
+                    "secondary": "#006c50",
+                    "on-tertiary-fixed": "#181c1e",
+                    "error-container": "#ffdad6",
+                    "outline-variant": "#c3c6d0",
+                    "primary-fixed": "#d5e3ff",
+                    "surface-container-high": "#e4e8f1",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "outline": "#737780",
+                    "on-tertiary-container": "#a9adaf",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#edf1fa",
+                    "surface-container": "#eaeef7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-50 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 duration-200 text-slate-500">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Manrope'] font-extrabold text-[#002b57] dark:text-blue-200 tracking-tighter text-xl">Foco no Concurso</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden md:flex flex-col items-end mr-2">
+<span class="text-xs font-medium text-slate-500">Meta Diária</span>
+<span class="text-sm font-bold text-primary">75%</span>
+</div>
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container" data-alt="Close-up portrait of a professional woman with a friendly expression in a modern office setting with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByLGV9IEQzD_9RXwJWlnmqbvUmkn3XvOUu-_R8ecQIGX3PdLpXqU2q-fXBEv39BZ2Rf62ssSi6160eWOvcQMSYSXXGdHRXbKDXWeU4nWq4EYceoDD-MfpkgX3xoaIq35v7QSoiBd5z8y3_cHkrrFyRkwh4cDOWp8UzCxtwNqrEakgujAV_FXu8l4I4zpPiZnWOKe_f1wf7eeTEJMKXMpj8GuWEAwL-3W4jtw-pGuFN9ZI-c-0x0RD3P4pCdEpdSOV8QXBt7856VMI"/>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-6 py-8">
+<!-- Daily Goal Hero Section -->
+<section class="mb-10">
+<div class="bg-surface-container-lowest p-8 rounded-xl flex flex-col md:flex-row justify-between items-center gap-8 border-b-0">
+<div class="flex-1">
+<h2 class="text-3xl font-extrabold text-primary tracking-tight mb-2">Bom dia, Victor!</h2>
+<p class="text-on-surface-variant body-lg mb-6">Sua jornada rumo à aprovação continua hoje. Você já completou <span class="font-bold text-secondary">3 de 4</span> metas diárias.</p>
+<div class="w-full bg-surface-container-highest h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-primary-container h-full w-[75%] rounded-full"></div>
+</div>
+</div>
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-dasharray="351.8" stroke-dashoffset="87.95" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-xl font-extrabold text-primary">75%</span>
+<span class="text-[10px] uppercase tracking-tighter text-on-surface-variant font-bold">Meta</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Continue de onde parou -->
+<section class="mb-10">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold text-primary">Continue de onde parou</h3>
+<button class="text-primary font-semibold text-sm hover:underline">Ver cronograma</button>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl bg-primary-container text-on-primary-container p-1 min-h-[200px] flex">
+<div class="absolute inset-0 z-0 opacity-20 transition-transform duration-700 group-hover:scale-110" data-alt="Modern workspace with an open laptop, notebooks, and a cup of coffee on a wooden table, soft focused study atmosphere" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDS4tQSty9Ib8bxX0LOdQEGxgcVOYCSdIG0Xm2rIqmb1GUgTpp5mWLngEn2QsVuL7R52qy4re-vDLyK4Ew3UQjp1m0DDl6ea-Kiftb36T9mMr3yLJOIEC7P34ATUP7ObgQwN_8WkwBNs--yJVAN0eCMmcMEKxDI22g_GlOZEzvOVwUZ77qRdHk0UTOfbTQ8oRi_Qm-E7zfzC3RRmuDewRJxPMmIHvjwgAdIi98Be518jKReYc2ipDQtia_DAL3k59aR_cAgytRGNJg'); background-size: cover; background-position: center;"></div>
+<div class="relative z-10 p-8 flex flex-col justify-between w-full backdrop-blur-sm bg-primary/40">
+<div>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block">Módulo 4: Licitações</span>
+<h4 class="text-2xl font-bold text-white mb-2">Direito Administrativo</h4>
+<p class="text-on-primary-container text-sm max-w-md">Aula 12: Inexigibilidade e Dispensa de Licitação. Faltam 15 minutos para concluir este tópico.</p>
+</div>
+<div class="flex items-center gap-4 mt-6">
+<button class="bg-white text-primary px-6 py-3 rounded-lg font-bold flex items-center gap-2 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="play_circle" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+                            Retomar Estudo
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Disciplines -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold text-primary">Suas Matérias</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+</button>
+<button class="p-2 rounded-lg text-slate-400 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="list">list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-low p-6 rounded-xl hover:bg-surface-container-high transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl" data-icon="translate">translate</span>
+</div>
+<span class="text-2xl font-bold text-primary">45%</span>
+</div>
+<h4 class="font-bold text-primary mb-1">Língua Portuguesa</h4>
+<p class="text-on-surface-variant text-sm mb-6">12 de 24 aulas concluídas</p>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full">
+<div class="bg-primary h-full w-[45%] rounded-full"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low p-6 rounded-xl hover:bg-surface-container-high transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-secondary-fixed rounded-xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-2xl" data-icon="gavel">gavel</span>
+</div>
+<span class="text-2xl font-bold text-primary">12%</span>
+</div>
+<h4 class="font-bold text-primary mb-1">Direito Administrativo</h4>
+<p class="text-on-surface-variant text-sm mb-6">3 de 25 aulas concluídas</p>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full">
+<div class="bg-secondary h-full w-[12%] rounded-full"></div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low p-6 rounded-xl hover:bg-surface-container-high transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-tertiary-fixed rounded-xl flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-2xl" data-icon="calculate">calculate</span>
+</div>
+<span class="text-2xl font-bold text-primary">88%</span>
+</div>
+<h4 class="font-bold text-primary mb-1">Raciocínio Lógico</h4>
+<p class="text-on-surface-variant text-sm mb-6">21 de 24 aulas concluídas</p>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full">
+<div class="bg-primary-container h-full w-[88%] rounded-full"></div>
+</div>
+</div>
+<!-- Card 4 (Double Width for emphasis or different look) -->
+<div class="md:col-span-2 bg-surface-container-low p-6 rounded-xl hover:bg-surface-container-high transition-all duration-300 flex flex-col md:flex-row gap-6">
+<div class="flex-1">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-800">
+<span class="material-symbols-outlined text-2xl" data-icon="account_balance">account_balance</span>
+</div>
+</div>
+<h4 class="font-bold text-primary mb-1 text-lg">Direito Constitucional</h4>
+<p class="text-on-surface-variant text-sm mb-6">Foco total em Direitos Fundamentais e Organização do Estado.</p>
+<div class="flex items-center gap-4">
+<div class="flex-1 w-full bg-surface-container-highest h-1.5 rounded-full">
+<div class="bg-blue-600 h-full w-[32%] rounded-full"></div>
+</div>
+<span class="text-lg font-bold text-primary">32%</span>
+</div>
+</div>
+<div class="hidden md:block w-px bg-outline-variant/30"></div>
+<div class="flex flex-col justify-center">
+<div class="flex items-center gap-2 text-secondary mb-2">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="text-xs font-bold uppercase tracking-tight">Desempenho em Alta</span>
+</div>
+<p class="text-sm text-on-surface-variant">Seu acerto em simulados subiu 15% nesta matéria.</p>
+</div>
+</div>
+<!-- Action Card -->
+<div class="bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl flex flex-col justify-center items-center text-center text-white">
+<div class="w-14 h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</div>
+<h4 class="font-bold mb-2">Nova Disciplina</h4>
+<p class="text-on-primary-container text-xs mb-4">Personalize seu plano de estudos adicionando novas matérias.</p>
+<button class="text-xs font-bold bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full uppercase tracking-widest">Adicionar</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-6 bg-white/90 dark:bg-slate-950/90 backdrop-blur-2xl z-50 rounded-t-[1.5rem] shadow-[0_-8px_24px_rgba(23,28,34,0.06)]">
+<!-- Active Nav: Início -->
+<a class="flex flex-col items-center justify-center bg-[#002b57] text-white dark:bg-blue-600 dark:text-white rounded-2xl px-5 py-2 active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-['Inter'] font-medium text-[10px] uppercase tracking-widest mt-1">Início</span>
+</a>
+<!-- Inactive Nav: Matérias -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-[#002b57] dark:hover:text-blue-300 active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-['Inter'] font-medium text-[10px] uppercase tracking-widest mt-1">Matérias</span>
+</a>
+<!-- Inactive Nav: Desempenho -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-[#002b57] dark:hover:text-blue-300 active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-['Inter'] font-medium text-[10px] uppercase tracking-widest mt-1">Desempenho</span>
+</a>
+<!-- Inactive Nav: Perfil -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-[#002b57] dark:hover:text-blue-300 active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] font-medium text-[10px] uppercase tracking-widest mt-1">Perfil</span>
+</a>
+</nav>
+<!-- FAB (Contextual for Home/Dashboard) -->
+<button class="fixed bottom-24 right-6 w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 duration-200 z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="timer">timer</span>
+</button>
+</body></html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Estudo Memorizado - Flashcards</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#002116",
+                        "tertiary": "#272b2d",
+                        "on-background": "#171c22",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d6dae3",
+                        "secondary": "#006c50",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#434749",
+                        "on-tertiary-container": "#a9adaf",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#8caee7",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#dee3eb",
+                        "secondary-container": "#93f6ce",
+                        "surface-container": "#eaeef7",
+                        "surface": "#f8f9ff",
+                        "outline-variant": "#c3c6d0",
+                        "on-surface": "#171c22",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d5e3ff",
+                        "on-surface-variant": "#43474f",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#001b3c",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "tertiary-container": "#3d4143",
+                        "inverse-primary": "#a8c8ff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-high": "#e4e8f1",
+                        "inverse-surface": "#2c3137",
+                        "surface-container-low": "#f0f4fd",
+                        "primary-container": "#1a4173",
+                        "secondary-fixed": "#93f6ce",
+                        "primary-fixed-dim": "#a8c8ff",
+                        "on-secondary-fixed-variant": "#00513c",
+                        "on-primary-fixed-variant": "#224779",
+                        "primary": "#002b57",
+                        "on-secondary-container": "#007255",
+                        "inverse-on-surface": "#edf1fa",
+                        "surface-container-highest": "#dee3eb",
+                        "surface-tint": "#3c5f93",
+                        "on-tertiary-fixed": "#181c1e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#77d9b3",
+                        "outline": "#737780",
+                        "background": "#f8f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<nav class="bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-200" data-icon="menu_book">menu_book</span>
+<h1 class="font-manrope font-extrabold text-blue-900 dark:text-blue-100 tracking-tight">Estudo Memorizado</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-high px-3 py-1 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-sm font-bold font-headline text-primary">12 dias</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col items-center justify-center pt-24 pb-32 px-6 max-w-2xl mx-auto w-full">
+<!-- Session Progress Header -->
+<div class="w-full mb-8">
+<div class="flex justify-between items-end mb-3">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-outline mb-1 block font-headline">Matéria</span>
+<h2 class="text-xl font-extrabold text-primary font-headline">Direito Constitucional</h2>
+</div>
+<div class="text-right">
+<span class="text-sm font-bold text-primary font-headline">5 / 20 cards</span>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[25%] rounded-full"></div>
+</div>
+</div>
+<!-- Flashcard Component (Editorial Style) -->
+<div class="relative w-full aspect-[4/5] md:aspect-[3/2] perspective-1000">
+<!-- Simulated Stack Effect -->
+<div class="absolute inset-0 bg-surface-container-low rounded-[2rem] transform translate-y-4 scale-95 opacity-50 -z-10"></div>
+<div class="absolute inset-0 bg-surface-container rounded-[2rem] transform translate-y-2 scale-[0.97] opacity-80 -z-10"></div>
+<!-- Main Flashcard -->
+<div class="w-full h-full bg-surface-container-lowest rounded-[2rem] shadow-[0_8px_24px_rgba(23,28,34,0.06)] border border-outline-variant/15 flex flex-col p-8 md:p-12 relative overflow-hidden">
+<!-- Card Header/Context -->
+<div class="flex justify-between items-start mb-6">
+<div class="bg-primary-container/10 text-primary-container px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider font-headline">
+                        Conceitos Fundamentais
+                    </div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="help_outline">help_outline</span>
+</div>
+<!-- Card Content (The Question) -->
+<div class="flex-1 flex flex-col justify-center items-center text-center">
+<h3 class="text-2xl md:text-3xl font-extrabold text-on-surface font-headline leading-tight mb-4">
+                        Qual o princípio constitucional que garante a impossibilidade de retrocesso social?
+                    </h3>
+<p class="text-on-surface-variant/70 italic font-body text-sm">
+                        Toque no card para ver a resposta
+                    </p>
+</div>
+<!-- Visual Texture (Asymmetric design) -->
+<div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute top-10 -left-10 w-24 h-24 bg-secondary/5 rounded-full blur-2xl"></div>
+</div>
+</div>
+<!-- Feedback Controls (Simplified for focus) -->
+<div class="mt-8 w-full">
+<div class="grid grid-cols-4 gap-3">
+<!-- Errei -->
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-error-container text-on-error-container active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+<span class="text-[10px] font-bold font-headline uppercase tracking-tighter">Errei</span>
+</button>
+<!-- Difícil -->
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-highest text-on-surface-variant active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="text-[10px] font-bold font-headline uppercase tracking-tighter">Difícil</span>
+</button>
+<!-- Bom -->
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-primary-container/20 text-primary-container active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="check">check</span>
+<span class="text-[10px] font-bold font-headline uppercase tracking-tighter">Bom</span>
+</button>
+<!-- Fácil -->
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-secondary-container text-on-secondary-container active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-[10px] font-bold font-headline uppercase tracking-tighter">Fácil</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Only for top-level) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-3 pb-8 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl shadow-[0_-8px_24px_rgba(23,28,34,0.06)] rounded-t-[2rem]">
+<div class="flex flex-col items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-6 py-2 transition-all duration-300">
+<span class="material-symbols-outlined mb-1" data-icon="style" style="font-variation-settings: 'FILL' 1;">style</span>
+<span class="font-manrope text-[11px] font-semibold tracking-wide">Estudos</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2 hover:opacity-80 active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined mb-1" data-icon="leaderboard">leaderboard</span>
+<span class="font-manrope text-[11px] font-semibold tracking-wide">Desempenho</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2 hover:opacity-80 active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-manrope text-[11px] font-semibold tracking-wide">Perfil</span>
+</div>
+</nav>
+<!-- Background Decoration -->
+<div class="fixed top-0 left-0 w-full h-full -z-20 overflow-hidden pointer-events-none">
+<div class="absolute top-[10%] left-[5%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[10%] right-[5%] w-[30%] h-[30%] bg-secondary/5 rounded-full blur-[100px]"></div>
+</div>
+</body></html>

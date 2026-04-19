@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container": "#eaeef7",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#e4e8f1",
+                      "on-tertiary-container": "#a9adaf",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#1a4173",
+                      "on-surface": "#171c22",
+                      "secondary-container": "#93f6ce",
+                      "on-primary-fixed": "#001b3c",
+                      "tertiary": "#272b2d",
+                      "on-background": "#171c22",
+                      "surface-variant": "#dee3eb",
+                      "primary-fixed-dim": "#a8c8ff",
+                      "error-container": "#ffdad6",
+                      "inverse-surface": "#2c3137",
+                      "surface-container-highest": "#dee3eb",
+                      "surface-bright": "#f8f9ff",
+                      "on-tertiary-fixed-variant": "#434749",
+                      "secondary-fixed-dim": "#77d9b3",
+                      "tertiary-fixed": "#e0e3e5",
+                      "surface-container-low": "#f0f4fd",
+                      "secondary": "#006c50",
+                      "on-primary": "#ffffff",
+                      "surface-dim": "#d6dae3",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed": "#181c1e",
+                      "background": "#f8f9ff",
+                      "outline-variant": "#c3c6d0",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "outline": "#737780",
+                      "primary-fixed": "#d5e3ff",
+                      "on-surface-variant": "#43474f",
+                      "on-secondary-container": "#007255",
+                      "on-secondary-fixed-variant": "#00513c",
+                      "inverse-primary": "#a8c8ff",
+                      "on-error-container": "#93000a",
+                      "surface": "#f8f9ff",
+                      "primary": "#002b57",
+                      "inverse-on-surface": "#edf1fa",
+                      "surface-tint": "#3c5f93",
+                      "on-primary-fixed-variant": "#224779",
+                      "secondary-fixed": "#93f6ce",
+                      "tertiary-container": "#3d4143",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#8caee7",
+                      "on-secondary-fixed": "#002116",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Manrope"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+        .segmented-control {
+            background-color: #f1f3f7;
+            padding: 4px;
+            border-radius: 12px;
+            display: flex;
+            position: relative;
+        }
+        .segmented-control button {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .segmented-control .active {
+            background-color: #ffffff;
+            color: #002b57;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .segmented-control .inactive {
+            color: #737780;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md flex justify-between items-center px-6 h-16 w-full border-b border-surface-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-200" data-icon="leaderboard">leaderboard</span>
+<h1 class="text-xl font-bold tracking-tight text-blue-900 dark:text-blue-100">Ranking Global</h1>
+</div>
+<div class="flex items-center gap-1">
+<button class="hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors p-2 rounded-full active:scale-95">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-200" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-20 px-6 max-w-2xl mx-auto">
+<!-- Search Bar -->
+<div class="relative mb-6">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-xl" data-icon="search">search</span>
+</div>
+<input class="block w-full pl-10 pr-4 py-3 bg-surface-container-low border-none rounded-2xl text-sm focus:ring-2 focus:ring-primary-container transition-all placeholder:text-outline/60" placeholder="Buscar competidor..." type="text"/>
+</div>
+<!-- Tab Selector (Segmented Control) -->
+<nav class="segmented-control mb-8">
+<button class="active">Semanal</button>
+<button class="inactive">Mensal</button>
+<button class="inactive">Geral</button>
+</nav>
+<!-- Podium Section -->
+<div class="flex items-end justify-center gap-4 mb-12 mt-4 h-64">
+<!-- 2nd Place -->
+<div class="flex flex-col items-center">
+<div class="relative mb-3">
+<div class="w-20 h-20 rounded-full border-4 border-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional male portrait with friendly expression in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEY0m2itEZevrYCK3giQsEcs4YUaAk7UbRLSaHqls367W7Ag19y8z7BRMPL9hXPoZ0UV6eQ_YZ6fAUVGCTxs6KuCDYRFNB4Pf96sFtV2nZAlynj1CPgiVkrLZN9_ieq2Pb2dfk56C9aNLCYjW5YDpnKRlwYRHrOXXOg8lcpkSk7qGttLCfJbEnxH1z2HoFMdRkpoTG5qldmX9XefyBh6h1FkE0Q-kutR7hinWi3Z2BFCDrZD9oozv4cw60paCJ11lOHbxJGgm1pI4"/>
+</div>
+<div class="absolute -bottom-2 -right-1 bg-surface-container-high text-primary font-bold w-8 h-8 rounded-full flex items-center justify-center text-xs">2º</div>
+</div>
+<p class="font-headline font-bold text-sm">Lucas M.</p>
+<p class="text-secondary font-bold text-xs">2.840 pts</p>
+<div class="w-16 h-20 bg-surface-container-high rounded-t-xl mt-2"></div>
+</div>
+<!-- 1st Place -->
+<div class="flex flex-col items-center scale-110 -translate-y-4">
+<div class="relative mb-3">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-yellow-500">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div class="w-24 h-24 rounded-full border-4 border-secondary-container overflow-hidden shadow-xl">
+<img class="w-full h-full object-cover" data-alt="vibrant portrait of a woman smiling with soft natural sunlight on her face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU9iFAlddWwgX4UVATLBUyv9wpcd6dobwKLNgNYfkNK-aa6yqZlTCbPDGJ2Xjsb17VAMc-qkMjYH9FPh7Cim7AGiK5g75wibRZ2OGDiRG4HxXKAj92xuaOSnZm8hVxWLkD4cnBuOkjSV8gLsvLg2JOQdLT5FR3QRTwX_69EFhaVMgi5-ODoRw_UJWsFiQkxUW3FcNsC0FxkLWUcK4S6evfm4ufgBbFrWs8rymk8c9guSOfd_b2JEpT4FLarGiWYgkwylxyPNAitRE"/>
+</div>
+<div class="absolute -bottom-2 -right-1 bg-secondary-container text-on-secondary-container font-bold w-10 h-10 rounded-full flex items-center justify-center text-sm shadow-md">1º</div>
+</div>
+<p class="font-headline font-bold text-base">Ana Clara</p>
+<p class="text-secondary font-bold text-sm">3.120 pts</p>
+<div class="w-20 h-32 bg-primary-container rounded-t-xl mt-2 flex items-center justify-center">
+<span class="text-primary-fixed-dim/20 font-black text-4xl">1</span>
+</div>
+</div>
+<!-- 3rd Place -->
+<div class="flex flex-col items-center">
+<div class="relative mb-3">
+<div class="w-16 h-16 rounded-full border-4 border-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="young man with beard wearing casual glasses looking directly at camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT9_UW7qMay5MgS7Ywrqav6Xh8Q4MYY3mimL_x9uaLHbBkUnknlzX0RsrcM5RuHz8wS2-_idnH9VCEW9EswWXZx7WeJ-TaX-qgjOI1y0oaeqUprjY1AIpa_wIZWLXIzMvL57CWNqSzSJvuTa5GhkQ6Kv24xBzPiMREXgAmszWgD8n2Pdgoe7YRLZnc44Q86FrAEUFbAnPqDw2_tjsSoJiMcZ7MVDUEQDFEu2IaBoQh2c5g6xD_M3IPPuZWXK2jArRAwp1TH6u0Ajg"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-surface-container text-outline font-bold w-7 h-7 rounded-full flex items-center justify-center text-[10px]">3º</div>
+</div>
+<p class="font-headline font-bold text-xs">Felipe S.</p>
+<p class="text-secondary font-bold text-[10px]">2.450 pts</p>
+<div class="w-14 h-14 bg-surface-container rounded-t-xl mt-2"></div>
+</div>
+</div>
+<!-- Ranking List -->
+<div class="space-y-1 mb-20">
+<!-- Row 4 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<span class="text-outline font-bold w-4 text-center">4</span>
+<img class="w-10 h-10 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="professional woman in corporate attire smiling confidently" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAzfj62ScMSnc_b4QBNljVktAxpqzv9PARjhg0F7YDMYiyLr8uluOVdb9T-dixmdDyoO4CPMfuJAw1Iz9GfoilZLAOju0VOrPiR75kBLeIWpLCxav0JRG1pgdiosMTAcxYwvKrq9gVKV1EigqRWGNhvIBCIC5YkR2fHw09KPITnQarQPc3G8kPUbcmJGkI6tZvWocERy1bHyONEFxNfhTmVpFG-5nzIf0qBifBckMPb3Js1SVIVZrDpFNiJLXWUmK9SoekNuu5GtE"/>
+<span class="font-medium text-on-surface">Mariana Costa</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-bold text-primary">2.105</span>
+<span class="text-[10px] text-secondary font-semibold">↑ 2 posições</span>
+</div>
+</div>
+<!-- Row 5 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<span class="text-outline font-bold w-4 text-center">5</span>
+<img class="w-10 h-10 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="man with thoughtful expression against blurred urban background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABKJIIynlriuSvGEj9AsLI7648Pp55xsbLvPf2O5CdxJ0gzW6qfg-oifq3fUj53mbx-kB3gp1acS3v3jvRRXuxYCgQaNi11URdSc6_H59nAK2LMvtBQ3FTnjfCmv_uDw-NKXvOdE0ZmdGfOgo_TrR-sB6XShzPgeVluVeZjxjNmwG38MshUbaGcK4Oe6TtsJrCzVOIfi4qVaotUho6YHjN_juVZkiJViZjvuxtsF2MAEZ5S9buuNLWTWdJpnqXKewJPzVWBHf9iEA"/>
+<span class="font-medium text-on-surface">Rodrigo Alves</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-bold text-primary">1.980</span>
+<span class="text-[10px] text-error font-semibold">↓ 1 posição</span>
+</div>
+</div>
+<!-- Row 6 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<span class="text-outline font-bold w-4 text-center">6</span>
+<img class="w-10 h-10 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="minimalist portrait of a woman with soft lighting and natural background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfsNBitUfBL2bQhNjZWbAHBFgM39xHzYwh3COejnW9lssEUoyM_LxsuCYM3_VqV_8gOQfWOmK24Ml-P7Qs2tqmw3ISNRko0nJuGUHt7TgXi3RGBkUqjPsdlX5jazS8yYWicQv7GXD_Vj6V8tUosFGoGI7F16zHweT5nnXji1wwk1awtdXAr3o4VhMy0VW_MRT5FV4GWbqN3P3Fp5jmtcEK-KYtkruNj0LAt-nETnfbxOd7y754UwUWRrvhQBqgFwoi2PePPIBBaxw"/>
+<span class="font-medium text-on-surface">Juliana Lima</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-bold text-primary">1.820</span>
+<span class="text-[10px] text-outline font-semibold">-- estável</span>
+</div>
+</div>
+<!-- Row 7 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<span class="text-outline font-bold w-4 text-center">7</span>
+<img class="w-10 h-10 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="friendly man with warm smile in casual indoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFCcnAwAdJS_cAQl7G3rw5aNgNOyDFl5-2wvg814Tvz7t6ZRsiKWkL1wUb-MJN7NJpi5o4seq1qfS06ZcFHwBE-arH1hghWxvfUBCPxlF3a40Q88ZnsnV7GEBzxK2SOhsUHMIZnBUa4UsXIoZZtfn7JjeWmxTFoe_NAnFGQdl1mvIkjVuZD0Q_LgEEWYgeIz4Yi52N5XUnKIPjhCGPfx64ltbJUnKHzpBIouJCzCxouj8bnUaNkvNbRjj_PufAbaLNc8NFJr2Z6mo"/>
+<span class="font-medium text-on-surface">Bruno Garcia</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-bold text-primary">1.750</span>
+<span class="text-[10px] text-secondary font-semibold">↑ 4 posições</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed User Status -->
+<div class="fixed bottom-24 left-0 w-full px-6 z-40">
+<div class="max-w-2xl mx-auto bg-primary text-white p-5 rounded-2xl shadow-2xl flex items-center justify-between border-t border-white/10 backdrop-blur-lg bg-primary/95">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-12 h-12 rounded-full border-2 border-secondary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="handsome young man with a slight smile and modern hairstyle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcQLVmFuVjnJ5LwvBZQ6e8wSc5TSHMrnr-r-KtXwc6kAyaV3AsViIsiW7sd_XUQInBM_-vg7XemW2u_xXbJSPzE48NezP_cf6Yv03XoNteWxmsJZkO8pduTAPlCvk2YSCm48Xr5AX5-VV6uuc9W0ZMGt3jcVs97hjkytGiaun9sTnz73-AxdwTB11i1VRRNdcOIL782PXeT68jlSRTbE8LMo2b2c7d7-T5TG2-B-eE1iYdl1RmREjDthp05omzXCQs3zItN6ZQ6iI"/>
+</div>
+<div class="absolute -top-1 -right-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold px-1.5 py-0.5 rounded-full">VOCÊ</div>
+</div>
+<div>
+<p class="font-headline font-bold text-base leading-tight">Victor Silva</p>
+<p class="text-on-primary-container text-xs">Posição atual: <span class="font-bold text-white">#112</span></p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-2xl font-black text-secondary-fixed leading-none">942</p>
+<p class="text-[10px] font-medium text-on-primary-container tracking-widest uppercase">PONTOS</p>
+</div>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-8 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl z-50 shadow-[0_-8px_24px_rgba(23,28,34,0.06)] rounded-t-3xl">
+<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-2xl cursor-pointer">
+<span class="material-symbols-outlined" data-icon="book_5">book_5</span>
+<span class="text-[10px] font-bold font-headline mt-1">Estudar</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-4 py-1.5 transition-all shadow-sm">
+<span class="material-symbols-outlined" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="text-[10px] font-bold font-headline mt-1">Ranking</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-2xl cursor-pointer">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="text-[10px] font-bold font-headline mt-1">Simulados</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-2xl cursor-pointer">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-bold font-headline mt-1">Perfil</span>
+</div>
+</nav>
+</body></html>

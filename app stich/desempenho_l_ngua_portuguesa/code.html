@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Análise de Desempenho - Língua Portuguesa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "tertiary-container": "#3d4143",
+                "surface-bright": "#f8f9ff",
+                "on-primary-fixed": "#001b3c",
+                "inverse-surface": "#2c3137",
+                "on-secondary-fixed-variant": "#00513c",
+                "surface-tint": "#3c5f93",
+                "on-primary": "#ffffff",
+                "primary-container": "#1a4173",
+                "on-surface-variant": "#43474f",
+                "background": "#f8f9ff",
+                "surface-dim": "#d6dae3",
+                "outline": "#737780",
+                "on-error": "#ffffff",
+                "tertiary": "#272b2d",
+                "on-background": "#171c22",
+                "error-container": "#ffdad6",
+                "surface-container": "#eaeef7",
+                "on-surface": "#171c22",
+                "error": "#ba1a1a",
+                "surface-container-high": "#e4e8f1",
+                "inverse-on-surface": "#edf1fa",
+                "secondary": "#006c50",
+                "on-tertiary-container": "#a9adaf",
+                "secondary-fixed-dim": "#77d9b3",
+                "on-tertiary-fixed": "#181c1e",
+                "surface-container-lowest": "#ffffff",
+                "surface": "#f8f9ff",
+                "on-error-container": "#93000a",
+                "secondary-container": "#93f6ce",
+                "inverse-primary": "#a8c8ff",
+                "on-secondary-container": "#007255",
+                "on-secondary-fixed": "#002116",
+                "secondary-fixed": "#93f6ce",
+                "primary": "#002b57",
+                "on-primary-fixed-variant": "#224779",
+                "outline-variant": "#c3c6d0",
+                "surface-container-highest": "#dee3eb",
+                "surface-container-low": "#f0f4fd",
+                "surface-variant": "#dee3eb",
+                "on-primary-container": "#8caee7",
+                "on-tertiary": "#ffffff",
+                "tertiary-fixed": "#e0e3e5",
+                "tertiary-fixed-dim": "#c4c7c9",
+                "primary-fixed": "#d5e3ff",
+                "on-secondary": "#ffffff",
+                "on-tertiary-fixed-variant": "#434749",
+                "primary-fixed-dim": "#a8c8ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "fontFamily": {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .radar-chart {
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 text-blue-900 dark:text-blue-200 hover:bg-slate-200/40 dark:hover:bg-slate-800/40 transition-colors active:scale-95 duration-200 rounded-full">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline font-bold text-lg tracking-tight text-blue-900 dark:text-blue-200">Portuguese Language</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase text-slate-500 dark:text-slate-400">Study</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase text-slate-500 dark:text-slate-400">Practice</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase flex flex-col items-center justify-center gap-1 bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-5 py-2">Analysis</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase text-slate-500 dark:text-slate-400">Profile</span>
+</div>
+</div>
+<div class="bg-slate-200/50 dark:bg-slate-800/50 h-px"></div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-screen-xl mx-auto">
+<!-- Hero Header -->
+<div class="mb-8">
+<h2 class="font-headline font-extrabold text-3xl text-primary tracking-tight mb-2">Análise de Performance</h2>
+<p class="text-on-surface-variant max-w-lg leading-relaxed">
+                Seu domínio em <span class="font-semibold text-primary">Língua Portuguesa</span> demonstrou uma evolução constante nos últimos 30 dias de simulados.
+            </p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Summary Card -->
+<div class="md:col-span-4 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between overflow-hidden relative group">
+<div class="z-10">
+<div class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                        Gold Level
+                    </div>
+<div class="mb-2">
+<span class="text-5xl font-headline font-black text-primary">92%</span>
+<span class="text-secondary font-bold text-lg ml-2">+5%</span>
+</div>
+<p class="text-on-surface-variant font-medium">Precisão Geral</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]" data-icon="analytics">analytics</span>
+</div>
+</div>
+<!-- Radar Chart Section (Simulated) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/15 flex flex-col md:flex-row items-center gap-8">
+<div class="w-48 h-48 bg-primary/5 rounded-full flex items-center justify-center relative">
+<div class="radar-chart w-40 h-40 bg-secondary/20 relative">
+<!-- Simulated Radar Points -->
+<div class="absolute inset-0 radar-chart bg-gradient-to-tr from-secondary to-secondary-fixed opacity-60 scale-75"></div>
+</div>
+<!-- Label Placements -->
+<span class="absolute -top-4 text-[10px] font-bold text-primary uppercase">Gramática</span>
+<span class="absolute -right-12 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary uppercase">Sintaxe</span>
+<span class="absolute -left-12 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary uppercase">Ortografia</span>
+<span class="absolute -bottom-4 left-0 text-[10px] font-bold text-primary uppercase">Morfologia</span>
+<span class="absolute -bottom-4 right-0 text-[10px] font-bold text-primary uppercase">Interpret.</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline font-bold text-xl text-primary mb-3">Mapeamento de Competências</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+                        Sua maior força reside na <span class="text-secondary font-bold">Gramática Normativa</span>. Recomendamos focar em <span class="text-primary-container font-bold">Sintaxe</span> para atingir a pontuação máxima.
+                    </p>
+<button class="flex items-center gap-2 text-secondary font-bold text-sm hover:underline">
+<span class="material-symbols-outlined text-base" data-icon="insights">insights</span>
+                        Ver relatório detalhado
+                    </button>
+</div>
+</div>
+<!-- Detailed Topic Breakdown -->
+<div class="md:col-span-7 space-y-4">
+<h3 class="font-headline font-bold text-lg text-primary mb-6">Detalhamento por Tópico</h3>
+<!-- Topic 1 -->
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex justify-between items-center mb-3">
+<span class="font-semibold text-on-surface">Gramática Normativa</span>
+<span class="text-secondary font-bold">95%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 95%"></div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex justify-between items-center mb-3">
+<span class="font-semibold text-on-surface">Interpretação de Textos</span>
+<span class="text-secondary font-bold">88%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex justify-between items-center mb-3">
+<span class="font-semibold text-on-surface">Sintaxe e Pontuação</span>
+<span class="text-primary-container font-bold">75%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<!-- Benchmarking & Action -->
+<div class="md:col-span-5 space-y-6">
+<!-- Benchmarking Card -->
+<div class="bg-primary text-on-primary p-8 rounded-xl relative overflow-hidden">
+<h3 class="font-headline font-bold text-lg mb-6 relative z-10">Benchmarking Global</h3>
+<div class="space-y-6 relative z-10">
+<div>
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest mb-2 opacity-80">Você</div>
+<div class="flex items-center gap-4">
+<div class="flex-1 h-3 bg-white/10 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[92%]"></div>
+</div>
+<span class="text-xl font-black">92%</span>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest mb-2 opacity-80">Média Global</div>
+<div class="flex items-center gap-4">
+<div class="flex-1 h-3 bg-white/10 rounded-full overflow-hidden">
+<div class="bg-white/30 h-full w-[68%]"></div>
+</div>
+<span class="text-xl font-black opacity-60">68%</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-white/10 text-sm italic opacity-70">
+                        Você está no top 5% dos estudantes que estudam este assunto.
+                    </div>
+</div>
+<!-- CTA Action -->
+<button class="w-full bg-secondary hover:bg-secondary/90 text-on-secondary font-bold py-5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                    Praticar pontos fracos
+                </button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-2xl z-50 rounded-t-[1.5rem] shadow-[0_-8px_24px_rgba(23,28,34,0.06)]">
+<div class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-6 md:pb-8">
+<div class="flex flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="book_2">book_2</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase">Study</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase">Practice</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-5 py-2 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="query_stats" style="font-variation-settings: 'FILL' 1;">query_stats</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase">Analysis</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide uppercase">Profile</span>
+</div>
+</div>
+</nav>
+<!-- FAB Content Contextual -->
+<button class="fixed bottom-24 right-6 md:bottom-12 md:right-12 w-14 h-14 rounded-full bg-primary text-on-primary shadow-xl flex items-center justify-center active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</body></html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Desempenho - Foco no Concurso</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, .font-headline {
+            font-family: 'Manrope', sans-serif;
+        }
+        .chart-grid {
+            background-image: linear-gradient(to top, #e4e8f1 1px, transparent 1px);
+            background-size: 100% 40px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#dee3eb",
+                      "on-surface-variant": "#43474f",
+                      "tertiary": "#272b2d",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed-variant": "#224779",
+                      "on-background": "#171c22",
+                      "surface-container-low": "#f0f4fd",
+                      "surface-container": "#eaeef7",
+                      "tertiary-container": "#3d4143",
+                      "tertiary-fixed": "#e0e3e5",
+                      "surface-container-high": "#e4e8f1",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "outline": "#737780",
+                      "on-tertiary-fixed": "#181c1e",
+                      "secondary-container": "#93f6ce",
+                      "on-error-container": "#93000a",
+                      "secondary": "#006c50",
+                      "primary-fixed-dim": "#a8c8ff",
+                      "primary-fixed": "#d5e3ff",
+                      "surface-variant": "#dee3eb",
+                      "primary": "#002b57",
+                      "surface-tint": "#3c5f93",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#77d9b3",
+                      "on-secondary-fixed": "#002116",
+                      "on-secondary-container": "#007255",
+                      "inverse-on-surface": "#edf1fa",
+                      "background": "#f8f9ff",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "surface": "#f8f9ff",
+                      "on-surface": "#171c22",
+                      "on-tertiary": "#ffffff",
+                      "inverse-surface": "#2c3137",
+                      "primary-container": "#1a4173",
+                      "on-primary-fixed": "#001b3c",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed": "#93f6ce",
+                      "on-tertiary-container": "#a9adaf",
+                      "on-primary-container": "#8caee7",
+                      "on-secondary-fixed-variant": "#00513c",
+                      "inverse-primary": "#a8c8ff",
+                      "outline-variant": "#c3c6d0",
+                      "surface-dim": "#d6dae3",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#434749"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              }
+            },
+          }
+        }
+      </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl fixed top-0 w-full z-50">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-transform duration-150 p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-100">arrow_back</span>
+</button>
+<h1 class="font-manrope text-lg font-bold tracking-tight text-blue-900 dark:text-blue-100">Desempenho</h1>
+</div>
+<button class="active:scale-95 transition-transform duration-150 p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full">
+<span class="material-symbols-outlined text-blue-900 dark:text-blue-100">filter_list</span>
+</button>
+</div>
+</header>
+<main class="pt-20 px-6 max-w-screen-xl mx-auto space-y-8">
+<!-- Period Selector -->
+<section class="flex justify-center">
+<div class="bg-surface-container-high p-1 rounded-xl flex gap-1 w-full max-w-md">
+<button class="flex-1 py-2 px-4 rounded-lg text-sm font-semibold bg-surface-container-lowest text-primary shadow-sm transition-all">7 dias</button>
+<button class="flex-1 py-2 px-4 rounded-lg text-sm font-semibold text-on-surface-variant hover:bg-surface-container-highest transition-all">30 dias</button>
+<button class="flex-1 py-2 px-4 rounded-lg text-sm font-semibold text-on-surface-variant hover:bg-surface-container-highest transition-all">6 meses</button>
+</div>
+</section>
+<!-- Enhanced Analytics Card -->
+<section class="bg-surface-container-low rounded-[2rem] p-6 lg:p-8 relative overflow-hidden border border-white/40">
+<div class="relative z-10">
+<div class="flex flex-col md:flex-row justify-between md:items-end gap-6 mb-8">
+<div class="space-y-1">
+<span class="text-secondary font-semibold text-xs tracking-widest uppercase opacity-80">Evolução de Acertos</span>
+<h2 class="text-4xl font-extrabold text-primary tracking-tight flex items-baseline gap-2">
+                        82% 
+                        <span class="text-sm font-bold text-secondary flex items-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                            +12.4%
+                        </span>
+</h2>
+<p class="text-on-surface-variant text-sm font-medium">vs. período anterior</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">Volume</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">Tendência</span>
+</div>
+</div>
+</div>
+<!-- Hybrid Chart (Stacked Bars + Trend Line Overlays) -->
+<div class="relative h-56 w-full flex items-end justify-between px-2 chart-grid">
+<!-- SVG Trend Line Overlay -->
+<svg class="absolute top-0 left-0 w-full h-full pointer-events-none z-20" preserveaspectratio="none" viewbox="0 0 100 100">
+<path class="drop-shadow-sm" d="M 5,65 Q 15,55 20,48 T 35,58 T 50,35 T 65,45 T 80,20 T 95,25" fill="none" stroke="#006c50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<circle cx="95" cy="25" fill="#006c50" r="3"></circle>
+</svg>
+<!-- Stacked Bars for Volume/Correct -->
+<!-- SEG -->
+<div class="flex flex-col items-center gap-2 w-full max-w-[40px]">
+<div class="w-full flex flex-col justify-end h-40 bg-surface-container-high rounded-t-md overflow-hidden relative group">
+<div class="w-full bg-primary/40 h-[40%]" title="Incorretas"></div>
+<div class="w-full bg-primary h-[40%] border-t border-white/20" title="Corretas"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">SEG</span>
+</div>
+<!-- TER -->
+<div class="flex flex-col items-center gap-2 w-full max-w-[40px]">
+<div class="w-full flex flex-col justify-end h-40 bg-surface-container-high rounded-t-md overflow-hidden relative">
+<div class="w-full bg-primary/40 h-[25%]"></div>
+<div class="w-full bg-primary h-[55%] border-t border-white/20"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">TER</span>
+</div>
+<!-- QUA -->
+<div class="flex flex-col items-center gap-2 w-full max-w-[40px]">
+<div class="w-full flex flex-col justify-end h-40 bg-surface-container-high rounded-t-md overflow-hidden relative">
+<div class="w-full bg-primary/40 h-[30%]"></div>
+<div class="w-full bg-primary h-[45%] border-t border-white/20"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">QUA</span>
+</div>
+<!-- QUI -->
+<div class="flex flex-col items-center gap-2 w-full max-w-[40px]">
+<div class="w-full flex flex-col justify-end h-40 bg-surface-container-high rounded-t-md overflow-hidden relative">
+<div class="w-full bg-primary/40 h-[15%]"></div>
+<div class="w-full bg-primary h-[70%] border-t border-white/20"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">QUI</span>
+</div>
+<!-- SEX -->
+<div class="flex flex-col items-center gap-2 w-full max-w-[40px]">
+<div class="w-full flex flex-col justify-end h-40 bg-surface-container-high rounded-t-md overflow-hidden relative">
+<div class="w-full bg-primary/40 h-[20%]"></div>
+<div class="w-full bg-primary h-[60%] border-t border-white/20"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">SEX</span>
+</div>
+<!-- SAB -->
+<div class="flex flex-col items-center gap-2 w-full max-w-[40px]">
+<div class="w-full flex flex-col justify-end h-40 bg-surface-container-high rounded-t-md overflow-hidden relative">
+<div class="w-full bg-primary/40 h-[10%]"></div>
+<div class="w-full bg-primary h-[85%] border-t border-white/20"></div>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant">SÁB</span>
+</div>
+<!-- DOM (Active) -->
+<div class="flex flex-col items-center gap-2 w-full max-w-[40px]">
+<div class="w-full flex flex-col justify-end h-40 bg-primary/20 rounded-t-md overflow-hidden relative ring-2 ring-primary ring-offset-2 ring-offset-surface-container-low">
+<div class="w-full bg-primary/60 h-[8%]"></div>
+<div class="w-full bg-gradient-to-t from-primary to-primary-container h-[82%] border-t border-white/20"></div>
+<div class="absolute top-1 left-1/2 -translate-x-1/2 bg-primary text-white text-[8px] px-1 rounded font-bold z-30">HOJE</div>
+</div>
+<span class="text-[10px] font-extrabold text-primary">DOM</span>
+</div>
+</div>
+</div>
+<!-- Decorative background -->
+<div class="absolute -bottom-12 -left-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-container-highest/50 p-6 rounded-3xl space-y-4">
+<div class="flex justify-between items-start">
+<div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div class="flex items-center text-secondary text-xs font-bold gap-0.5">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                    3%
+                </div>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-medium">Média de Acertos</p>
+<p class="text-2xl font-bold text-primary">78.5%</p>
+</div>
+</div>
+<div class="bg-surface-container-highest/50 p-6 rounded-3xl space-y-4 border-l-4 border-secondary">
+<div class="flex justify-between items-start">
+<div class="w-12 h-12 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_turned_in</span>
+</div>
+<div class="flex items-center text-secondary text-xs font-bold gap-0.5">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                    5
+                </div>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-medium">Simulados Concluídos</p>
+<p class="text-2xl font-bold text-primary">24</p>
+</div>
+</div>
+<div class="bg-surface-container-highest/50 p-6 rounded-3xl space-y-4">
+<div class="flex justify-between items-start">
+<div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div class="flex items-center text-error text-xs font-bold gap-0.5">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">trending_down</span>
+                    12m
+                </div>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-medium">Tempo Médio</p>
+<p class="text-2xl font-bold text-primary">2h 15m</p>
+</div>
+</div>
+</section>
+<!-- Recent Activities -->
+<section class="space-y-6">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-bold text-primary">Últimos Simulados</h3>
+<button class="text-primary font-semibold text-sm hover:underline">Ver todos</button>
+</div>
+<div class="space-y-4">
+<!-- Simulado Item 1 (High Performance) -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 group hover:shadow-md transition-all border border-transparent hover:border-secondary/20">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center overflow-hidden">
+<img alt="Fountain pen" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsAv1ZpByNte8LzKNNHfwiNzVbVV2F_vc3DmhNyOhJt4JYXcKzK4nniDTwAKPL9bCat6i7TfNT_9_KUXWnNIPrHqf-kayZbvRmgSKjoKnua80vtJR1Qu2ZZnIAcXWQK2eKuOFKFBNCd7tKvbXWut8d3fqv_RHdEHM-7eGUO1gwJZsMQNunMGtbvSZRUmIeYCfu30hGll0Oh1EY2_R8CgoEeQUwB4RH-EGkYpnys-MTo7bF8q_Yo1G_HFzHbB1F8GDBJQFVC5Xxon0"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<h4 class="text-primary font-bold truncate">Direito Constitucional - Nível Médio</h4>
+<span class="text-lg font-black text-secondary">85%</span>
+</div>
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-wider mb-2">14 de Out, 2023</p>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden border border-slate-200/50">
+<div class="bg-secondary h-full rounded-full shadow-[0_0_8px_rgba(0,108,80,0.4)]" style="width: 85%"></div>
+</div>
+</div>
+</div>
+<!-- Simulado Item 2 (Needs Attention - Higher Contrast) -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 group hover:shadow-md transition-all border-l-4 border-error/40">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center overflow-hidden">
+<img alt="Notebook" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzYq13WHCMvEuBEgui1eJi1Ru1blb_a9rkxBz3sdvl3AR-NL8YWFASfCMnluYevv9jBgtO1fB7OwXSA2zuWYfHWXq18rGVDEDzKPPw6QuwTIyX_DKXS9TIs7_TlYaqiX79zMfg8WI7Emr7yzxjdaStRpBJ8GW8NXN3lfKt2z55cy7zt2QaeqP92GsTIHcXK-I6NSbhjKURa1tx9LuBoNzawd2E3ec8wjg_NBzgAZ9qfaSg0061hV0i3Oy87-f30fzbc97MTGMnoSA"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<h4 class="text-primary font-bold truncate">Raciocínio Lógico - PC-SP</h4>
+<span class="text-lg font-black text-primary-container">62%</span>
+</div>
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-wider mb-2">12 de Out, 2023</p>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden border border-slate-200/50">
+<div class="bg-primary-container h-full rounded-full" style="width: 62%"></div>
+</div>
+</div>
+</div>
+<!-- Simulado Item 3 (Excellent) -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 group hover:shadow-md transition-all">
+<div class="flex-shrink-0 w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center overflow-hidden">
+<img alt="Law book" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCswv4KcNcALMYbnCWjHePj4gGh3n9Ui5uQZQluXXFLQqOD7uv9p3jeJWuKlasZHQP62405uRjcghqFZbTjFxFBwGniOMbG7TVvrbT0mbUGtvbTPjl_vxZhqFlvetKwi1db-OMmqQxpIIdmfOZnLWYvRHGiRhTK-KXFo_WpNwNP6Wsne6sZQM7pBrx5HLz4chK-mpMdLzMsbM4dOAWL3lailE3jH8olTvuqtj4DzmUy9mOn1X4xn3kvz76CH9RsbogrZe4yU0ELEKA"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<h4 class="text-primary font-bold truncate">Português - FGV 2023</h4>
+<span class="text-lg font-black text-secondary">92%</span>
+</div>
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-wider mb-2">10 de Out, 2023</p>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden border border-slate-200/50">
+<div class="bg-secondary h-full rounded-full shadow-[0_0_10px_rgba(0,108,80,0.5)]" style="width: 92%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-around items-center px-4 pb-safe z-50 rounded-t-[2rem] shadow-[0_-8px_24px_rgba(23,28,34,0.06)]">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 active:scale-90 transition-all duration-200 hover:text-blue-700" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-inter text-[10px] font-semibold uppercase tracking-wider mt-1">Início</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 active:scale-90 transition-all duration-200 hover:text-blue-700" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-inter text-[10px] font-semibold uppercase tracking-wider mt-1">Estudo</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-5 py-2 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-inter text-[10px] font-semibold uppercase tracking-wider mt-1">Desempenho</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 active:scale-90 transition-all duration-200 hover:text-blue-700" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-inter text-[10px] font-semibold uppercase tracking-wider mt-1">Perfil</span>
+</a>
+</nav>
+</body></html>

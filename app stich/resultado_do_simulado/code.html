@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resultado do Simulado - Foco no Concurso</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#dee3eb",
+                    "surface-tint": "#3c5f93",
+                    "tertiary": "#272b2d",
+                    "primary-container": "#1a4173",
+                    "on-tertiary-fixed": "#181c1e",
+                    "on-primary-fixed": "#001b3c",
+                    "secondary-fixed": "#93f6ce",
+                    "surface-dim": "#d6dae3",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "primary-fixed": "#d5e3ff",
+                    "inverse-surface": "#2c3137",
+                    "primary-fixed-dim": "#a8c8ff",
+                    "inverse-on-surface": "#edf1fa",
+                    "on-secondary-fixed": "#002116",
+                    "error": "#ba1a1a",
+                    "on-secondary-container": "#007255",
+                    "surface-container-high": "#e4e8f1",
+                    "secondary": "#006c50",
+                    "secondary-container": "#93f6ce",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f0f4fd",
+                    "secondary-fixed-dim": "#77d9b3",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#dee3eb",
+                    "outline-variant": "#c3c6d0",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f8f9ff",
+                    "tertiary-container": "#3d4143",
+                    "surface-bright": "#f8f9ff",
+                    "on-primary-fixed-variant": "#224779",
+                    "on-tertiary-container": "#a9adaf",
+                    "inverse-primary": "#a8c8ff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "surface-container": "#eaeef7",
+                    "primary": "#002b57",
+                    "on-surface-variant": "#43474f",
+                    "on-error-container": "#93000a",
+                    "on-background": "#171c22",
+                    "outline": "#737780",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#171c22",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "on-primary-container": "#8caee7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body pb-32 overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl flex items-center justify-between px-6 h-16 w-full max-w-none">
+<div class="flex items-center gap-4">
+<button class="text-blue-900 dark:text-blue-200 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200 ease-in-out p-2 rounded-full">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-bold text-lg tracking-tight text-blue-900 dark:text-blue-200">Resultado do Simulado</h1>
+</div>
+<button class="text-blue-900 dark:text-blue-200 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200 ease-in-out p-2 rounded-full">
+<span class="material-symbols-outlined">share</span>
+</button>
+</header>
+<main class="mt-20 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Score Highlights Section (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Global Score Ring -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-xl p-8 flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full">
+<circle class="text-surface-container-highest" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-secondary progress-ring-circle" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-dasharray="502.6" stroke-dashoffset="100.5" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-headline font-extrabold text-primary">80%</span>
+<span class="text-sm font-semibold text-outline tracking-wider uppercase">Acertos</span>
+</div>
+</div>
+<div class="mt-6 flex gap-8">
+<div class="text-center">
+<p class="text-2xl font-headline font-bold text-on-surface">32/40</p>
+<p class="text-xs text-outline font-medium">Questões</p>
+</div>
+<div class="w-px h-10 bg-outline-variant/30"></div>
+<div class="text-center">
+<p class="text-2xl font-headline font-bold text-on-surface">01:12:45</p>
+<p class="text-xs text-outline font-medium">Tempo Total</p>
+</div>
+</div>
+</div>
+<!-- Motivator Card -->
+<div class="md:col-span-1 bg-secondary-container text-on-secondary-container rounded-xl p-6 flex flex-col justify-between border-none">
+<div class="bg-on-secondary-container/10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-xl mb-2">Excelente desempenho!</h3>
+<p class="font-body text-sm leading-relaxed opacity-90">Você está no caminho certo para a aprovação. Continue com essa constância.</p>
+</div>
+<div class="mt-4 pt-4 border-t border-on-secondary-container/10">
+<span class="text-xs font-bold tracking-widest uppercase opacity-70">Sua melhor marca</span>
+</div>
+</div>
+</section>
+<!-- Performance by Subject -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline font-bold text-xl text-primary">Desempenho por Disciplina</h2>
+<span class="text-xs font-semibold text-outline uppercase tracking-tighter">Detalhamento</span>
+</div>
+<div class="space-y-3">
+<!-- Subject Item -->
+<div class="bg-surface-container-low p-4 rounded-xl flex items-center gap-4 transition-all hover:bg-surface-container">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">gavel</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-on-surface">Direito Administrativo</span>
+<span class="font-bold text-secondary">90%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 90%"></div>
+</div>
+</div>
+</div>
+<!-- Subject Item -->
+<div class="bg-surface-container-low p-4 rounded-xl flex items-center gap-4 transition-all hover:bg-surface-container">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">translate</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-on-surface">Português</span>
+<span class="font-bold text-secondary">75%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<!-- Subject Item -->
+<div class="bg-surface-container-low p-4 rounded-xl flex items-center gap-4 transition-all hover:bg-surface-container">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-on-surface">Direito Constitucional</span>
+<span class="font-bold text-secondary">82%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</div>
+<!-- Subject Item -->
+<div class="bg-surface-container-low p-4 rounded-xl flex items-center gap-4 transition-all hover:bg-surface-container">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-on-surface">Informática</span>
+<span class="font-bold text-secondary">68%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 68%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Action Buttons -->
+<section class="flex flex-col gap-4 py-4">
+<button class="w-full py-5 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-xl font-bold text-lg shadow-xl shadow-primary/10 flex items-center justify-center gap-3 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">rule</span>
+                Revisar Questões
+            </button>
+<button class="w-full py-5 bg-surface-container-highest text-primary rounded-xl font-bold text-lg flex items-center justify-center gap-3 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">restart_alt</span>
+                Refazer Simulado
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-6 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-2xl rounded-t-[2rem] z-50 shadow-[0_-8px_24px_rgba(23,28,34,0.06)]">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide mt-1">Início</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-300 rounded-2xl px-5 py-2 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide mt-1">Simulados</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide mt-1">Desempenho</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-2 hover:text-blue-700 dark:hover:text-blue-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[11px] font-semibold tracking-wide mt-1">Perfil</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,47 @@
+Prompt de Estruturação: App Foco no Concurso
+"Atue como um Especialista em Editais de Concursos Públicos e Arquiteto de Dados. Sua missão é gerar a estrutura mestre de conteúdos para o aplicativo Foco no Concurso, focado nos níveis Fundamental, Médio e Superior.
+1. OBJETIVO TÉCNICO
+Gere um mapeamento completo de Disciplinas, Matérias e Submatérias em formato JSON. Esta estrutura será importada para um banco de dados PostgreSQL auto-hospedado via Coolify.
+2. ESCOPO PEDAGÓGICO
+Para cada nível, você deve listar as matérias que possuem maior recorrência estatística nos últimos 3 anos em bancas como FGV, Cebraspe, FCC e Vunesp.
+As disciplinas obrigatórias são:
+Língua Portuguesa
+Raciocínio Lógico e Matemática
+Informática
+Direito Administrativo
+Direito Constitucional
+Legislação Geral (Lei 8.112, Lei 8.429, Lei 14.133)
+Conhecimentos Regionais (Foco em Ceará/Nordeste)
+3. REGRAS DE GRANULARIDADE (Obrigatório)
+Cada disciplina deve ser dividida em Matérias e cada matéria em Submatérias. Para cada Submatéria, você deve prever a divisão em 'Micro-Aulas'.
+4. FORMATO DE SAÍDA (Siga este esquema JSON)
+{
+  "app_config": {
+    "niveis": ["Fundamental", "Médio", "Superior"],
+    "bancas_alvo": ["FGV", "Cebraspe", "FCC", "Vunesp", "Consulplan"]
+  },
+  "conteudo": [
+    {
+      "nivel": "Nível do Concurso",
+      "disciplina": "Nome da Disciplina",
+      "materias": [
+        {
+          "titulo_materia": "Ex: Sintaxe",
+          "submaterias": [
+            {
+              "nome": "Ex: Concordância Nominal",
+              "importancia_banca": {"FGV": "Alta", "Cebraspe": "Média"},
+              "blocos_sugeridos": ["Conceito", "Regras Gerais", "Exceções", "Casos Especiais"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+5. INSTRUÇÕES ADICIONAIS
+Nível Fundamental: Foque em conteúdos práticos e gramática normativa simples.
+Nível Médio: Foque em legislação básica e informática funcional.
+Nível Superior: Foque em doutrina, jurisprudência e lógica complexa.
+Diferencial: Inclua tópicos específicos de 'História e Geografia do Ceará' na seção de atualidades para os níveis Fundamental e Médio.
+Inicie agora a geração da estrutura completa de matérias."

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Estatísticas de Memorização</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e0e3e5",
+                    "surface-dim": "#d6dae3",
+                    "surface-container-low": "#f0f4fd",
+                    "primary-container": "#1a4173",
+                    "on-secondary-container": "#007255",
+                    "on-secondary-fixed-variant": "#00513c",
+                    "on-primary-container": "#8caee7",
+                    "secondary-container": "#93f6ce",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#93f6ce",
+                    "inverse-surface": "#2c3137",
+                    "on-tertiary-fixed": "#181c1e",
+                    "on-error": "#ffffff",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "surface-container-high": "#e4e8f1",
+                    "on-secondary-fixed": "#002116",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#dee3eb",
+                    "secondary": "#006c50",
+                    "inverse-primary": "#a8c8ff",
+                    "on-primary-fixed-variant": "#224779",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "outline": "#737780",
+                    "surface-tint": "#3c5f93",
+                    "outline-variant": "#c3c6d0",
+                    "on-surface": "#171c22",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#dee3eb",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#a8c8ff",
+                    "primary-fixed": "#d5e3ff",
+                    "primary": "#002b57",
+                    "inverse-on-surface": "#edf1fa",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-background": "#171c22",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "on-surface-variant": "#43474f",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#001b3c",
+                    "secondary-fixed-dim": "#77d9b3",
+                    "tertiary": "#272b2d",
+                    "surface-container": "#eaeef7",
+                    "on-tertiary-container": "#a9adaf",
+                    "tertiary-container": "#3d4143",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chart-gradient {
+            background: linear-gradient(180deg, rgba(0, 43, 87, 0.08) 0%, rgba(0, 43, 87, 0) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 backdrop-blur-xl flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="hover:bg-slate-200/50 transition-colors active:scale-95 duration-200 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-900" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-manrope font-bold text-lg text-blue-900">Statistics</h1>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-blue-900 font-extrabold tracking-tight">SCHOLAR</span>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" data-alt="close-up portrait of a professional student with glasses in a minimalist bright library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA428b3PII0dGpJSvISu9KLOEgpjWA25f4MsapAjJm2bgREDMCFbo1RfkyZZppeBf60eYpkCVzGwdABKvDItwyH6c9yt1F--B_PPCNWUB8Mcsskns5Dins4NtriaAnEa1M-ykk8eSYMKiw-l_D23UDKJn9-DKtNs2TxXdiv64yuIlnq3aGq1d_XFSGw5l0XQn6KOZ3gb1QOnYu34DX0ClSCBVUqkye1_pDXYYxGNLnDJqFp-ytQzEn8PYepmuU8uWtrg_gYWVMfZwA"/>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-6 pt-24 space-y-8">
+<!-- Header Motivation -->
+<section class="mb-8">
+<h2 class="text-4xl font-extrabold text-primary tracking-tight mb-2">Estatísticas de Memorização</h2>
+<p class="text-on-surface-variant text-lg">Seu progresso cognitivo está 12% acima da média semanal.</p>
+</section>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Cards Memorized -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-primary mb-2" data-icon="school">school</span>
+<p class="text-on-surface-variant font-semibold text-sm uppercase tracking-wider">Cartões Memorizados</p>
+</div>
+<div class="mt-4">
+<h3 class="text-3xl font-extrabold text-primary">420<span class="text-outline text-xl font-normal">/500</span></h3>
+<div class="w-full bg-surface-container-highest h-2 mt-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 84%"></div>
+</div>
+</div>
+</div>
+<!-- Retention Rate -->
+<div class="bg-[#1A4173] text-on-primary p-6 rounded-xl border border-white/5 relative overflow-hidden shadow-lg shadow-primary/20"><!-- Decorative background element -->
+<div class="absolute -right-6 -bottom-6 w-32 h-32 bg-primary-container/20 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container" data-icon="psychology">psychology</span>
+<p class="text-on-primary-container/80 font-bold text-xs uppercase tracking-widest">Taxa de Retenção</p>
+</div>
+<span class="bg-secondary-container/20 text-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold border border-secondary-container/30">+3% ACIMA DA META</span>
+</div>
+<div class="mt-6 flex items-center gap-6">
+<!-- Semi-circular Gauge -->
+<div class="relative w-24 h-16">
+<svg class="w-full h-full rotate-0" viewbox="0 0 100 55">
+<!-- Background Path -->
+<path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-linecap="round" stroke-width="12"></path>
+<!-- Progress Path (88%) -->
+<path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#93f6ce" stroke-dasharray="125.6" stroke-dashoffset="15.07" stroke-linecap="round" stroke-width="12"></path>
+<!-- Goal Marker (85%) -->
+<line stroke="white" stroke-width="2" x1="82" x2="88" y1="35" y2="32"></line>
+</svg>
+<div class="absolute bottom-0 inset-x-0 text-center">
+<span class="text-2xl font-extrabold text-white">88%</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-primary-container/60 font-bold uppercase">Meta de Estudo</span>
+<div class="flex items-baseline gap-1">
+<span class="text-xl font-bold text-white">85%</span>
+<span class="material-symbols-outlined text-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+<p class="mt-4 text-xs text-on-primary-container/70 leading-relaxed">
+    Excelente desempenho! Você está mantendo a retenção estável em níveis de alta performance.
+  </p>
+</div></div>
+<!-- Streak -->
+<div class="bg-secondary-container text-on-secondary-container p-6 rounded-xl border border-secondary/10 flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-secondary mb-2" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<p class="font-semibold text-sm uppercase tracking-wider">Ofensiva Atual</p>
+</div>
+<div class="mt-4">
+<h3 class="text-4xl font-extrabold">12 Dias</h3>
+<p class="text-on-secondary-fixed-variant text-sm mt-1">Mantenha o ritmo!</p>
+</div>
+</div>
+</div>
+<!-- Retention Curve & Review Volume Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Retention Curve Chart -->
+<div class="bg-surface-container-low rounded-xl p-8 space-y-6">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-bold text-primary">Curva de Esquecimento</h3>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">PROBABILIDADE DE RECALL</span>
+</div>
+<div class="h-64 w-full flex items-end justify-between relative group">
+<!-- Fake Line Chart Implementation -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 400 200">
+<path class="text-primary opacity-80" d="M0,20 Q100,50 200,100 T400,160" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="fill-primary/5" d="M0,20 Q100,50 200,100 T400,160 L400,200 L0,200 Z"></path>
+<!-- Data points -->
+<circle class="fill-primary" cx="0" cy="20" r="4"></circle>
+<circle class="fill-primary" cx="100" cy="45" r="4"></circle>
+<circle class="fill-primary" cx="200" cy="100" r="4"></circle>
+<circle class="fill-primary" cx="300" cy="135" r="4"></circle>
+<circle class="fill-primary" cx="400" cy="160" r="4"></circle>
+</svg>
+<div class="absolute bottom-0 w-full flex justify-between text-[10px] text-outline font-semibold pt-4">
+<span>DIA 1</span>
+<span>DIA 3</span>
+<span>DIA 7</span>
+<span>DIA 14</span>
+<span>DIA 30</span>
+</div>
+</div>
+<p class="text-sm text-on-surface-variant italic">A revisão espaçada está prevenindo o declínio acentuado de memória esperado para hoje.</p>
+</div>
+<!-- Review Volume Bar Chart -->
+<div class="bg-surface-container-low rounded-xl p-8 space-y-6">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-bold text-primary">Volume de Revisões</h3>
+<div class="flex gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="text-[10px] font-bold text-on-surface-variant">ÚLTIMOS 7 DIAS</span>
+</div>
+</div>
+<div class="h-64 flex items-end justify-between gap-3">
+<!-- Bars -->
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full bg-secondary-container/40 rounded-t-lg group-hover:bg-secondary transition-colors" style="height: 45%"></div>
+<span class="text-[10px] text-outline font-bold">SEG</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full bg-secondary-container/40 rounded-t-lg group-hover:bg-secondary transition-colors" style="height: 65%"></div>
+<span class="text-[10px] text-outline font-bold">TER</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full bg-secondary rounded-t-lg" style="height: 90%"></div>
+<span class="text-[10px] text-primary font-bold">QUA</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full bg-secondary-container/40 rounded-t-lg group-hover:bg-secondary transition-colors" style="height: 30%"></div>
+<span class="text-[10px] text-outline font-bold">QUI</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full bg-secondary-container/40 rounded-t-lg group-hover:bg-secondary transition-colors" style="height: 75%"></div>
+<span class="text-[10px] text-outline font-bold">SEX</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full bg-secondary-container/40 rounded-t-lg group-hover:bg-secondary transition-colors" style="height: 50%"></div>
+<span class="text-[10px] text-outline font-bold">SAB</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2 group">
+<div class="w-full bg-secondary-container/40 rounded-t-lg group-hover:bg-secondary transition-colors" style="height: 20%"></div>
+<span class="text-[10px] text-outline font-bold">DOM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Deck Health Section -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<h3 class="text-2xl font-extrabold text-primary">Saúde dos Baralhos</h3>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                    Ver Todos <span class="material-symbols-outlined text-sm" data-icon="trending_flat">trending_flat</span>
+</button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/10">
+<!-- Deck Item 1: Urgent -->
+<div class="p-5 flex items-center justify-between border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-error-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="gavel">gavel</span>
+</div>
+<div>
+<h4 class="font-bold text-primary">Direito Constitucional</h4>
+<p class="text-xs text-on-surface-variant font-medium">85 cartões pendentes</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block text-right">
+<p class="text-[10px] font-bold text-outline uppercase">STATUS</p>
+<span class="text-xs font-bold text-error bg-error-container px-2 py-0.5 rounded">URGENTE</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-bold active:scale-95 transition-transform">Revisar</button>
+</div>
+</div>
+<!-- Deck Item 2: Optimal -->
+<div class="p-5 flex items-center justify-between border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="translate">translate</span>
+</div>
+<div>
+<h4 class="font-bold text-primary">Língua Portuguesa</h4>
+<p class="text-xs text-on-surface-variant font-medium">0 cartões pendentes</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block text-right">
+<p class="text-[10px] font-bold text-outline uppercase">STATUS</p>
+<span class="text-xs font-bold text-on-secondary-container bg-secondary-container px-2 py-0.5 rounded">EM DIA</span>
+</div>
+<button class="bg-surface-container-highest text-primary px-4 py-2 rounded-lg text-sm font-bold opacity-50 cursor-not-allowed">Revisar</button>
+</div>
+</div>
+<!-- Deck Item 3: Attention -->
+<div class="p-5 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="calculate">calculate</span>
+</div>
+<div>
+<h4 class="font-bold text-primary">Raciocínio Lógico</h4>
+<p class="text-xs text-on-surface-variant font-medium">12 cartões pendentes</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block text-right">
+<p class="text-[10px] font-bold text-outline uppercase">STATUS</p>
+<span class="text-xs font-bold text-primary-container bg-primary-fixed px-2 py-0.5 rounded">ATENÇÃO</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-bold active:scale-95 transition-transform">Revisar</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-slate-50/80 backdrop-blur-xl z-50 rounded-t-3xl shadow-[0_-8px_24px_rgba(23,28,34,0.06)] border-t border-slate-200/10">
+<a class="flex flex-col items-center justify-center text-slate-500 hover:bg-slate-200/30 transition-colors active:scale-90 px-5 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:bg-slate-200/30 transition-colors active:scale-90 px-5 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="style">style</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase mt-1">Review</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-blue-100 text-blue-900 rounded-2xl px-5 py-2 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase mt-1">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:bg-slate-200/30 transition-colors active:scale-90 px-5 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-inter text-[10px] font-semibold tracking-wide uppercase mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,564 @@
+{
+  "app_config": {
+    "niveis": ["Fundamental", "Médio", "Superior"],
+    "bancas_alvo": ["FGV", "Cebraspe", "FCC", "Vunesp", "Consulplan"]
+  },
+  "conteudo": [
+    {
+      "nivel": "Fundamental",
+      "disciplina": "Língua Portuguesa",
+      "materias": [
+        {
+          "titulo_materia": "Compreensão de Textos e Ortografia",
+          "submaterias": [
+            {
+              "nome": "Interpretação de Textos Simples",
+              "importancia_banca": {"Vunesp": "Alta", "FGV": "Alta", "FCC": "Média"},
+              "blocos_sugeridos": ["Leitura e Significado", "Ideia Principal e Secundária", "Dedução Básica"]
+            },
+            {
+              "nome": "Ortografia Oficial",
+              "importancia_banca": {"FCC": "Alta", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Uso das Letras (S, Z, X, CH)", "Uso do Porquê", "Acentuação Básica"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Classes de Palavras Básicas",
+          "submaterias": [
+            {
+              "nome": "Substantivo e Adjetivo",
+              "importancia_banca": {"Vunesp": "Média", "FGV": "Média"},
+              "blocos_sugeridos": ["Classificação do Substantivo", "Flexão de Gênero e Número", "Adjetivos Pátrios"]
+            },
+            {
+              "nome": "Verbos e Tempos Verbais",
+              "importancia_banca": {"FCC": "Alta", "Vunesp": "Média"},
+              "blocos_sugeridos": ["Presente, Passado e Futuro", "Modo Indicativo e Subjuntivo", "Verbos Auxiliares"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Fundamental",
+      "disciplina": "Raciocínio Lógico e Matemática",
+      "materias": [
+        {
+          "titulo_materia": "Operações Fundamentais",
+          "submaterias": [
+            {
+              "nome": "Adição, Subtração, Multiplicação e Divisão",
+              "importancia_banca": {"Vunesp": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Números Inteiros", "Frações Simples", "Resolução de Problemas"]
+            },
+            {
+              "nome": "Sistemas de Medidas",
+              "importancia_banca": {"Consulplan": "Média", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Comprimento (Metro)", "Massa (Grama)", "Tempo (Horas e Minutos)"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Proporção Básica",
+          "submaterias": [
+            {
+              "nome": "Porcentagem Simples",
+              "importancia_banca": {"FGV": "Alta", "Cebraspe": "Alta"},
+              "blocos_sugeridos": ["Cálculo de Descontos", "Acréscimos", "Proporcionalidade Direta"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Fundamental",
+      "disciplina": "Informática",
+      "materias": [
+        {
+          "titulo_materia": "Conceitos Essenciais",
+          "submaterias": [
+            {
+              "nome": "Hardware e Software Básicos",
+              "importancia_banca": {"Vunesp": "Alta", "Consulplan": "Média"},
+              "blocos_sugeridos": ["Componentes Físicos (Mouse, Teclado, Monitor)", "Sistema Operacional Simples (Windows)"]
+            },
+            {
+              "nome": "Navegação na Internet",
+              "importancia_banca": {"FCC": "Alta", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Navegadores (Chrome, Edge)", "Uso de E-mail", "Pesquisas Básicas"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Fundamental",
+      "disciplina": "Direito Administrativo",
+      "materias": [
+        {
+          "titulo_materia": "Noções do Serviço Público",
+          "submaterias": [
+            {
+              "nome": "Organização do Serviço",
+              "importancia_banca": {"Consulplan": "Baixa", "Vunesp": "Média"},
+              "blocos_sugeridos": ["Tipos de Servidores", "Postura e Ética Profissional", "Atendimento ao Público"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Fundamental",
+      "disciplina": "Direito Constitucional",
+      "materias": [
+        {
+          "titulo_materia": "Direitos e Garantias Fundamentais",
+          "submaterias": [
+            {
+              "nome": "Artigo 5º da CF em Linhas Gerais",
+              "importancia_banca": {"FCC": "Alta", "Cebraspe": "Média"},
+              "blocos_sugeridos": ["Direito à Vida", "Igualdade Perante a Lei", "Liberdade de Expressão"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Fundamental",
+      "disciplina": "Legislação Geral",
+      "materias": [
+        {
+          "titulo_materia": "Noções de Estatutos",
+          "submaterias": [
+            {
+              "nome": "Deveres e Proibições Básicas",
+              "importancia_banca": {"Vunesp": "Alta", "FGV": "Média"},
+              "blocos_sugeridos": ["Responsabilidades", "Assiduidade e Pontualidade"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Fundamental",
+      "disciplina": "Conhecimentos Regionais (Foco em Ceará/Nordeste)",
+      "materias": [
+        {
+          "titulo_materia": "Aspectos Físicos e Culturais",
+          "submaterias": [
+            {
+              "nome": "Geografia do Ceará",
+              "importancia_banca": {"Cebraspe": "Alta", "Consulplan": "Alta"},
+              "blocos_sugeridos": ["Clima (Semiárido)", "Relevo e Bacias Hidrográficas", "Distribuição Populacional"]
+            },
+            {
+              "nome": "História e Cultura do Ceará",
+              "importancia_banca": {"FCC": "Média", "FGV": "Alta"},
+              "blocos_sugeridos": ["Colonização e Formação", "Abolição da Escravatura no CE", "Festas Típicas e Culinária"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Médio",
+      "disciplina": "Língua Portuguesa",
+      "materias": [
+        {
+          "titulo_materia": "Sintaxe da Oração e Período",
+          "submaterias": [
+            {
+              "nome": "Concordância Verbal e Nominal",
+              "importancia_banca": {"FGV": "Alta", "Cebraspe": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Regra Geral Verbal", "Casos Especiais (Haver, Fazer)", "Concordância Nominal Básica", "Expressões Partitivas"]
+            },
+            {
+              "nome": "Regência Verbal e Nominal",
+              "importancia_banca": {"FCC": "Alta", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Verbos Transitivos", "Uso da Crase (Regras Básicas)", "Casos Especiais de Crase"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Morfologia",
+          "submaterias": [
+            {
+              "nome": "Pronomes",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Alta"},
+              "blocos_sugeridos": ["Colocação Pronominal", "Pronomes Relativos (Que, Cujo)", "Pronomes Demonstrativos"]
+            },
+            {
+              "nome": "Conjunções",
+              "importancia_banca": {"FGV": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Coordenativas", "Subordinativas", "Relações de Sentido Expresso"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Médio",
+      "disciplina": "Raciocínio Lógico e Matemática",
+      "materias": [
+        {
+          "titulo_materia": "Lógica Proposicional",
+          "submaterias": [
+            {
+              "nome": "Estruturas Lógicas",
+              "importancia_banca": {"Cebraspe": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Tabela Verdade", "Conectivos Lógicos (E, Ou, Se Então)", "Negação de Proposições", "Equivalência Lógica"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Matemática Aplicada",
+          "submaterias": [
+            {
+              "nome": "Regra de Três e Probabilidade",
+              "importancia_banca": {"FGV": "Alta", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Regra de Três Simples e Composta", "Conceito de Probabilidade", "Análise de Dados Simples"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Médio",
+      "disciplina": "Informática",
+      "materias": [
+        {
+          "titulo_materia": "Aplicativos de Escritório",
+          "submaterias": [
+            {
+              "nome": "Microsoft Word",
+              "importancia_banca": {"Vunesp": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Formatação Geral", "Atalhos Úteis e Faixa de Opções", "Impressão e Estilos"]
+            },
+            {
+              "nome": "Microsoft Excel",
+              "importancia_banca": {"FGV": "Alta", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Fórmulas Básicas (SOMA, MÉDIA, SE)", "Gráficos", "Formatação Condicional"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Segurança da Informação e Redes",
+          "submaterias": [
+            {
+              "nome": "Conceitos de Segurança",
+              "importancia_banca": {"Cebraspe": "Alta", "FCC": "Média"},
+              "blocos_sugeridos": ["Malwares (Vírus, Worm, Trojan)", "Phishing e Golpes", "Backups", "Antivírus e Firewall"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Médio",
+      "disciplina": "Direito Administrativo",
+      "materias": [
+        {
+          "titulo_materia": "Princípios e Organização",
+          "submaterias": [
+            {
+              "nome": "Princípios Constitucionais",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Média"},
+              "blocos_sugeridos": ["LIMPE (Legalidade, Impessoalidade...)", "Princípios Implícitos (Proporcionalidade, Razoabilidade)"]
+            },
+            {
+              "nome": "Organização Administrativa",
+              "importancia_banca": {"FCC": "Alta", "Consulplan": "Média"},
+              "blocos_sugeridos": ["Administração Direta", "Administração Indireta", "Autarquias e Fundações"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Atos Administrativos",
+          "submaterias": [
+            {
+              "nome": "Conceito e Elementos",
+              "importancia_banca": {"Vunesp": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Competência, Finalidade, Forma...", "Atributos (Presunção de Legitimidade...)", "Anulação e Revogação"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Médio",
+      "disciplina": "Direito Constitucional",
+      "materias": [
+        {
+          "titulo_materia": "Direitos e Garantias Fundamentais",
+          "submaterias": [
+            {
+              "nome": "Obras do Art. 5º",
+              "importancia_banca": {"Cebraspe": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Direitos Individuais", "Remédios Constitucionais (Habeas Corpus, Mandado de Segurança)"]
+            },
+            {
+              "nome": "Direitos Políticos",
+              "importancia_banca": {"FGV": "Média", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Elegibilidade e Inelegibilidade", "Sufágio Universal"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Organização do Estado",
+          "submaterias": [
+            {
+              "nome": "Repartição de Competências",
+              "importancia_banca": {"FCC": "Média", "Cebraspe": "Média"},
+              "blocos_sugeridos": ["União, Estados, DF e Municípios", "Intervenção"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Médio",
+      "disciplina": "Legislação Geral",
+      "materias": [
+        {
+          "titulo_materia": "Estatuto dos Servidores (Lei 8.112/90)",
+          "submaterias": [
+            {
+              "nome": "Provimento e Vacância",
+              "importancia_banca": {"FCC": "Alta", "Vunesp": "Média"},
+              "blocos_sugeridos": ["Formas de Provimento (Nomeação, Readaptação)", "Formas de Vacância", "Posse e Exercício"]
+            },
+            {
+              "nome": "Regime Disciplinar",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Alta"},
+              "blocos_sugeridos": ["Deveres e Proibições", "Penalidades Disciplinares"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Improbidade e Licitações Básicas",
+          "submaterias": [
+            {
+              "nome": "Lei de Improbidade (Lei 8.429/92 alterada)",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Alta"},
+              "blocos_sugeridos": ["Atos de Improbidade", "Sanções"]
+            },
+            {
+              "nome": "Noções de Licitações (Lei 14.133/21)",
+              "importancia_banca": {"FCC": "Alta", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Princípios Licitatórios", "Modalidades Básicas (Pregão, Concorrência)"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Médio",
+      "disciplina": "Conhecimentos Regionais (Foco em Ceará/Nordeste)",
+      "materias": [
+        {
+          "titulo_materia": "Economia e Política",
+          "submaterias": [
+            {
+              "nome": "Atividades Econômicas do Ceará",
+              "importancia_banca": {"Consulplan": "Alta", "Cebraspe": "Média"},
+              "blocos_sugeridos": ["Turismo", "Indústria de Energias Renováveis", "Agronegócio e Seca"]
+            },
+            {
+              "nome": "Geografia do Nordeste e Ceará",
+              "importancia_banca": {"FGV": "Média", "FCC": "Alta"},
+              "blocos_sugeridos": ["Regiões Metropolitanas de Fortaleza", "Transposição do Rio São Francisco", "Semiárido e Caatinga"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Superior",
+      "disciplina": "Língua Portuguesa",
+      "materias": [
+        {
+          "titulo_materia": "Compreensão Textual Avançada",
+          "submaterias": [
+            {
+              "nome": "Tipologia e Gênero Textual",
+              "importancia_banca": {"FGV": "Alta", "Cebraspe": "Alta", "FCC": "Média"},
+              "blocos_sugeridos": ["Narração, Descrição e Dissertação", "Argumentação e Argumentos Falaciosos"]
+            },
+            {
+              "nome": "Reescritura de Frases",
+              "importancia_banca": {"FCC": "Alta", "FGV": "Alta", "Cebraspe": "Alta"},
+              "blocos_sugeridos": ["Manutenção do Sentido Original", "Adequação Gramatical na Substituição de Termos", "Emprego de Tempos Verbais Relativos"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Sintaxe Avançada",
+          "submaterias": [
+            {
+              "nome": "Orações Subordinadas e Coordenadas",
+              "importancia_banca": {"Vunesp": "Alta", "FGV": "Alta"},
+              "blocos_sugeridos": ["Substantivas, Adjetivas e Adverbiais", "Pontuação Atada à Sintaxe"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Superior",
+      "disciplina": "Raciocínio Lógico e Matemática",
+      "materias": [
+        {
+          "titulo_materia": "Lógica Avançada",
+          "submaterias": [
+            {
+              "nome": "Lógica de Argumentação",
+              "importancia_banca": {"FGV": "Alta", "Cebraspe": "Alta"},
+              "blocos_sugeridos": ["Silogismos", "Diagramas Lógicos", "Validação de Argumentos"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Análise Combinatória e Probabilidade Avançada",
+          "submaterias": [
+            {
+              "nome": "Combinatória e Permutação",
+              "importancia_banca": {"FCC": "Alta", "Consulplan": "Média"},
+              "blocos_sugeridos": ["Arranjo vs Combinação", "Permutação com Repetição"]
+            },
+            {
+              "nome": "Probabilidade Complexa",
+              "importancia_banca": {"FGV": "Alta", "Vunesp": "Alta"},
+              "blocos_sugeridos": ["Eventos Independentes", "Probabilidade Condicional"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Superior",
+      "disciplina": "Informática",
+      "materias": [
+        {
+          "titulo_materia": "Ampliando Conceitos Computacionais",
+          "submaterias": [
+            {
+              "nome": "Banco de Dados e Big Data",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Média"},
+              "blocos_sugeridos": ["Noções SQL", "Chaves Primárias e Estrangeiras", "Conceito de Big Data"]
+            },
+            {
+              "nome": "Redes de Computadores",
+              "importancia_banca": {"FCC": "Alta", "Cebraspe": "Alta"},
+              "blocos_sugeridos": ["Protocolos (TCP/IP, HTTP)", "Topologias", "Modelo OSI Fundamental"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Superior",
+      "disciplina": "Direito Administrativo",
+      "materias": [
+        {
+          "titulo_materia": "Licitações e Contratos aprofundados",
+          "submaterias": [
+            {
+              "nome": "Lei 14.133/21 Completa",
+              "importancia_banca": {"FGV": "Alta", "Cebraspe": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Inexigibilidade e Dispensa", "Contratos Administrativos", "Infrações e Sanções Licitatórias"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Controle e Responsabilidade",
+          "submaterias": [
+            {
+              "nome": "Controle da Administração",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Média"},
+              "blocos_sugeridos": ["Controle Interno e Externo", "Tribunais de Contas", "Recursos Administrativos"]
+            },
+            {
+              "nome": "Responsabilidade Civil do Estado",
+              "importancia_banca": {"FCC": "Alta", "Vunesp": "Média"},
+              "blocos_sugeridos": ["Teoria do Risco Administrativo", "Ação de Regresso", "Excludentes de Responsabilidade"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Superior",
+      "disciplina": "Direito Constitucional",
+      "materias": [
+        {
+          "titulo_materia": "Controle de Constitucionalidade",
+          "submaterias": [
+            {
+              "nome": "Sistemas de Controle",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Alta"},
+              "blocos_sugeridos": ["Controle Difuso e Concentrado", "Ações Constitucionais (ADI, ADC, ADPF)"]
+            }
+          ]
+        },
+        {
+          "titulo_materia": "Processo e Poderes",
+          "submaterias": [
+            {
+              "nome": "Poder Legislativo",
+              "importancia_banca": {"FCC": "Média", "Cebraspe": "Alta"},
+              "blocos_sugeridos": ["Atribuições do CN", "Câmara e Senado", "Comissões Parlamentares de Inquérito"]
+            },
+            {
+              "nome": "Processo Legislativo",
+              "importancia_banca": {"FGV": "Alta", "Vunesp": "Média"},
+              "blocos_sugeridos": ["Emendas Constitucionais", "Leis Complementares e Ordinárias", "Medidas Provisórias"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Superior",
+      "disciplina": "Legislação Geral",
+      "materias": [
+        {
+          "titulo_materia": "Aprofundamento de Normas",
+          "submaterias": [
+            {
+              "nome": "Jurisprudência: Lei 8.112",
+              "importancia_banca": {"Cebraspe": "Alta", "FGV": "Alta"},
+              "blocos_sugeridos": ["Precedentes do STF", "Acumulação de Cargos", "Processo Administrativo Disciplinar (PAD)"]
+            },
+            {
+              "nome": "Jurisprudência: Lei de Improbidade",
+              "importancia_banca": {"Cebraspe": "Alta", "FCC": "Alta"},
+              "blocos_sugeridos": ["Dolo nas Ações de Improbidade (Nova Lei)", "Prescrição Intercorrente"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nivel": "Superior",
+      "disciplina": "Conhecimentos Regionais (Foco em Ceará/Nordeste)",
+      "materias": [
+        {
+          "titulo_materia": "Aspectos Sociais e Culturais Próximos",
+          "submaterias": [
+            {
+              "nome": "Políticas Públicas Sociais",
+              "importancia_banca": {"Cebraspe": "Alta", "Consulplan": "Média"},
+              "blocos_sugeridos": ["Educação no Ceará (Modelos de Sucesso)", "Combate à Desigualdade Social Regional"]
+            },
+            {
+              "nome": "Dinâmicas Rurais e Urbanas",
+              "importancia_banca": {"FGV": "Alta", "FCC": "Média"},
+              "blocos_sugeridos": ["O Crescimento das Cidades Médias", "Agroindústria", "Problemática da Seca Avançada"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
