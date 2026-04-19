@@ -1,1 +1,1 @@
-feat: PRF module update with enriched theory and question bank expansion
+content: add macetes and exam tips to all major subtopics
