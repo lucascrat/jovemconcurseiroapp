@@ -1,59 +1,61 @@
-import 'package:postgres/postgres.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../models/models.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class DatabaseService {
-  final Pool _connection;
+  final String baseUrl;
 
-  DatabaseService(this._connection);
+  DatabaseService(this.baseUrl);
 
   static Future<DatabaseService> connect() async {
-    final pool = Pool.withEndpoints(
-      [
-        Endpoint(
-          host: '187.77.230.251',
-          database: 'postgres',
-          username: 'postgres',
-          password: 'km3nWyqka6tb1HloQdxJFp8ahIkkdPyRS0CN4gje6XSFAaSAdGlgO3hvOk4t2DQI',
-          port: 5437,
-        )
-      ],
-      settings: PoolSettings(
-        sslMode: SslMode.disable,
-      ),
-    );
-    return DatabaseService(pool);
+    // No Coolify/Produção, a API roda na mesma porta que o App estático.
+    // Usamos a URL base vazia ou definimos dinamicamente.
+    String url = "";
+    if (!kIsWeb) {
+      // Se fosse rodar em mobile/desktop localmente, precisaria do IP do servidor.
+      url = "http://187.77.230.251"; 
+    }
+    return DatabaseService(url);
   }
 
   Future<List<Subject>> getSubjects() async {
-    final results = await _connection.execute('SELECT id, name, level, description FROM "Subject"');
-    return results.map((row) => Subject.fromMap(row.toColumnMap())).toList();
+    final response = await http.get(Uri.parse('$baseUrl/api/subjects'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => Subject.fromMap(json)).toList();
+    }
+    throw Exception('Failed to load subjects');
   }
 
   Future<List<Topic>> getTopicsForSubject(String subjectId) async {
-    final results = await _connection.execute(
-      Sql.named('SELECT id, "subjectId", title, "videoUrl", content, "order" FROM "Topic" WHERE "subjectId" = @id ORDER BY "order"'),
-      parameters: {'id': subjectId},
-    );
-    return results.map((row) => Topic.fromMap(row.toColumnMap())).toList();
+    final response = await http.get(Uri.parse('$baseUrl/api/topics/$subjectId'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => Topic.fromMap(json)).toList();
+    }
+    throw Exception('Failed to load topics');
   }
 
   Future<List<SubTopic>> getSubTopicsForTopic(String topicId) async {
-    final results = await _connection.execute(
-      Sql.named('SELECT id, "topicId", name, "importanciaBanca", "blocosSugeridos", content FROM "SubTopic" WHERE "topicId" = @id'),
-      parameters: {'id': topicId},
-    );
-    return results.map((row) => SubTopic.fromMap(row.toColumnMap())).toList();
+    final response = await http.get(Uri.parse('$baseUrl/api/subtopics/$topicId'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => SubTopic.fromMap(json)).toList();
+    }
+    throw Exception('Failed to load subtopics');
   }
 
   Future<List<QuizQuestion>> getQuestionsForTopic(String topicId) async {
-    final results = await _connection.execute(
-      Sql.named('SELECT id, "topicId", banca, statement, options, "correctAnswer", type, explanation FROM "Question" WHERE "topicId" = @id'),
-      parameters: {'id': topicId},
-    );
-    return results.map((row) => QuizQuestion.fromMap(row.toColumnMap())).toList();
+    final response = await http.get(Uri.parse('$baseUrl/api/questions/$topicId'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => QuizQuestion.fromMap(json)).toList();
+    }
+    throw Exception('Failed to load questions');
   }
 
   Future<void> close() async {
-    await _connection.close();
+    // Nothing to close for HTTP
   }
 }
