@@ -20,21 +20,31 @@ class PrfModuleScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 180,
+            expandedHeight: 200,
             floating: false,
             pinned: true,
+            stretch: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text('Foco: PRF', style: TextStyle(fontWeight: FontWeight.bold)),
+              title: const Text('Módulo Especialista PRF', style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, fontSize: 16)),
+              centerTitle: true,
               background: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Colors.blue, Colors.green],
-                  ),
+                decoration: BoxDecoration(
+                  gradient: AppTheme.prfGradient,
                 ),
-                child: const Center(
-                  child: Icon(Icons.security, size: 80, color: Colors.white24),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: -30,
+                      top: -30,
+                      child: Icon(Icons.security, color: Colors.white.withOpacity(0.1), size: 180),
+                    ),
+                    const Center(
+                      child: Hero(
+                        tag: 'prf_hero_icon',
+                        child: Icon(Icons.shield, size: 80, color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -72,23 +82,44 @@ class PrfModuleScreen extends StatelessWidget {
   }
 
   Widget _buildExamCard(BuildContext context, String title, int year, {bool enabled = true}) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 2,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: AppTheme.softShadow,
+      ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        contentPadding: const EdgeInsets.all(20),
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: enabled ? Colors.orange.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+            color: enabled ? AppTheme.primaryColor.withOpacity(0.05) : Colors.grey.withOpacity(0.05),
             shape: BoxShape.circle,
           ),
-          child: Icon(Icons.assignment, color: enabled ? Colors.orange : Colors.grey),
+          child: Icon(
+            Icons.history_edu_rounded, 
+            color: enabled ? AppTheme.primaryColor : Colors.grey,
+            size: 24,
+          ),
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(enabled ? 'Simulado oficial Cebraspe' : 'Em processamento'),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        title: Text(
+          title, 
+          style: TextStyle(
+            fontWeight: FontWeight.w900, 
+            color: enabled ? AppTheme.primaryColor : Colors.grey,
+            fontSize: 16,
+          )
+        ),
+        subtitle: Text(
+          enabled ? 'Simulado oficial completo' : 'Em breve no banco',
+          style: TextStyle(color: Colors.blueGrey[300], fontSize: 13),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_rounded, 
+          size: 14, 
+          color: enabled ? AppTheme.primaryColor : Colors.grey[300],
+        ),
         onTap: !enabled ? null : () {
            Navigator.push(
              context,

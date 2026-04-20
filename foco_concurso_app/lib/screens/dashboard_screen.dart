@@ -62,61 +62,94 @@ class DashboardScreen extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      width: double.infinity,
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.primaryColor.withOpacity(0.02),
+            AppTheme.primaryColor.withOpacity(0.08),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppTheme.primaryColor.withOpacity(0.05)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Bom dia, Estudante!',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
-              color: AppTheme.primaryColor,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Sua jornada rumo à aprovação continua hoje.',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
-          ),
-          const SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   const Text(
+                    'Bom dia, Estudante!',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                      color: AppTheme.primaryColor,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  Text(
+                    'Sua jornada continua hoje.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blueGrey[400],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: AppTheme.softShadow,
+                ),
+                child: const Icon(Icons.rocket_launch, color: AppTheme.secondaryColor),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          _buildProgressStats(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgressStats() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Progresso Geral', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
+                  Text('75%', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: AppTheme.primaryColor)),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
                 child: LinearProgressIndicator(
                   value: 0.75,
-                  backgroundColor: Colors.grey[200],
+                  backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
                   color: AppTheme.primaryColor,
-                  minHeight: 8,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              const SizedBox(width: 16),
-              const Text(
-                '75%',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.primaryColor,
+                  minHeight: 10,
                 ),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -245,57 +278,86 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget _buildSubjectCard(dynamic subject) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: const Duration(milliseconds: 600),
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, 20 * (1 - value)),
+            child: child,
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(8),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: AppTheme.softShadow,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Hero(
+                  tag: 'icon_${subject.id}',
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.bookmark_outline, color: AppTheme.primaryColor, size: 20),
+                  ),
                 ),
-                child: const Icon(Icons.menu_book, color: AppTheme.primaryColor),
+                Text(
+                  "45%",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    color: AppTheme.primaryColor.withOpacity(0.4),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Text(
+              subject.name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold, 
+                fontSize: 15,
+                color: AppTheme.primaryColor,
+                letterSpacing: -0.2,
               ),
-              const Text("45%", style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
-            ],
-          ),
-          const Spacer(),
-          Text(
-            subject.name,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            subject.level,
-            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-          ),
-          const SizedBox(height: 12),
-          LinearProgressIndicator(
-            value: 0.45,
-            backgroundColor: Colors.grey[100],
-            color: AppTheme.primaryColor,
-            minHeight: 4,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ],
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              subject.level.toUpperCase(),
+              style: TextStyle(
+                fontSize: 10, 
+                color: Colors.blueGrey[300],
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 14),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: 0.45,
+                backgroundColor: AppTheme.primaryColor.withOpacity(0.05),
+                color: AppTheme.primaryColor,
+                minHeight: 6,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -375,42 +437,55 @@ class DashboardScreen extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.blue, Colors.green],
-          ),
-          borderRadius: BorderRadius.circular(16),
+          gradient: AppTheme.prfGradient,
+          borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.blue.withOpacity(0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: const Color(0xFF1E3A8A).withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
             ),
           ],
         ),
-        child: const Row(
+        child: Stack(
           children: [
-            Icon(Icons.security, color: Colors.white, size: 40),
-            SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'MODO FOCO: PRF',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  Text(
-                    'Simulados históricos e conteúdos específicos baseados no seu edital.',
-                    style: TextStyle(color: Colors.white70, fontSize: 13),
-                  ),
-                ],
-              ),
+            Positioned(
+              right: -20,
+              top: -20,
+              child: Icon(Icons.security, color: Colors.white.withOpacity(0.1), size: 100),
             ),
-            Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.shield, color: Colors.white, size: 28),
+                ),
+                const SizedBox(width: 20),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'MODO ESPECIALISTA: PRF',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 0.5),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Simulados históricos e legislação focada.',
+                        style: TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 24),
+              ],
+            ),
           ],
         ),
       ),
