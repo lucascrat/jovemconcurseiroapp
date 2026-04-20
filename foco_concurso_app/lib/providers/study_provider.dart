@@ -42,13 +42,22 @@ class StudyProvider with ChangeNotifier {
 
   Future<List<QuizQuestion>> getQuestions(String topicId) async {
     if (_dbService == null) return [];
-    return await _dbService!.getQuestionsForTopic(topicId);
+    final questions = await _dbService!.getQuestionsForTopic(topicId);
+    questions.shuffle();
+    return questions;
   }
 
-  Future<List<QuizQuestion>> getQuestionsByExam(String concurso, {int? ano}) async {
+  Future<List<QuizQuestion>> getQuestionsByExam(String concurso, {int? ano, int limit = 50}) async {
     if (_dbService == null) return [];
-    return await _dbService!.getQuestionsByExam(concurso, ano: ano);
+    final questions = await _dbService!.getQuestionsByExam(concurso, ano: ano);
+    questions.shuffle();
+    // For exams, we limit to 50 questions by default to keep it performant and realistic
+    if (questions.length > limit) {
+      return questions.take(limit).toList();
+    }
+    return questions;
   }
+
 
   @override
   void dispose() {

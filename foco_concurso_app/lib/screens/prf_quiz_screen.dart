@@ -15,13 +15,16 @@ class PrfQuizScreen extends StatefulWidget {
 
 class _PrfQuizScreenState extends State<PrfQuizScreen> {
   late Future<List<QuizQuestion>> _questionsFuture;
+  List<QuizQuestion>? _loadedQuestions;
   int _currentIndex = 0;
   String? _selectedOption;
   bool _isAnswerRevealed = false;
+  bool _isReviewMode = false;
   
-  // Scoring
+  // Scoring & History
   int _corrects = 0;
   int _wrongs = 0;
+  final Map<int, String> _userAnswers = {};
 
   @override
   void initState() {
@@ -33,7 +36,9 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
   void _submitAnswer(QuizQuestion question) {
     if (_selectedOption == null) return;
     
+    _userAnswers[_currentIndex] = _selectedOption!;
     bool isCorrect = _selectedOption == question.correctAnswer;
+    
     setState(() {
       _isAnswerRevealed = true;
       if (isCorrect) {
@@ -62,26 +67,55 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Resultado - Padrão Cebraspe'),
+        title: const Text('Resultado Final'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Acertos: $_corrects', style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-            Text('Erros: $_wrongs', style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-            const Divider(),
-            Text('Nota Líquida: $totalScore', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.green),
+                const SizedBox(width: 8),
+                Text('Acertos: $_corrects', style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 18)),
+              ],
+            ),
             const SizedBox(height: 8),
-            const Text('*No padrão Cebraspe, uma questão errada anula uma certa.', style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
+            Row(
+              children: [
+                const Icon(Icons.cancel, color: Colors.red),
+                const SizedBox(width: 8),
+                Text('Erros: $_wrongs', style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18)),
+              ],
+            ),
+            const Divider(height: 32),
+            Center(
+              child: Column(
+                children: [
+                  const Text('Nota Líquida (Cebraspe)', style: TextStyle(color: Colors.grey)),
+                  Text('$totalScore', style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.blue)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text('*Cada erro anula uma questão certa.', style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: Colors.grey)),
           ],
         ),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
         actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close dialog
+              setState(() => _isReviewMode = true);
+            },
+            child: const Text('REVISAR QUESTÕES', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context); // Close dialog
               Navigator.pop(context); // Back to module
             },
-            child: const Text('Finalizar'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[800], foregroundColor: Colors.white),
+            child: const Text('FINALIZAR'),
           ),
         ],
       ),
@@ -92,23 +126,35 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Simulado PRF ${widget.year}'),
+        title: Text(_isReviewMode ? 'Revisão do Simulado' : 'Simulado PRF ${widget.year}'),
         backgroundColor: Colors.blue[800],
         foregroundColor: Colors.white,
+        actions: _isReviewMode ? [
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          )
+        ] : null,
       ),
       body: FutureBuilder<List<QuizQuestion>>(
         future: _questionsFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting && _loadedQuestions == null) {
              return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
              return Center(child: Text('Erro: ${snapshot.error}'));
           }
 
-          final questions = snapshot.data ?? [];
+          _loadedQuestions ??= snapshot.data;
+          final questions = _loadedQuestions ?? [];
+          
           if (questions.isEmpty) {
             return const Center(child: Text('Nenhuma questão encontrada para este ano.'));
+          }
+
+          if (_isReviewMode) {
+            return _buildReviewList(questions);
           }
 
           final currentQuestion = questions[_currentIndex];
@@ -126,9 +172,25 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Questão ${_currentIndex + 1} de ${questions.length}',
-                        style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Questão ${_currentIndex + 1} de ${questions.length}',
+                            style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '${currentQuestion.banca} • ${currentQuestion.ano}',
+                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       Container(
@@ -136,10 +198,11 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
                         decoration: BoxDecoration(
                           color: Colors.blue[50],
                           borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.blue[100]!),
                         ),
                         child: Text(
-                          currentQuestion.topicId.split('/').last, // Simple topic display
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                          _getTopicName(currentQuestion.topicId),
+                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 13),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -179,8 +242,9 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          elevation: 2,
                         ),
-                        child: Text(_isAnswerRevealed ? 'Próxima' : 'Confirmar'),
+                        child: Text(_isAnswerRevealed ? 'PRÓXIMA' : 'CONFIRMAR RESPOSTA', style: const TextStyle(letterSpacing: 1.2, fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
@@ -190,6 +254,96 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
           );
         },
       ),
+    );
+  }
+
+  String _getTopicName(String id) {
+     // Improvement: Try to cleanup the UUID if it's there
+     if (id.length > 20) {
+        return "Tópico Específico da Prova";
+     }
+     return id.replaceAll('_', ' ').toUpperCase();
+  }
+
+  Widget _buildReviewList(List<QuizQuestion> questions) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: questions.length,
+      itemBuilder: (context, index) {
+        final q = questions[index];
+        final userAns = _userAnswers[index];
+        final isCorrect = userAns == q.correctAnswer;
+
+        return Card(
+          margin: const EdgeInsets.only(bottom: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: ExpansionTile(
+            title: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: isCorrect ? Colors.green : Colors.red,
+                  radius: 12,
+                  child: Icon(isCorrect ? Icons.check : Icons.close, color: Colors.white, size: 16),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Questão ${index + 1}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                if (!isCorrect && userAns == null)
+                  const Text('Não Respondida', style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
+            subtitle: Text(q.statement, maxLines: 1, overflow: TextOverflow.ellipsis),
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(q.statement, style: const TextStyle(fontWeight: FontWeight.w500)),
+                    const SizedBox(height: 16),
+                    ...q.options.entries.map((e) {
+                       bool isUserChoice = e.key == userAns;
+                       bool isCorrectChoice = e.key == q.correctAnswer;
+                       Color textColor = Colors.black;
+                       IconData? icon;
+                       
+                       if (isCorrectChoice) {
+                         textColor = Colors.green;
+                         icon = Icons.check_circle;
+                       } else if (isUserChoice) {
+                         textColor = Colors.red;
+                         icon = Icons.cancel;
+                       }
+
+                       return Container(
+                         margin: const EdgeInsets.only(bottom: 4),
+                         padding: const EdgeInsets.all(8),
+                         decoration: BoxDecoration(
+                           color: isCorrectChoice ? Colors.green[50] : (isUserChoice ? Colors.red[50] : null),
+                           borderRadius: BorderRadius.circular(4),
+                         ),
+                         child: Row(
+                           children: [
+                             Text('${e.key.toUpperCase()}: ', style: TextStyle(fontWeight: FontWeight.bold, color: textColor)),
+                             Expanded(child: Text(e.value, style: TextStyle(color: textColor))),
+                             if (icon != null) Icon(icon, color: textColor, size: 16),
+                           ],
+                         ),
+                       );
+                    }).toList(),
+                    const Divider(height: 32),
+                    _buildExplanation(q.explanation),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -206,18 +360,39 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: _isAnswerRevealed ? null : () => setState(() => _selectedOption = key),
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             border: Border.all(color: color, width: 2),
             borderRadius: BorderRadius.circular(12),
             color: isSelected ? color.withOpacity(0.05) : Colors.white,
+            boxShadow: isSelected && !_isAnswerRevealed ? [
+              BoxShadow(color: Colors.blue.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2))
+            ] : null,
           ),
           child: Row(
             children: [
-              Text(key.toUpperCase(), style: TextStyle(fontWeight: FontWeight.bold, color: color)),
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected ? color : Colors.transparent,
+                  border: Border.all(color: isSelected ? color : Colors.grey[400]!),
+                ),
+                child: Center(
+                  child: Text(
+                    key.toUpperCase(), 
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold, 
+                      color: isSelected ? Colors.white : Colors.grey[600]
+                    )
+                  ),
+                ),
+              ),
               const SizedBox(width: 16),
-              Expanded(child: Text(text)),
+              Expanded(child: Text(text, style: TextStyle(fontSize: 16, color: Colors.grey[800]))),
             ],
           ),
         ),
@@ -229,18 +404,27 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.orange[50],
+        color: Colors.blueGrey[50],
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.orange[200]!),
+        border: Border.all(color: Colors.blueGrey[100]!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Por que?', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange)),
+          Row(
+            children: [
+              Icon(Icons.lightbulb, color: Colors.amber[700], size: 20),
+              const SizedBox(width: 8),
+              Text('EXPLICAÇÃO TÉCNICA', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey[800], fontSize: 12)),
+            ],
+          ),
+          const Divider(),
           const SizedBox(height: 8),
-          Text(explanation),
+          Text(explanation, style: TextStyle(color: Colors.blueGrey[900], height: 1.4)),
         ],
       ),
     );
   }
+}
+
 }
