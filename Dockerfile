@@ -12,7 +12,7 @@ RUN flutter pub get
 RUN flutter build web --release
 
 # Estágio 2: Node.js API + Static Server
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
