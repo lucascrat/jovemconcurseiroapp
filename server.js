@@ -55,6 +55,19 @@ const s3Client = new S3Client({
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+// Debug directory structure
+const fs = require('fs');
+console.log('Checking directory structure...');
+['./foco_admin/dist', './foco_concurso_app/build/web'].forEach(dir => {
+    if (fs.existsSync(dir)) {
+        console.log(`Directory ${dir} exists. Contents:`, fs.readdirSync(dir).slice(0, 5));
+    } else {
+        console.log(`Directory ${dir} DOES NOT exist.`);
+    }
+});
+
+app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
+
 // ==========================================
 // ADMIN UPLOAD ROUTE
 // ==========================================
