@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, HelpCircle, Search, Loader } from 'lucide-react';
+import { Plus, Edit2, Trash2, HelpCircle, School, GraduationCap, Award } from 'lucide-react';
 import api from '../api';
+
+const LEVEL_CONFIG = {
+  fundamental: { label: 'Fundamental', icon: <School size={18} />, color: '#22c55e' },
+  médio: { label: 'Médio', icon: <GraduationCap size={18} />, color: '#3b82f6' },
+  superior: { label: 'Superior', icon: <Award size={18} />, color: '#a855f7' },
+};
 
 export default function Questions() {
   const [subjects, setSubjects] = useState([]);
   const [topics, setTopics] = useState([]);
   const [questions, setQuestions] = useState([]);
   
+  const [activeLevel, setActiveLevel] = useState('médio');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   
@@ -16,9 +23,13 @@ export default function Questions() {
     topicId: '', banca: '', statement: '', options: ['', '', '', '', ''], correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear()
   });
 
+  useEffect(() => { fetchInitialData(); }, []);
+
   useEffect(() => {
-    fetchInitialData();
-  }, []);
+    const filtered = subjects.filter(s => s.level === activeLevel);
+    if (filtered.length > 0) setSelectedSubject(filtered[0].id);
+    else setSelectedSubject('');
+  }, [activeLevel, subjects]);
 
   useEffect(() => {
     if (selectedSubject) fetchTopics();
@@ -34,12 +45,8 @@ export default function Questions() {
     try {
       const res = await api.get('/admin/subjects');
       setSubjects(res.data);
-      if (res.data.length > 0) setSelectedSubject(res.data[0].id);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   };
 
   const fetchTopics = async () => {
@@ -48,9 +55,7 @@ export default function Questions() {
       setTopics(res.data);
       if (res.data.length > 0) setSelectedTopic(res.data[0].id);
       else setSelectedTopic('');
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const fetchQuestions = async () => {
@@ -58,37 +63,25 @@ export default function Questions() {
     try {
       const res = await api.get(`/admin/questions?topicId=${selectedTopic}`);
       setQuestions(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
     try {
       const payload = { ...currentQuestion, topicId: selectedTopic };
-      if (currentQuestion.id) {
-        await api.put(`/admin/questions/${currentQuestion.id}`, payload);
-      } else {
-        await api.post('/admin/questions', payload);
-      }
+      if (currentQuestion.id) await api.put(`/admin/questions/${currentQuestion.id}`, payload);
+      else await api.post('/admin/questions', payload);
       setIsModalOpen(false);
       fetchQuestions();
-    } catch (err) {
-      alert('Erro ao salvar questão');
-    }
+    } catch (err) { alert('Erro ao salvar questão'); }
   };
 
   const handleDelete = async (id) => {
     if (!confirm('Deseja excluir esta questão?')) return;
-    try {
-      await api.delete(`/admin/questions/${id}`);
-      fetchQuestions();
-    } catch (err) {
-      alert('Erro ao excluir');
-    }
+    try { await api.delete(`/admin/questions/${id}`); fetchQuestions(); }
+    catch (err) { alert('Erro ao excluir'); }
   };
 
   const handleOptionChange = (index, value) => {
@@ -97,33 +90,43 @@ export default function Questions() {
     setCurrentQuestion({ ...currentQuestion, options: newOptions });
   };
 
-  if (loading && subjects.length === 0) return <div className="loader">Carregando...</div>;
+  const filteredSubjects = subjects.filter(s => s.level === activeLevel);
+  const levelCounts = {};
+  Object.keys(LEVEL_CONFIG).forEach(k => { levelCounts[k] = subjects.filter(s => s.level === k).length; });
 
   return (
     <div>
       <div className="flex-between">
         <h1 className="page-title">Banco de Questões</h1>
         <button className="btn btn-primary" onClick={() => { 
-          setCurrentQuestion({ 
-            topicId: selectedTopic, banca: '', statement: '', options: ['', '', '', '', ''], 
-            correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear() 
-          }); 
+          setCurrentQuestion({ topicId: selectedTopic, banca: '', statement: '', options: ['', '', '', '', ''], correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear() }); 
           setIsModalOpen(true); 
         }} disabled={!selectedTopic}>
           <Plus size={20} /> Nova Questão
         </button>
       </div>
 
-      <div className="card" style={{ marginTop: 24, padding: 20 }}>
+      {/* Level Tabs */}
+      <div className="level-tabs" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+        {Object.entries(LEVEL_CONFIG).map(([key, cfg]) => (
+          <button key={key} className={`level-tab ${activeLevel === key ? 'active' : ''}`} onClick={() => setActiveLevel(key)}
+            style={activeLevel === key ? { borderColor: cfg.color, color: cfg.color } : {}}>
+            {cfg.icon} {cfg.label} ({levelCounts[key]})
+          </button>
+        ))}
+      </div>
+
+      {/* Filters */}
+      <div className="card" style={{ marginTop: 20, padding: 20 }}>
         <div className="grid-2">
           <div className="form-group">
-            <label>Filtrar por Matéria</label>
+            <label>Matéria ({LEVEL_CONFIG[activeLevel]?.label})</label>
             <select className="form-control" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
-              {subjects.map(s => <option key={s.id} value={s.id}>{s.name} ({s.level})</option>)}
+              {filteredSubjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </div>
           <div className="form-group">
-            <label>Filtrar por Tópico</label>
+            <label>Tópico</label>
             <select className="form-control" value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)} disabled={topics.length === 0}>
               <option value="">Selecione o tópico</option>
               {topics.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
@@ -132,17 +135,11 @@ export default function Questions() {
         </div>
       </div>
 
+      {/* Table */}
       <div className="card" style={{ marginTop: 20 }}>
         {loading ? <div className="loader">Buscando questões...</div> : (
           <table className="table">
-            <thead>
-              <tr>
-                <th>Enunciado</th>
-                <th>Banca</th>
-                <th>Ano</th>
-                <th style={{ textAlign: 'right' }}>Ações</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Enunciado</th><th>Banca</th><th>Ano</th><th style={{ textAlign: 'right' }}>Ações</th></tr></thead>
             <tbody>
               {questions.map(q => (
                 <tr key={q.id}>
@@ -157,47 +154,33 @@ export default function Questions() {
                   </td>
                 </tr>
               ))}
-              {questions.length === 0 && <tr><td colSpan="4" style={{ textAlign: 'center', padding: 40 }}>{selectedTopic ? 'Nenhuma questão para este tópico.' : 'Selecione um tópico para ver as questões.'}</td></tr>}
+              {questions.length === 0 && <tr><td colSpan="4" style={{ textAlign: 'center', padding: 40 }}>{selectedTopic ? 'Nenhuma questão.' : 'Selecione um tópico.'}</td></tr>}
             </tbody>
           </table>
         )}
       </div>
 
+      {/* Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="card modal-content" style={{ width: 800, maxHeight: '90vh', overflowY: 'auto' }}>
             <h2>{currentQuestion.id ? 'Editar' : 'Nova'} Questão</h2>
             <form onSubmit={handleSave}>
               <div className="grid-2">
-                <div className="form-group">
-                  <label>Banca</label>
-                  <input className="form-control" value={currentQuestion.banca} onChange={e => setCurrentQuestion({...currentQuestion, banca: e.target.value})} required />
-                </div>
-                <div className="form-group">
-                  <label>Ano</label>
-                  <input className="form-control" type="number" value={currentQuestion.ano} onChange={e => setCurrentQuestion({...currentQuestion, ano: parseInt(e.target.value)})} />
-                </div>
+                <div className="form-group"><label>Banca</label><input className="form-control" value={currentQuestion.banca} onChange={e => setCurrentQuestion({...currentQuestion, banca: e.target.value})} required /></div>
+                <div className="form-group"><label>Ano</label><input className="form-control" type="number" value={currentQuestion.ano} onChange={e => setCurrentQuestion({...currentQuestion, ano: parseInt(e.target.value)})} /></div>
               </div>
-              <div className="form-group">
-                <label>Enunciado</label>
-                <textarea className="form-control" value={currentQuestion.statement} onChange={e => setCurrentQuestion({...currentQuestion, statement: e.target.value})} rows={4} required />
-              </div>
-              
+              <div className="form-group"><label>Enunciado</label><textarea className="form-control" value={currentQuestion.statement} onChange={e => setCurrentQuestion({...currentQuestion, statement: e.target.value})} rows={4} required /></div>
               <div style={{ marginBottom: 16 }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 8 }}>Alternativas</label>
                 {currentQuestion.options.map((opt, idx) => (
                   <div key={idx} className="flex-center" style={{ marginBottom: 8, gap: 10 }}>
                     <input type="radio" name="correct" checked={currentQuestion.correctAnswer === idx} onChange={() => setCurrentQuestion({...currentQuestion, correctAnswer: idx})} />
-                    <input className="form-control" value={opt} onChange={e => handleOptionChange(idx, e.target.value)} placeholder={`Alternativa ${String.fromCharCode(65+idx)}`} required={idx < 4} />
+                    <input className="form-control" value={opt} onChange={e => handleOptionChange(idx, e.target.value)} placeholder={`Alternativa ${String.fromCharCode(65+idx)}`} />
                   </div>
                 ))}
               </div>
-
-              <div className="form-group">
-                <label>Explicação / Gabarito Comentado</label>
-                <textarea className="form-control" value={currentQuestion.explanation} onChange={e => setCurrentQuestion({...currentQuestion, explanation: e.target.value})} rows={3} />
-              </div>
-
+              <div className="form-group"><label>Explicação</label><textarea className="form-control" value={currentQuestion.explanation} onChange={e => setCurrentQuestion({...currentQuestion, explanation: e.target.value})} rows={3} /></div>
               <div className="flex-center" style={{ justifyContent: 'flex-end', marginTop: 24, gap: 12 }}>
                 <button type="button" className="btn btn-outline" onClick={() => setIsModalOpen(false)}>Cancelar</button>
                 <button className="btn btn-primary">Salvar Questão</button>

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { Edit2, UploadCloud, Video, Mic, Map, FileText, Loader, CheckCircle, Search, Trash2, Plus } from 'lucide-react';
+import { Edit2, UploadCloud, Video, Mic, Map, FileText, Loader, Trash2, Plus, School, GraduationCap, Award } from 'lucide-react';
+
+const LEVEL_CONFIG = {
+  fundamental: { label: 'Fundamental', icon: <School size={18} />, color: '#22c55e' },
+  médio: { label: 'Médio', icon: <GraduationCap size={18} />, color: '#3b82f6' },
+  superior: { label: 'Superior', icon: <Award size={18} />, color: '#a855f7' },
+};
 
 export default function SubTopics() {
   const [subjects, setSubjects] = useState([]);
   const [topics, setTopics] = useState([]);
   const [subtopics, setSubtopics] = useState([]);
   
+  const [activeLevel, setActiveLevel] = useState('médio');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   
@@ -15,13 +22,17 @@ export default function SubTopics() {
   const [editingSub, setEditingSub] = useState(null);
   const [uploading, setUploading] = useState({ video: false, audio: false, map: false });
 
+  useEffect(() => { fetchInitialData(); }, []);
+
   useEffect(() => {
-    fetchInitialData();
-  }, []);
+    const filtered = subjects.filter(s => s.level === activeLevel);
+    if (filtered.length > 0) setSelectedSubject(filtered[0].id);
+    else setSelectedSubject('');
+  }, [activeLevel, subjects]);
 
   useEffect(() => {
     if (selectedSubject) fetchTopics();
-    else setTopics([]);
+    else { setTopics([]); setSelectedTopic(''); }
   }, [selectedSubject]);
 
   useEffect(() => {
@@ -33,12 +44,8 @@ export default function SubTopics() {
     try {
       const res = await api.get('/admin/subjects');
       setSubjects(res.data);
-      if (res.data.length > 0) setSelectedSubject(res.data[0].id);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   };
 
   const fetchTopics = async () => {
@@ -47,9 +54,7 @@ export default function SubTopics() {
       setTopics(res.data);
       if (res.data.length > 0) setSelectedTopic(res.data[0].id);
       else setSelectedTopic('');
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const fetchSubtopics = async () => {
@@ -57,11 +62,8 @@ export default function SubTopics() {
     try {
       const res = await api.get(`/admin/subtopics?topicId=${selectedTopic}`);
       setSubtopics(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   };
 
   const handleUpload = async (e, type) => {
@@ -71,45 +73,33 @@ export default function SubTopics() {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const res = await api.post('/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await api.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       const url = res.data.url;
       setEditingSub(prev => ({ ...prev, [type === 'video' ? 'videoUrl' : type === 'audio' ? 'audioUrl' : 'mindMapUrl']: url }));
-    } catch (err) {
-      alert('Erro ao fazer upload');
-    } finally {
-      setUploading({ ...uploading, [type]: false });
-    }
+    } catch (err) { alert('Erro ao fazer upload'); }
+    finally { setUploading({ ...uploading, [type]: false }); }
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
     try {
       const payload = { ...editingSub, topicId: selectedTopic };
-      if (editingSub.id) {
-        await api.put(`/admin/subtopics/${editingSub.id}`, payload);
-      } else {
-        await api.post('/admin/subtopics', payload);
-      }
+      if (editingSub.id) await api.put(`/admin/subtopics/${editingSub.id}`, payload);
+      else await api.post('/admin/subtopics', payload);
       setIsModalOpen(false);
       fetchSubtopics();
-    } catch (err) {
-      alert('Erro ao salvar');
-    }
+    } catch (err) { alert('Erro ao salvar'); }
   };
 
   const handleDelete = async (id) => {
     if (!confirm('Deseja excluir este conteúdo?')) return;
-    try {
-      await api.delete(`/admin/subtopics/${id}`);
-      fetchSubtopics();
-    } catch (err) {
-      alert('Erro ao excluir');
-    }
+    try { await api.delete(`/admin/subtopics/${id}`); fetchSubtopics(); }
+    catch (err) { alert('Erro ao excluir'); }
   };
 
-  if (loading && subjects.length === 0) return <div className="loader">Carregando dados...</div>;
+  const filteredSubjects = subjects.filter(s => s.level === activeLevel);
+  const levelCounts = {};
+  Object.keys(LEVEL_CONFIG).forEach(k => { levelCounts[k] = subjects.filter(s => s.level === k).length; });
 
   return (
     <div>
@@ -123,16 +113,27 @@ export default function SubTopics() {
         </button>
       </div>
 
-      <div className="card" style={{ marginTop: 24, padding: 20 }}>
+      {/* Level Tabs */}
+      <div className="level-tabs" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+        {Object.entries(LEVEL_CONFIG).map(([key, cfg]) => (
+          <button key={key} className={`level-tab ${activeLevel === key ? 'active' : ''}`} onClick={() => setActiveLevel(key)}
+            style={activeLevel === key ? { borderColor: cfg.color, color: cfg.color } : {}}>
+            {cfg.icon} {cfg.label} ({levelCounts[key]})
+          </button>
+        ))}
+      </div>
+
+      {/* Filters */}
+      <div className="card" style={{ marginTop: 20, padding: 20 }}>
         <div className="grid-2">
           <div className="form-group">
-            <label>Filtrar por Matéria</label>
+            <label>Matéria ({LEVEL_CONFIG[activeLevel]?.label})</label>
             <select className="form-control" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
-              {subjects.map(s => <option key={s.id} value={s.id}>{s.name} ({s.level})</option>)}
+              {filteredSubjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </div>
           <div className="form-group">
-            <label>Filtrar por Tópico</label>
+            <label>Tópico</label>
             <select className="form-control" value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)} disabled={topics.length === 0}>
               <option value="">Selecione o tópico</option>
               {topics.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
@@ -141,16 +142,11 @@ export default function SubTopics() {
         </div>
       </div>
 
+      {/* Table */}
       <div className="card" style={{ marginTop: 20 }}>
         {loading ? <div className="loader">Buscando conteúdos...</div> : (
           <table className="table">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Mídias</th>
-                <th style={{ textAlign: 'right' }}>Ações</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Nome</th><th>Mídias</th><th style={{ textAlign: 'right' }}>Ações</th></tr></thead>
             <tbody>
               {subtopics.map(s => (
                 <tr key={s.id}>
@@ -160,6 +156,7 @@ export default function SubTopics() {
                       {s.videoUrl && <Video size={16} color="var(--primary)" title="Vídeo" />}
                       {s.audioUrl && <Mic size={16} color="var(--success)" title="Áudio" />}
                       {s.mindMapUrl && <Map size={16} color="var(--accent)" title="Mapa Mental" />}
+                      {!s.videoUrl && !s.audioUrl && !s.mindMapUrl && <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Sem mídia</span>}
                     </div>
                   </td>
                   <td style={{ textAlign: 'right' }}>
@@ -168,56 +165,54 @@ export default function SubTopics() {
                   </td>
                 </tr>
               ))}
-              {subtopics.length === 0 && <tr><td colSpan="3" style={{ textAlign: 'center', padding: 40 }}>{selectedTopic ? 'Nenhum conteúdo para este tópico.' : 'Selecione um tópico para ver os conteúdos.'}</td></tr>}
+              {subtopics.length === 0 && <tr><td colSpan="3" style={{ textAlign: 'center', padding: 40 }}>{selectedTopic ? 'Nenhum conteúdo para este tópico.' : 'Selecione um tópico.'}</td></tr>}
             </tbody>
           </table>
         )}
       </div>
 
+      {/* Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="card modal-content" style={{ width: 850 }}>
-            <div className="modal-header">
-              <h2>{editingSub.id ? 'Editar Conteúdo' : 'Novo Conteúdo'}</h2>
-            </div>
+            <div className="modal-header"><h2>{editingSub?.id ? 'Editar Conteúdo' : 'Novo Conteúdo'}</h2></div>
             <div className="modal-body">
               <div className="form-group">
                 <label>Nome do Subtópico</label>
-                <input className="form-control" value={editingSub.name} onChange={e => setEditingSub({...editingSub, name: e.target.value})} required />
+                <input className="form-control" value={editingSub?.name || ''} onChange={e => setEditingSub({...editingSub, name: e.target.value})} required />
               </div>
               <div className="form-group">
                 <label>Teoria (Markdown)</label>
-                <textarea className="form-control" value={editingSub.content} onChange={e => setEditingSub({...editingSub, content: e.target.value})} rows={10} />
+                <textarea className="form-control" value={editingSub?.content || ''} onChange={e => setEditingSub({...editingSub, content: e.target.value})} rows={10} />
               </div>
-
               <div className="grid-2">
                 <div>
                   <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Video size={18}/> Vídeo</h3>
-                  <input className="form-control" placeholder="URL do vídeo..." value={editingSub.videoUrl || ''} onChange={e => setEditingSub({...editingSub, videoUrl: e.target.value})} style={{marginBottom: 10}} />
+                  <input className="form-control" placeholder="URL do vídeo..." value={editingSub?.videoUrl || ''} onChange={e => setEditingSub({...editingSub, videoUrl: e.target.value})} style={{marginBottom: 10}} />
                   <label className="upload-zone" style={{display: 'block'}}>
                     {uploading.video ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>Upload de Vídeo R2</p>
+                    <p style={{marginTop: 8}}>Upload R2</p>
                     <input type="file" accept="video/*" style={{display:'none'}} onChange={e => handleUpload(e, 'video')} />
                   </label>
                 </div>
                 <div>
                   <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Mic size={18}/> Áudio</h3>
-                  <input className="form-control" placeholder="URL do áudio..." value={editingSub.audioUrl || ''} onChange={e => setEditingSub({...editingSub, audioUrl: e.target.value})} style={{marginBottom: 10}} />
+                  <input className="form-control" placeholder="URL do áudio..." value={editingSub?.audioUrl || ''} onChange={e => setEditingSub({...editingSub, audioUrl: e.target.value})} style={{marginBottom: 10}} />
                   <label className="upload-zone" style={{display: 'block'}}>
                     {uploading.audio ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>Upload de Áudio R2</p>
+                    <p style={{marginTop: 8}}>Upload R2</p>
                     <input type="file" accept="audio/*" style={{display:'none'}} onChange={e => handleUpload(e, 'audio')} />
                   </label>
                 </div>
                 <div style={{gridColumn: '1 / -1'}}>
                   <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Map size={18}/> Mapa Mental</h3>
-                  <input className="form-control" placeholder="URL do mapa mental..." value={editingSub.mindMapUrl || ''} onChange={e => setEditingSub({...editingSub, mindMapUrl: e.target.value})} style={{marginBottom: 10}} />
+                  <input className="form-control" placeholder="URL do mapa mental..." value={editingSub?.mindMapUrl || ''} onChange={e => setEditingSub({...editingSub, mindMapUrl: e.target.value})} style={{marginBottom: 10}} />
                   <label className="upload-zone" style={{display: 'block'}}>
                     {uploading.map ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>Upload de Imagem R2</p>
+                    <p style={{marginTop: 8}}>Upload R2</p>
                     <input type="file" accept="image/*" style={{display:'none'}} onChange={e => handleUpload(e, 'map')} />
                   </label>
-                  {editingSub.mindMapUrl && <div className="media-preview" style={{textAlign: 'center'}}><img src={editingSub.mindMapUrl} alt="Preview" /></div>}
+                  {editingSub?.mindMapUrl && <div style={{textAlign: 'center', marginTop: 10}}><img src={editingSub.mindMapUrl} alt="Preview" style={{maxWidth: 300, borderRadius: 8}} /></div>}
                 </div>
               </div>
             </div>
