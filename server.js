@@ -1,23 +1,95 @@
+require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const port = process.env.PORT || 80;
 
+// Admin Credentials
+const ADMIN_USER = "Holanda";
+const ADMIN_PASS = "01Deus02@";
+
 app.use(cors());
 app.use(express.json());
 
+// Login Route
+app.post('/api/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    res.json({ success: true, token: 'admin-secret-token' });
+  } else {
+    res.status(401).json({ error: 'Credenciais inválidas' });
+  }
+});
+
+// Middleware for Admin Auth
+const adminAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader === 'admin-secret-token') {
+    next();
+  } else {
+    res.status(403).json({ error: 'Não autorizado' });
+  }
+};
+
 const pool = new Pool({
-  connectionString: 'postgres://postgres:km3nWyqka6tb1HloQdxJFp8ahIkkdPyRS0CN4gje6XSFAaSAdGlgO3hvOk4t2DQI@187.77.230.251:5437/postgres',
+  connectionString: process.env.DATABASE_URL || 'postgres://postgres:km3nWyqka6tb1HloQdxJFp8ahIkkdPyRS0CN4gje6XSFAaSAdGlgO3hvOk4t2DQI@187.77.230.251:5437/postgres',
   ssl: { rejectUnauthorized: false }
 });
 
-// API Routes
+// Configure R2 / S3 Client
+const s3Client = new S3Client({
+  region: "auto",
+  endpoint: process.env.R2_ENDPOINT,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+  },
+});
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+// ==========================================
+// ADMIN UPLOAD ROUTE
+// ==========================================
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const fileExtension = req.file.originalname.split('.').pop();
+    const fileName = `${uuidv4()}.${fileExtension}`;
+    const bucketName = process.env.R2_BUCKET_NAME;
+
+    const command = new PutObjectCommand({
+      Bucket: bucketName,
+      Key: fileName,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    });
+
+    await s3Client.send(command);
+
+    const publicUrl = `${process.env.R2_PUBLIC_DOMAIN}/${fileName}`;
+    res.json({ url: publicUrl });
+  } catch (error) {
+    console.error('Upload Error:', error);
+    res.status(500).json({ error: 'Failed to upload file to R2' });
+  }
+});
+
+// ==========================================
+// READ ROUTES (PUBLIC)
+// ==========================================
 app.get('/api/subjects', async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, name, level, description FROM "Subject"');
+    const result = await pool.query('SELECT id, name, level, description FROM "Subject" ORDER BY name');
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -29,7 +101,7 @@ app.get('/api/topics/:subjectId', async (req, res) => {
   try {
     const { subjectId } = req.params;
     const result = await pool.query(
-      'SELECT id, "subjectId", title, "videoUrl", content, "order" FROM "Topic" WHERE "subjectId" = $1 ORDER BY "order"',
+      'SELECT id, "subjectId", title, "videoUrl", content, "order", "audioUrl", "mindMapUrl" FROM "Topic" WHERE "subjectId" = $1 ORDER BY "order"',
       [subjectId]
     );
     res.json(result.rows);
@@ -43,7 +115,7 @@ app.get('/api/subtopics/:topicId', async (req, res) => {
   try {
     const { topicId } = req.params;
     const result = await pool.query(
-      'SELECT id, "topicId", name, "importanciaBanca", "blocosSugeridos", content FROM "SubTopic" WHERE "topicId" = $1',
+      'SELECT id, "topicId", name, "importanciaBanca", "blocosSugeridos", content, "videoUrl", "audioUrl", "mindMapUrl" FROM "SubTopic" WHERE "topicId" = $1 ORDER BY name',
       [topicId]
     );
     res.json(result.rows);
@@ -67,35 +139,142 @@ app.get('/api/questions/:topicId', async (req, res) => {
   }
 });
 
-app.get('/api/questions/filter/:concurso', async (req, res) => {
+// ==========================================
+// ADMIN CRUD ROUTES
+// ==========================================
+
+// --- Subjects ---
+app.post('/api/admin/subjects', adminAuth, async (req, res) => {
   try {
-    const { concurso } = req.params;
-    const { ano } = req.query;
-    
-    let query = 'SELECT * FROM "Question" WHERE concurso = $1';
-    let params = [concurso];
-    
-    if (ano) {
-      query += ' AND ano = $2';
-      params.push(parseInt(ano));
-    }
-    
-    const result = await pool.query(query, params);
-    res.json(result.rows);
+    const { name, level, description } = req.body;
+    const id = uuidv4().replace(/-/g, '');
+    await pool.query(
+      'INSERT INTO "Subject" (id, name, level, description) VALUES ($1, $2, $3, $4)',
+      [id, name, level, description]
+    );
+    res.json({ id, name, level, description });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });
   }
 });
 
-app.get('/api/boards', async (req, res) => {
+app.put('/api/admin/subjects/:id', adminAuth, async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM "ExamBoard" ORDER BY name');
-    res.json(result.rows);
+    const { id } = req.params;
+    const { name, level, description } = req.body;
+    await pool.query(
+      'UPDATE "Subject" SET name = $1, level = $2, description = $3 WHERE id = $4',
+      [name, level, description, id]
+    );
+    res.json({ success: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });
   }
+});
+
+app.delete('/api/admin/subjects/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM "Subject" WHERE id = $1', [id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// --- Topics ---
+app.post('/api/admin/topics', adminAuth, async (req, res) => {
+  try {
+    const { subjectId, title, videoUrl, content, order, audioUrl, mindMapUrl } = req.body;
+    const id = uuidv4().replace(/-/g, '');
+    await pool.query(
+      'INSERT INTO "Topic" (id, "subjectId", title, "videoUrl", content, "order", "audioUrl", "mindMapUrl") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+      [id, subjectId, title, videoUrl || '', content || '', order || 0, audioUrl || null, mindMapUrl || null]
+    );
+    res.json({ id, subjectId, title });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.put('/api/admin/topics/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, videoUrl, content, order, audioUrl, mindMapUrl } = req.body;
+    await pool.query(
+      'UPDATE "Topic" SET title = $1, "videoUrl" = $2, content = $3, "order" = $4, "audioUrl" = $5, "mindMapUrl" = $6 WHERE id = $7',
+      [title, videoUrl || '', content || '', order || 0, audioUrl || null, mindMapUrl || null, id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.delete('/api/admin/topics/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM "Topic" WHERE id = $1', [id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// --- SubTopics ---
+app.post('/api/admin/subtopics', adminAuth, async (req, res) => {
+  try {
+    const { topicId, name, content, videoUrl, audioUrl, mindMapUrl } = req.body;
+    const id = uuidv4().replace(/-/g, '');
+    // ImportanciaBanca e BlocosSugeridos as empty defaults for now
+    await pool.query(
+      'INSERT INTO "SubTopic" (id, "topicId", name, "importanciaBanca", "blocosSugeridos", content, "videoUrl", "audioUrl", "mindMapUrl") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+      [id, topicId, name, '{}', '[]', content || '', videoUrl || null, audioUrl || null, mindMapUrl || null]
+    );
+    res.json({ id, topicId, name });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.put('/api/admin/subtopics/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, content, videoUrl, audioUrl, mindMapUrl } = req.body;
+    await pool.query(
+      'UPDATE "SubTopic" SET name = $1, content = $2, "videoUrl" = $3, "audioUrl" = $4, "mindMapUrl" = $5 WHERE id = $6',
+      [name, content || '', videoUrl || null, audioUrl || null, mindMapUrl || null, id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.delete('/api/admin/subtopics/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM "SubTopic" WHERE id = $1', [id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+
+// Serve Admin Panel Static Files
+app.use('/admin', express.static(path.join(__dirname, 'foco_admin/dist')));
+app.get('/admin/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'foco_admin/dist/index.html'));
 });
 
 // Serve Flutter Web Build

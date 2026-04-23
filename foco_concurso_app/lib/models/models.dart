@@ -28,6 +28,8 @@ class Topic {
   final String videoUrl;
   final String content;
   final int order;
+  final String audioUrl;
+  final String mindMapUrl;
 
   Topic({
     required this.id,
@@ -36,6 +38,8 @@ class Topic {
     required this.videoUrl,
     required this.content,
     required this.order,
+    this.audioUrl = '',
+    this.mindMapUrl = '',
   });
 
   factory Topic.fromMap(Map<String, dynamic> map) {
@@ -46,6 +50,8 @@ class Topic {
       videoUrl: map['videoUrl'] as String? ?? '',
       content: map['content'] as String? ?? '',
       order: map['order'] as int? ?? 0,
+      audioUrl: map['audioUrl'] as String? ?? '',
+      mindMapUrl: map['mindMapUrl'] as String? ?? '',
     );
   }
 }
@@ -57,6 +63,9 @@ class SubTopic {
   final Map<String, dynamic> importanciaBanca;
   final List<String> blocosSugeridos;
   final String content;
+  final String videoUrl;
+  final String audioUrl;
+  final String mindMapUrl;
 
   SubTopic({
     required this.id,
@@ -65,6 +74,9 @@ class SubTopic {
     required this.importanciaBanca,
     required this.blocosSugeridos,
     required this.content,
+    this.videoUrl = '',
+    this.audioUrl = '',
+    this.mindMapUrl = '',
   });
 
   factory SubTopic.fromMap(Map<String, dynamic> map) {
@@ -75,6 +87,9 @@ class SubTopic {
       importanciaBanca: map['importanciaBanca'] != null ? Map<String, dynamic>.from(map['importanciaBanca'] as Map) : {},
       blocosSugeridos: map['blocosSugeridos'] != null ? List<String>.from(map['blocosSugeridos'] as List) : [],
       content: map['content'] as String? ?? '',
+      videoUrl: map['videoUrl'] as String? ?? '',
+      audioUrl: map['audioUrl'] as String? ?? '',
+      mindMapUrl: map['mindMapUrl'] as String? ?? '',
     );
   }
 }
