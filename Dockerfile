@@ -23,6 +23,8 @@ RUN npm install --production
 COPY server.js ./
 # Copiar o build do flutter gerado no estágio anterior
 COPY --from=build /app/foco_concurso_app/build/web ./foco_concurso_app/build/web
+# Copiar o build do painel admin que já está no repositório
+COPY foco_admin/dist ./foco_admin/dist
 
 EXPOSE 80
 
