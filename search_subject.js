@@ -6,14 +6,8 @@ const pool = new Pool({
 
 async function run() {
   try {
-    const res = await pool.query(`
-      SELECT column_name, data_type 
-      FROM information_schema.columns 
-      WHERE table_name = 'Question' 
-      ORDER BY ordinal_position
-    `);
-    console.log('Question table columns:');
-    res.rows.forEach(r => console.log(`  ${r.column_name}: ${r.data_type}`));
+    const res = await pool.query('SELECT * FROM "Subject" WHERE name ILIKE \'%Interpretação%\'');
+    console.log('Found subjects:', res.rows);
   } catch (err) {
     console.error(err);
   } finally {

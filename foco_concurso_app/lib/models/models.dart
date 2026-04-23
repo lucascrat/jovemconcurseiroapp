@@ -98,6 +98,7 @@ class QuizQuestion {
   final String id;
   final String topicId;
   final String banca;
+  final String textBase;
   final String statement;
   final Map<String, String> options;
   final String correctAnswer;
@@ -110,6 +111,7 @@ class QuizQuestion {
     required this.id,
     required this.topicId,
     required this.banca,
+    this.textBase = '',
     required this.statement,
     required this.options,
     required this.correctAnswer,
@@ -140,6 +142,7 @@ class QuizQuestion {
       id: map['id'] as String,
       topicId: map['topicId'] as String,
       banca: map['banca'] as String? ?? 'Desconhecida',
+      textBase: map['textBase'] as String? ?? '',
       statement: map['statement'] as String? ?? '',
       options: parsedOptions,
       correctAnswer: map['correctAnswer'] as String? ?? '',

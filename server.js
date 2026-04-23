@@ -143,7 +143,7 @@ app.get('/api/questions/:topicId', async (req, res) => {
   try {
     const { topicId } = req.params;
     const result = await pool.query(
-      'SELECT id, "topicId", banca, statement, options, "correctAnswer", type, explanation, concurso, ano FROM "Question" WHERE "topicId" = $1',
+      'SELECT id, "topicId", banca, "textBase", statement, options, "correctAnswer", type, explanation, concurso, ano FROM "Question" WHERE "topicId" = $1 ORDER BY id',
       [topicId]
     );
     res.json(result.rows);
@@ -435,11 +435,11 @@ app.get('/api/admin/questions', adminAuth, async (req, res) => {
 
 app.post('/api/admin/questions', adminAuth, async (req, res) => {
   try {
-    const { topicId, banca, statement, options, correctAnswer, type, explanation, concurso, ano } = req.body;
+    const { topicId, banca, textBase, statement, options, correctAnswer, type, explanation, concurso, ano } = req.body;
     const id = uuidv4().replace(/-/g, '');
     await pool.query(
-      'INSERT INTO "Question" (id, "topicId", banca, statement, options, "correctAnswer", type, explanation, concurso, ano) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
-      [id, topicId, banca, statement, JSON.stringify(options), correctAnswer, type, explanation, concurso, ano]
+      'INSERT INTO "Question" (id, "topicId", banca, "textBase", statement, options, "correctAnswer", type, explanation, concurso, ano) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+      [id, topicId, banca, textBase || '', statement, JSON.stringify(options), correctAnswer, type, explanation, concurso, ano]
     );
     res.json({ id, topicId, statement });
   } catch (err) {
@@ -451,10 +451,10 @@ app.post('/api/admin/questions', adminAuth, async (req, res) => {
 app.put('/api/admin/questions/:id', adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
-    const { banca, statement, options, correctAnswer, type, explanation, concurso, ano } = req.body;
+    const { banca, textBase, statement, options, correctAnswer, type, explanation, concurso, ano } = req.body;
     await pool.query(
-      'UPDATE "Question" SET banca = $1, statement = $2, options = $3, "correctAnswer" = $4, type = $5, explanation = $6, concurso = $7, ano = $8 WHERE id = $9',
-      [banca, statement, JSON.stringify(options), correctAnswer, type, explanation, concurso, ano, id]
+      'UPDATE "Question" SET banca = $1, "textBase" = $2, statement = $3, options = $4, "correctAnswer" = $5, type = $6, explanation = $7, concurso = $8, ano = $9 WHERE id = $10',
+      [banca, textBase || '', statement, JSON.stringify(options), correctAnswer, type, explanation, concurso, ano, id]
     );
     res.json({ success: true });
   } catch (err) {

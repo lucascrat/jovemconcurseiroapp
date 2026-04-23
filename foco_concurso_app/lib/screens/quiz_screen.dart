@@ -99,6 +99,49 @@ class _QuizScreenState extends State<QuizScreen> {
                 ),
                 const SizedBox(height: 20),
                 
+                // Text Base (Texto de Apoio) - shown if the question has a support text
+                if (currentQuestion.textBase.isNotEmpty) ...[
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.amber[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.amber[300]!, width: 1.5),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.menu_book_rounded, color: Colors.amber[800], size: 18),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Leia o texto abaixo antes de responder',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.amber[900],
+                                fontSize: 13,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(height: 16),
+                        Text(
+                          currentQuestion.textBase,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            height: 1.7,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+
                 // Question Statement
                 Text(
                   currentQuestion.statement,

@@ -25,7 +25,7 @@ export default function Questions() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({
-    topicId: '', banca: '', statement: '', options: ['', '', '', '', ''], correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear()
+    topicId: '', banca: '', textBase: '', statement: '', options: ['', '', '', '', ''], correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear()
   });
 
   useEffect(() => { fetchInitialData(); }, []);
@@ -104,7 +104,7 @@ export default function Questions() {
       <div className="flex-between">
         <h1 className="page-title">Banco de Questões</h1>
         <button className="btn btn-primary" onClick={() => { 
-          setCurrentQuestion({ topicId: selectedTopic, banca: '', statement: '', options: ['', '', '', '', ''], correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear() }); 
+          setCurrentQuestion({ topicId: selectedTopic, banca: '', textBase: '', statement: '', options: ['', '', '', '', ''], correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear() }); 
           setIsModalOpen(true); 
         }} disabled={!selectedTopic}>
           <Plus size={20} /> Nova Questão
@@ -174,7 +174,8 @@ export default function Questions() {
                 <div className="form-group"><label>Banca</label><input className="form-control" value={currentQuestion.banca} onChange={e => setCurrentQuestion({...currentQuestion, banca: e.target.value})} required /></div>
                 <div className="form-group"><label>Ano</label><input className="form-control" type="number" value={currentQuestion.ano} onChange={e => setCurrentQuestion({...currentQuestion, ano: parseInt(e.target.value)})} /></div>
               </div>
-              <div className="form-group"><label>Enunciado</label><textarea className="form-control" value={currentQuestion.statement} onChange={e => setCurrentQuestion({...currentQuestion, statement: e.target.value})} rows={4} required /></div>
+              <div className="form-group"><label>Texto Base / Leitura (Opcional)</label><textarea className="form-control" value={currentQuestion.textBase || ''} onChange={e => setCurrentQuestion({...currentQuestion, textBase: e.target.value})} rows={3} placeholder="Ex: Trecho de lei, poema, notícia a ser lida antes da questão..." /></div>
+              <div className="form-group"><label>Enunciado (Pergunta)</label><textarea className="form-control" value={currentQuestion.statement} onChange={e => setCurrentQuestion({...currentQuestion, statement: e.target.value})} rows={3} required /></div>
               <div style={{ marginBottom: 16 }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 8 }}>Alternativas</label>
                 {currentQuestion.options.map((opt, idx) => (

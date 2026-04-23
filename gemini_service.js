@@ -10,16 +10,21 @@ async function extractQuestions(fileBuffer, mimeType, boardName) {
   const prompt = `
     Analise esta prova da banca ${boardName}. 
     Extraia TODAS as questões de múltipla escolha ou Certo/Errado.
+    
+    ATENÇÃO ESPECIAL: Muitas questões de concurso são precedidas por um TEXTO BASE (texto de leitura, trecho de lei, notícia, poema, tabela, etc.) que o candidato deve ler antes de responder. 
+    Capture esse texto integralmente no campo "textBase". Se a questão não tiver texto de apoio, deixe "textBase" como string vazia "".
+    
     Para cada questão, retorne exatamente este formato JSON:
     {
       "banca": "${boardName}",
-      "statement": "Enunciado completo da questão",
+      "textBase": "Texto de apoio/leitura que precede a questão (se houver). Pode ser um trecho de lei, notícia, poema, tabela, etc. Se não houver, deixe vazio.",
+      "statement": "Enunciado completo da questão (o comando/pergunta em si, sem o texto de apoio)",
       "options": ["Alternativa A", "Alternativa B", "Alternativa C", "Alternativa D", "Alternativa E"],
-      "correctAnswer": 0, (índice da alternativa correta, 0-4)
+      "correctAnswer": 0,
       "explanation": "Uma breve explicação de por que esta é a correta",
-      "type": "multiple" (ou "boolean" para certo/errado)
+      "type": "multiple"
     }
-    Retorne APENAS o array JSON, sem markdown.
+    Retorne APENAS o array JSON, sem markdown, sem \`\`\`json.
   `;
 
   const payload = {

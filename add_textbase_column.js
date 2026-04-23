@@ -6,14 +6,8 @@ const pool = new Pool({
 
 async function run() {
   try {
-    const res = await pool.query(`
-      SELECT column_name, data_type 
-      FROM information_schema.columns 
-      WHERE table_name = 'Question' 
-      ORDER BY ordinal_position
-    `);
-    console.log('Question table columns:');
-    res.rows.forEach(r => console.log(`  ${r.column_name}: ${r.data_type}`));
+    await pool.query('ALTER TABLE "Question" ADD COLUMN IF NOT EXISTS "textBase" TEXT DEFAULT \'\'');
+    console.log('Column textBase added successfully!');
   } catch (err) {
     console.error(err);
   } finally {
