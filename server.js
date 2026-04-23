@@ -272,16 +272,18 @@ app.delete('/api/admin/subtopics/:id', adminAuth, async (req, res) => {
 
 
 // Serve Admin Panel Static Files
-app.use('/admin', express.static(path.join(__dirname, 'foco_admin/dist')));
-app.get('/admin/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'foco_admin/dist/index.html'));
+const adminDist = path.join(__dirname, 'foco_admin/dist');
+app.use('/admin', express.static(adminDist));
+app.get('/admin*', (req, res) => {
+    res.sendFile(path.join(adminDist, 'index.html'));
 });
 
 // Serve Flutter Web Build
-app.use(express.static(path.join(__dirname, 'foco_concurso_app/build/web')));
+const flutterDist = path.join(__dirname, 'foco_concurso_app/build/web');
+app.use(express.static(flutterDist));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'foco_concurso_app/build/web/index.html'));
+    res.sendFile(path.join(flutterDist, 'index.html'));
 });
 
 app.listen(port, () => {
