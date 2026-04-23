@@ -2,18 +2,23 @@ import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { Edit2, UploadCloud, Video, Mic, Map, FileText, Loader, Trash2, Plus, School, GraduationCap, Award } from 'lucide-react';
 
+const LEVELS = ['Fundamental', 'Médio', 'Superior'];
 const LEVEL_CONFIG = {
-  fundamental: { label: 'Fundamental', icon: <School size={18} />, color: '#22c55e' },
-  médio: { label: 'Médio', icon: <GraduationCap size={18} />, color: '#3b82f6' },
-  superior: { label: 'Superior', icon: <Award size={18} />, color: '#a855f7' },
+  'Fundamental': { icon: <School size={18} />, color: '#22c55e' },
+  'Médio': { icon: <GraduationCap size={18} />, color: '#3b82f6' },
+  'Superior': { icon: <Award size={18} />, color: '#a855f7' },
 };
+
+function matchLevel(dbLevel, uiLevel) {
+  return (dbLevel || '').toLowerCase() === uiLevel.toLowerCase();
+}
 
 export default function SubTopics() {
   const [subjects, setSubjects] = useState([]);
   const [topics, setTopics] = useState([]);
   const [subtopics, setSubtopics] = useState([]);
   
-  const [activeLevel, setActiveLevel] = useState('médio');
+  const [activeLevel, setActiveLevel] = useState('Médio');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   
@@ -25,7 +30,7 @@ export default function SubTopics() {
   useEffect(() => { fetchInitialData(); }, []);
 
   useEffect(() => {
-    const filtered = subjects.filter(s => s.level === activeLevel);
+    const filtered = subjects.filter(s => matchLevel(s.level, activeLevel));
     if (filtered.length > 0) setSelectedSubject(filtered[0].id);
     else setSelectedSubject('');
   }, [activeLevel, subjects]);
@@ -74,8 +79,7 @@ export default function SubTopics() {
     formData.append('file', file);
     try {
       const res = await api.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-      const url = res.data.url;
-      setEditingSub(prev => ({ ...prev, [type === 'video' ? 'videoUrl' : type === 'audio' ? 'audioUrl' : 'mindMapUrl']: url }));
+      setEditingSub(prev => ({ ...prev, [type === 'video' ? 'videoUrl' : type === 'audio' ? 'audioUrl' : 'mindMapUrl']: res.data.url }));
     } catch (err) { alert('Erro ao fazer upload'); }
     finally { setUploading({ ...uploading, [type]: false }); }
   };
@@ -97,9 +101,9 @@ export default function SubTopics() {
     catch (err) { alert('Erro ao excluir'); }
   };
 
-  const filteredSubjects = subjects.filter(s => s.level === activeLevel);
+  const filteredSubjects = subjects.filter(s => matchLevel(s.level, activeLevel));
   const levelCounts = {};
-  Object.keys(LEVEL_CONFIG).forEach(k => { levelCounts[k] = subjects.filter(s => s.level === k).length; });
+  LEVELS.forEach(lv => { levelCounts[lv] = subjects.filter(s => matchLevel(s.level, lv)).length; });
 
   return (
     <div>
@@ -113,21 +117,22 @@ export default function SubTopics() {
         </button>
       </div>
 
-      {/* Level Tabs */}
       <div className="level-tabs" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-        {Object.entries(LEVEL_CONFIG).map(([key, cfg]) => (
-          <button key={key} className={`level-tab ${activeLevel === key ? 'active' : ''}`} onClick={() => setActiveLevel(key)}
-            style={activeLevel === key ? { borderColor: cfg.color, color: cfg.color } : {}}>
-            {cfg.icon} {cfg.label} ({levelCounts[key]})
-          </button>
-        ))}
+        {LEVELS.map(lv => {
+          const cfg = LEVEL_CONFIG[lv];
+          return (
+            <button key={lv} className={`level-tab ${activeLevel === lv ? 'active' : ''}`} onClick={() => setActiveLevel(lv)}
+              style={activeLevel === lv ? { borderColor: cfg.color, color: cfg.color } : {}}>
+              {cfg.icon} {lv} ({levelCounts[lv]})
+            </button>
+          );
+        })}
       </div>
 
-      {/* Filters */}
       <div className="card" style={{ marginTop: 20, padding: 20 }}>
         <div className="grid-2">
           <div className="form-group">
-            <label>Matéria ({LEVEL_CONFIG[activeLevel]?.label})</label>
+            <label>Matéria ({activeLevel})</label>
             <select className="form-control" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
               {filteredSubjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
@@ -142,7 +147,6 @@ export default function SubTopics() {
         </div>
       </div>
 
-      {/* Table */}
       <div className="card" style={{ marginTop: 20 }}>
         {loading ? <div className="loader">Buscando conteúdos...</div> : (
           <table className="table">
@@ -171,7 +175,6 @@ export default function SubTopics() {
         )}
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="card modal-content" style={{ width: 850 }}>
@@ -189,29 +192,17 @@ export default function SubTopics() {
                 <div>
                   <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Video size={18}/> Vídeo</h3>
                   <input className="form-control" placeholder="URL do vídeo..." value={editingSub?.videoUrl || ''} onChange={e => setEditingSub({...editingSub, videoUrl: e.target.value})} style={{marginBottom: 10}} />
-                  <label className="upload-zone" style={{display: 'block'}}>
-                    {uploading.video ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>Upload R2</p>
-                    <input type="file" accept="video/*" style={{display:'none'}} onChange={e => handleUpload(e, 'video')} />
-                  </label>
+                  <label className="upload-zone" style={{display: 'block'}}>{uploading.video ? <Loader className="spin" /> : <UploadCloud />}<p style={{marginTop: 8}}>Upload R2</p><input type="file" accept="video/*" style={{display:'none'}} onChange={e => handleUpload(e, 'video')} /></label>
                 </div>
                 <div>
                   <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Mic size={18}/> Áudio</h3>
                   <input className="form-control" placeholder="URL do áudio..." value={editingSub?.audioUrl || ''} onChange={e => setEditingSub({...editingSub, audioUrl: e.target.value})} style={{marginBottom: 10}} />
-                  <label className="upload-zone" style={{display: 'block'}}>
-                    {uploading.audio ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>Upload R2</p>
-                    <input type="file" accept="audio/*" style={{display:'none'}} onChange={e => handleUpload(e, 'audio')} />
-                  </label>
+                  <label className="upload-zone" style={{display: 'block'}}>{uploading.audio ? <Loader className="spin" /> : <UploadCloud />}<p style={{marginTop: 8}}>Upload R2</p><input type="file" accept="audio/*" style={{display:'none'}} onChange={e => handleUpload(e, 'audio')} /></label>
                 </div>
                 <div style={{gridColumn: '1 / -1'}}>
                   <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Map size={18}/> Mapa Mental</h3>
-                  <input className="form-control" placeholder="URL do mapa mental..." value={editingSub?.mindMapUrl || ''} onChange={e => setEditingSub({...editingSub, mindMapUrl: e.target.value})} style={{marginBottom: 10}} />
-                  <label className="upload-zone" style={{display: 'block'}}>
-                    {uploading.map ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>Upload R2</p>
-                    <input type="file" accept="image/*" style={{display:'none'}} onChange={e => handleUpload(e, 'map')} />
-                  </label>
+                  <input className="form-control" placeholder="URL do mapa..." value={editingSub?.mindMapUrl || ''} onChange={e => setEditingSub({...editingSub, mindMapUrl: e.target.value})} style={{marginBottom: 10}} />
+                  <label className="upload-zone" style={{display: 'block'}}>{uploading.map ? <Loader className="spin" /> : <UploadCloud />}<p style={{marginTop: 8}}>Upload R2</p><input type="file" accept="image/*" style={{display:'none'}} onChange={e => handleUpload(e, 'map')} /></label>
                   {editingSub?.mindMapUrl && <div style={{textAlign: 'center', marginTop: 10}}><img src={editingSub.mindMapUrl} alt="Preview" style={{maxWidth: 300, borderRadius: 8}} /></div>}
                 </div>
               </div>

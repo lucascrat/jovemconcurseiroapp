@@ -2,18 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, HelpCircle, School, GraduationCap, Award } from 'lucide-react';
 import api from '../api';
 
+const LEVELS = ['Fundamental', 'Médio', 'Superior'];
 const LEVEL_CONFIG = {
-  fundamental: { label: 'Fundamental', icon: <School size={18} />, color: '#22c55e' },
-  médio: { label: 'Médio', icon: <GraduationCap size={18} />, color: '#3b82f6' },
-  superior: { label: 'Superior', icon: <Award size={18} />, color: '#a855f7' },
+  'Fundamental': { icon: <School size={18} />, color: '#22c55e' },
+  'Médio': { icon: <GraduationCap size={18} />, color: '#3b82f6' },
+  'Superior': { icon: <Award size={18} />, color: '#a855f7' },
 };
+
+function matchLevel(dbLevel, uiLevel) {
+  return (dbLevel || '').toLowerCase() === uiLevel.toLowerCase();
+}
 
 export default function Questions() {
   const [subjects, setSubjects] = useState([]);
   const [topics, setTopics] = useState([]);
   const [questions, setQuestions] = useState([]);
   
-  const [activeLevel, setActiveLevel] = useState('médio');
+  const [activeLevel, setActiveLevel] = useState('Médio');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   
@@ -26,7 +31,7 @@ export default function Questions() {
   useEffect(() => { fetchInitialData(); }, []);
 
   useEffect(() => {
-    const filtered = subjects.filter(s => s.level === activeLevel);
+    const filtered = subjects.filter(s => matchLevel(s.level, activeLevel));
     if (filtered.length > 0) setSelectedSubject(filtered[0].id);
     else setSelectedSubject('');
   }, [activeLevel, subjects]);
@@ -90,9 +95,9 @@ export default function Questions() {
     setCurrentQuestion({ ...currentQuestion, options: newOptions });
   };
 
-  const filteredSubjects = subjects.filter(s => s.level === activeLevel);
+  const filteredSubjects = subjects.filter(s => matchLevel(s.level, activeLevel));
   const levelCounts = {};
-  Object.keys(LEVEL_CONFIG).forEach(k => { levelCounts[k] = subjects.filter(s => s.level === k).length; });
+  LEVELS.forEach(lv => { levelCounts[lv] = subjects.filter(s => matchLevel(s.level, lv)).length; });
 
   return (
     <div>
@@ -106,21 +111,22 @@ export default function Questions() {
         </button>
       </div>
 
-      {/* Level Tabs */}
       <div className="level-tabs" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-        {Object.entries(LEVEL_CONFIG).map(([key, cfg]) => (
-          <button key={key} className={`level-tab ${activeLevel === key ? 'active' : ''}`} onClick={() => setActiveLevel(key)}
-            style={activeLevel === key ? { borderColor: cfg.color, color: cfg.color } : {}}>
-            {cfg.icon} {cfg.label} ({levelCounts[key]})
-          </button>
-        ))}
+        {LEVELS.map(lv => {
+          const cfg = LEVEL_CONFIG[lv];
+          return (
+            <button key={lv} className={`level-tab ${activeLevel === lv ? 'active' : ''}`} onClick={() => setActiveLevel(lv)}
+              style={activeLevel === lv ? { borderColor: cfg.color, color: cfg.color } : {}}>
+              {cfg.icon} {lv} ({levelCounts[lv]})
+            </button>
+          );
+        })}
       </div>
 
-      {/* Filters */}
       <div className="card" style={{ marginTop: 20, padding: 20 }}>
         <div className="grid-2">
           <div className="form-group">
-            <label>Matéria ({LEVEL_CONFIG[activeLevel]?.label})</label>
+            <label>Matéria ({activeLevel})</label>
             <select className="form-control" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
               {filteredSubjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
@@ -135,7 +141,6 @@ export default function Questions() {
         </div>
       </div>
 
-      {/* Table */}
       <div className="card" style={{ marginTop: 20 }}>
         {loading ? <div className="loader">Buscando questões...</div> : (
           <table className="table">
@@ -160,7 +165,6 @@ export default function Questions() {
         )}
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="card modal-content" style={{ width: 800, maxHeight: '90vh', overflowY: 'auto' }}>

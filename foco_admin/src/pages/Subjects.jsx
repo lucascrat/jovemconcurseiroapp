@@ -2,18 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, BookOpen, GraduationCap, School, Award } from 'lucide-react';
 import api from '../api';
 
+const LEVELS = ['Fundamental', 'Médio', 'Superior'];
 const LEVEL_CONFIG = {
-  fundamental: { label: 'Fundamental', icon: <School size={20} />, color: '#22c55e' },
-  médio: { label: 'Médio', icon: <GraduationCap size={20} />, color: '#3b82f6' },
-  superior: { label: 'Superior', icon: <Award size={20} />, color: '#a855f7' },
+  'Fundamental': { icon: <School size={20} />, color: '#22c55e' },
+  'Médio': { icon: <GraduationCap size={20} />, color: '#3b82f6' },
+  'Superior': { icon: <Award size={20} />, color: '#a855f7' },
 };
+
+function matchLevel(dbLevel, uiLevel) {
+  return (dbLevel || '').toLowerCase() === uiLevel.toLowerCase();
+}
 
 export default function Subjects() {
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeLevel, setActiveLevel] = useState('all');
-  const [currentSubject, setCurrentSubject] = useState({ name: '', level: 'médio', description: '' });
+  const [currentSubject, setCurrentSubject] = useState({ name: '', level: 'Médio', description: '' });
 
   useEffect(() => { fetchSubjects(); }, []);
 
@@ -28,31 +33,23 @@ export default function Subjects() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      if (currentSubject.id) {
-        await api.put(`/admin/subjects/${currentSubject.id}`, currentSubject);
-      } else {
-        await api.post('/admin/subjects', currentSubject);
-      }
+      if (currentSubject.id) await api.put(`/admin/subjects/${currentSubject.id}`, currentSubject);
+      else await api.post('/admin/subjects', currentSubject);
       setIsModalOpen(false);
       fetchSubjects();
     } catch (err) { alert('Erro ao salvar'); }
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Deseja excluir esta matéria?')) return;
+    if (!confirm('Deseja excluir esta matéria e todos seus tópicos?')) return;
     try { await api.delete(`/admin/subjects/${id}`); fetchSubjects(); }
     catch (err) { alert('Erro ao excluir'); }
   };
 
-  const grouped = {
-    fundamental: subjects.filter(s => s.level === 'fundamental'),
-    médio: subjects.filter(s => s.level === 'médio'),
-    superior: subjects.filter(s => s.level === 'superior'),
-  };
+  const grouped = {};
+  LEVELS.forEach(lv => { grouped[lv] = subjects.filter(s => matchLevel(s.level, lv)); });
 
-  const visibleLevels = activeLevel === 'all' 
-    ? ['fundamental', 'médio', 'superior'] 
-    : [activeLevel];
+  const visibleLevels = activeLevel === 'all' ? LEVELS : [activeLevel];
 
   if (loading) return <div className="loader">Carregando...</div>;
 
@@ -60,25 +57,26 @@ export default function Subjects() {
     <div>
       <div className="flex-between">
         <h1 className="page-title">Gerenciar Matérias</h1>
-        <button className="btn btn-primary" onClick={() => { setCurrentSubject({ name: '', level: 'médio', description: '' }); setIsModalOpen(true); }}>
+        <button className="btn btn-primary" onClick={() => { setCurrentSubject({ name: '', level: 'Médio', description: '' }); setIsModalOpen(true); }}>
           <Plus size={20} /> Nova Matéria
         </button>
       </div>
 
-      {/* Level Tabs */}
       <div className="level-tabs" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
         <button className={`level-tab ${activeLevel === 'all' ? 'active' : ''}`} onClick={() => setActiveLevel('all')}>
           Todos ({subjects.length})
         </button>
-        {Object.entries(LEVEL_CONFIG).map(([key, cfg]) => (
-          <button key={key} className={`level-tab ${activeLevel === key ? 'active' : ''}`} onClick={() => setActiveLevel(key)}
-            style={activeLevel === key ? { borderColor: cfg.color, color: cfg.color } : {}}>
-            {cfg.icon} {cfg.label} ({grouped[key]?.length || 0})
-          </button>
-        ))}
+        {LEVELS.map(lv => {
+          const cfg = LEVEL_CONFIG[lv];
+          return (
+            <button key={lv} className={`level-tab ${activeLevel === lv ? 'active' : ''}`} onClick={() => setActiveLevel(lv)}
+              style={activeLevel === lv ? { borderColor: cfg.color, color: cfg.color } : {}}>
+              {cfg.icon} {lv} ({grouped[lv]?.length || 0})
+            </button>
+          );
+        })}
       </div>
 
-      {/* Grouped Cards */}
       {visibleLevels.map(level => {
         const cfg = LEVEL_CONFIG[level];
         const items = grouped[level] || [];
@@ -87,18 +85,12 @@ export default function Subjects() {
           <div key={level} style={{ marginTop: 28 }}>
             <div className="flex-center" style={{ gap: 10, marginBottom: 14 }}>
               <div style={{ width: 4, height: 28, borderRadius: 4, background: cfg.color }}></div>
-              <h2 style={{ margin: 0, fontSize: '1.1rem' }}>{cfg.icon} {cfg.label}</h2>
+              <h2 style={{ margin: 0, fontSize: '1.1rem' }}>{cfg.icon} {level}</h2>
               <span className="badge" style={{ background: cfg.color + '22', color: cfg.color }}>{items.length} matérias</span>
             </div>
             <div className="card">
               <table className="table">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th style={{ textAlign: 'right' }}>Ações</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>Nome</th><th>Descrição</th><th style={{ textAlign: 'right' }}>Ações</th></tr></thead>
                 <tbody>
                   {items.map(s => (
                     <tr key={s.id}>
@@ -129,14 +121,14 @@ export default function Subjects() {
               <div className="form-group">
                 <label>Nível</label>
                 <select className="form-control" value={currentSubject.level} onChange={e => setCurrentSubject({...currentSubject, level: e.target.value})}>
-                  <option value="fundamental">Fundamental</option>
-                  <option value="médio">Médio</option>
-                  <option value="superior">Superior</option>
+                  <option value="Fundamental">Fundamental</option>
+                  <option value="Médio">Médio</option>
+                  <option value="Superior">Superior</option>
                 </select>
               </div>
               <div className="form-group">
                 <label>Descrição</label>
-                <textarea className="form-control" value={currentSubject.description} onChange={e => setCurrentSubject({...currentSubject, description: e.target.value})} rows={3} />
+                <textarea className="form-control" value={currentSubject.description || ''} onChange={e => setCurrentSubject({...currentSubject, description: e.target.value})} rows={3} />
               </div>
               <div className="flex-center" style={{ justifyContent: 'flex-end', marginTop: 24, gap: 12 }}>
                 <button type="button" className="btn btn-outline" onClick={() => setIsModalOpen(false)}>Cancelar</button>

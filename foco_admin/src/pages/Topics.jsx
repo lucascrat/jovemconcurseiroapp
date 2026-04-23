@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Layers, School, GraduationCap, Award } from 'lucide-react';
 import api from '../api';
 
+const LEVELS = ['Fundamental', 'Médio', 'Superior'];
 const LEVEL_CONFIG = {
-  fundamental: { label: 'Fundamental', icon: <School size={18} />, color: '#22c55e' },
-  médio: { label: 'Médio', icon: <GraduationCap size={18} />, color: '#3b82f6' },
-  superior: { label: 'Superior', icon: <Award size={18} />, color: '#a855f7' },
+  'Fundamental': { icon: <School size={18} />, color: '#22c55e' },
+  'Médio': { icon: <GraduationCap size={18} />, color: '#3b82f6' },
+  'Superior': { icon: <Award size={18} />, color: '#a855f7' },
 };
+
+function matchLevel(dbLevel, uiLevel) {
+  return (dbLevel || '').toLowerCase() === uiLevel.toLowerCase();
+}
 
 export default function Topics() {
   const [topics, setTopics] = useState([]);
@@ -34,11 +39,8 @@ export default function Topics() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      if (currentTopic.id) {
-        await api.put(`/admin/topics/${currentTopic.id}`, currentTopic);
-      } else {
-        await api.post('/admin/topics', currentTopic);
-      }
+      if (currentTopic.id) await api.put(`/admin/topics/${currentTopic.id}`, currentTopic);
+      else await api.post('/admin/topics', currentTopic);
       setIsModalOpen(false);
       fetchData();
     } catch (err) { alert('Erro ao salvar'); }
@@ -50,23 +52,17 @@ export default function Topics() {
     catch (err) { alert('Erro ao excluir'); }
   };
 
-  // Build subject-level map
   const subjectLevelMap = {};
   subjects.forEach(s => { subjectLevelMap[s.id] = s.level; });
 
-  // Filter subjects by active level
-  const filteredSubjects = activeLevel === 'all' 
-    ? subjects 
-    : subjects.filter(s => s.level === activeLevel);
+  const filteredSubjects = activeLevel === 'all' ? subjects : subjects.filter(s => matchLevel(s.level, activeLevel));
 
-  // Filter topics
   const filteredTopics = topics.filter(t => {
-    const levelMatch = activeLevel === 'all' || subjectLevelMap[t.subjectId] === activeLevel;
+    const levelMatch = activeLevel === 'all' || matchLevel(subjectLevelMap[t.subjectId], activeLevel);
     const subjectMatch = activeSubject === 'all' || t.subjectId === activeSubject;
     return levelMatch && subjectMatch;
   });
 
-  // Group topics by subject
   const groupedBySubject = {};
   filteredTopics.forEach(t => {
     const key = t.subjectName || 'Sem Matéria';
@@ -74,12 +70,8 @@ export default function Topics() {
     groupedBySubject[key].topics.push(t);
   });
 
-  // Level counts
-  const levelCounts = { fundamental: 0, médio: 0, superior: 0 };
-  topics.forEach(t => {
-    const lv = subjectLevelMap[t.subjectId];
-    if (lv && levelCounts[lv] !== undefined) levelCounts[lv]++;
-  });
+  const levelCounts = {};
+  LEVELS.forEach(lv => { levelCounts[lv] = topics.filter(t => matchLevel(subjectLevelMap[t.subjectId], lv)).length; });
 
   if (loading) return <div className="loader">Carregando...</div>;
 
@@ -92,23 +84,24 @@ export default function Topics() {
         </button>
       </div>
 
-      {/* Level Tabs */}
       <div className="level-tabs" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
         <button className={`level-tab ${activeLevel === 'all' ? 'active' : ''}`} onClick={() => { setActiveLevel('all'); setActiveSubject('all'); }}>
           Todos ({topics.length})
         </button>
-        {Object.entries(LEVEL_CONFIG).map(([key, cfg]) => (
-          <button key={key} className={`level-tab ${activeLevel === key ? 'active' : ''}`} onClick={() => { setActiveLevel(key); setActiveSubject('all'); }}
-            style={activeLevel === key ? { borderColor: cfg.color, color: cfg.color } : {}}>
-            {cfg.icon} {cfg.label} ({levelCounts[key]})
-          </button>
-        ))}
+        {LEVELS.map(lv => {
+          const cfg = LEVEL_CONFIG[lv];
+          return (
+            <button key={lv} className={`level-tab ${activeLevel === lv ? 'active' : ''}`} onClick={() => { setActiveLevel(lv); setActiveSubject('all'); }}
+              style={activeLevel === lv ? { borderColor: cfg.color, color: cfg.color } : {}}>
+              {cfg.icon} {lv} ({levelCounts[lv]})
+            </button>
+          );
+        })}
       </div>
 
-      {/* Subject filter */}
       {activeLevel !== 'all' && (
         <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
-          <button className={`badge ${activeSubject === 'all' ? 'badge-primary' : 'badge-outline'}`} 
+          <button className={`badge ${activeSubject === 'all' ? 'badge-primary' : 'badge-outline'}`}
             style={{ cursor: 'pointer', padding: '6px 14px' }} onClick={() => setActiveSubject('all')}>
             Todas as Matérias
           </button>
@@ -121,9 +114,8 @@ export default function Topics() {
         </div>
       )}
 
-      {/* Grouped by Subject */}
       {Object.entries(groupedBySubject).map(([subjectName, data]) => {
-        const cfg = LEVEL_CONFIG[data.level] || LEVEL_CONFIG['médio'];
+        const cfg = LEVEL_CONFIG[LEVELS.find(lv => matchLevel(data.level, lv))] || LEVEL_CONFIG['Médio'];
         return (
           <div key={subjectName} style={{ marginTop: 24 }}>
             <div className="flex-center" style={{ gap: 10, marginBottom: 10 }}>
@@ -152,7 +144,7 @@ export default function Topics() {
         );
       })}
 
-      {filteredTopics.length === 0 && <div className="card" style={{ marginTop: 24, textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>Nenhum tópico encontrado para este filtro.</div>}
+      {filteredTopics.length === 0 && <div className="card" style={{ marginTop: 24, textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>Nenhum tópico encontrado.</div>}
 
       {isModalOpen && (
         <div className="modal-overlay">
@@ -162,16 +154,16 @@ export default function Topics() {
               <div className="form-group">
                 <label>Matéria</label>
                 <select className="form-control" value={currentTopic.subjectId} onChange={e => setCurrentTopic({...currentTopic, subjectId: e.target.value})} required>
-                  <option value="">Selecione uma matéria</option>
+                  <option value="">Selecione</option>
                   {subjects.map(s => <option key={s.id} value={s.id}>{s.name} ({s.level})</option>)}
                 </select>
               </div>
               <div className="form-group">
-                <label>Título do Tópico</label>
+                <label>Título</label>
                 <input className="form-control" value={currentTopic.title} onChange={e => setCurrentTopic({...currentTopic, title: e.target.value})} required />
               </div>
               <div className="form-group">
-                <label>Ordem de Exibição</label>
+                <label>Ordem</label>
                 <input className="form-control" type="number" value={currentTopic.order} onChange={e => setCurrentTopic({...currentTopic, order: parseInt(e.target.value)})} />
               </div>
               <div className="flex-center" style={{ justifyContent: 'flex-end', marginTop: 24, gap: 12 }}>
