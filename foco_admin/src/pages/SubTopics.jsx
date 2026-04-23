@@ -1,34 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { Edit2, UploadCloud, Video, Mic, Map, FileText, Loader, CheckCircle, Search, Trash2 } from 'lucide-react';
+import { Edit2, UploadCloud, Video, Mic, Map, FileText, Loader, CheckCircle, Search, Trash2, Plus } from 'lucide-react';
 
 export default function SubTopics() {
+  const [subjects, setSubjects] = useState([]);
   const [topics, setTopics] = useState([]);
   const [subtopics, setSubtopics] = useState([]);
+  
+  const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
+  
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSub, setEditingSub] = useState(null);
   const [uploading, setUploading] = useState({ video: false, audio: false, map: false });
 
   useEffect(() => {
-    fetchTopics();
+    fetchInitialData();
   }, []);
+
+  useEffect(() => {
+    if (selectedSubject) fetchTopics();
+    else setTopics([]);
+  }, [selectedSubject]);
 
   useEffect(() => {
     if (selectedTopic) fetchSubtopics();
     else setSubtopics([]);
   }, [selectedTopic]);
 
-  const fetchTopics = async () => {
+  const fetchInitialData = async () => {
     try {
-      const res = await api.get('/admin/topics');
-      setTopics(res.data);
-      if (res.data.length > 0) setSelectedTopic(res.data[0].id);
+      const res = await api.get('/admin/subjects');
+      setSubjects(res.data);
+      if (res.data.length > 0) setSelectedSubject(res.data[0].id);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTopics = async () => {
+    try {
+      const res = await api.get(`/admin/topics?subjectId=${selectedSubject}`);
+      setTopics(res.data);
+      if (res.data.length > 0) setSelectedTopic(res.data[0].id);
+      else setSelectedTopic('');
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -47,25 +67,15 @@ export default function SubTopics() {
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
-
     setUploading({ ...uploading, [type]: true });
-    
     const formData = new FormData();
     formData.append('file', file);
-
     try {
       const res = await api.post('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       const url = res.data.url;
-      
-      setEditingSub(prev => {
-        const next = { ...prev };
-        if (type === 'video') next.videoUrl = url;
-        if (type === 'audio') next.audioUrl = url;
-        if (type === 'map') next.mindMapUrl = url;
-        return next;
-      });
+      setEditingSub(prev => ({ ...prev, [type === 'video' ? 'videoUrl' : type === 'audio' ? 'audioUrl' : 'mindMapUrl']: url }));
     } catch (err) {
       alert('Erro ao fazer upload');
     } finally {
@@ -99,26 +109,35 @@ export default function SubTopics() {
     }
   };
 
-  if (loading && topics.length === 0) return <div className="loader">Carregando tópicos...</div>;
+  if (loading && subjects.length === 0) return <div className="loader">Carregando dados...</div>;
 
   return (
     <div>
       <div className="flex-between">
-        <h1 className="page-title">Gerenciar Conteúdo (Subtópicos)</h1>
+        <h1 className="page-title">Gerenciar Conteúdo Teórico</h1>
         <button className="btn btn-primary" onClick={() => {
           setEditingSub({ name: '', content: '', videoUrl: '', audioUrl: '', mindMapUrl: '' });
           setIsModalOpen(true);
-        }}>
+        }} disabled={!selectedTopic}>
           <Plus size={20} /> Novo Conteúdo
         </button>
       </div>
 
       <div className="card" style={{ marginTop: 24, padding: 20 }}>
-        <div className="form-group" style={{ maxWidth: 400 }}>
-          <label><Search size={14} /> Selecione o Tópico</label>
-          <select className="form-control" value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)}>
-            {topics.map(t => <option key={t.id} value={t.id}>{t.subjectName} - {t.title}</option>)}
-          </select>
+        <div className="grid-2">
+          <div className="form-group">
+            <label>Filtrar por Matéria</label>
+            <select className="form-control" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
+              {subjects.map(s => <option key={s.id} value={s.id}>{s.name} ({s.level})</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Filtrar por Tópico</label>
+            <select className="form-control" value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)} disabled={topics.length === 0}>
+              <option value="">Selecione o tópico</option>
+              {topics.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -149,7 +168,7 @@ export default function SubTopics() {
                   </td>
                 </tr>
               ))}
-              {subtopics.length === 0 && <tr><td colSpan="3" style={{ textAlign: 'center', padding: 40 }}>Nenhum conteúdo para este tópico.</td></tr>}
+              {subtopics.length === 0 && <tr><td colSpan="3" style={{ textAlign: 'center', padding: 40 }}>{selectedTopic ? 'Nenhum conteúdo para este tópico.' : 'Selecione um tópico para ver os conteúdos.'}</td></tr>}
             </tbody>
           </table>
         )}
@@ -212,5 +231,3 @@ export default function SubTopics() {
     </div>
   );
 }
-
-const Plus = ({ size }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;

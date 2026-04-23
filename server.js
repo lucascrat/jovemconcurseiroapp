@@ -344,7 +344,7 @@ app.delete('/api/admin/topics/:id', adminAuth, async (req, res) => {
 app.get('/api/admin/subtopics', adminAuth, async (req, res) => {
   try {
     const { topicId } = req.query;
-    let query = 'SELECT st.*, t.title as "topicTitle" FROM "SubTopic" st JOIN "Topic" t ON st."topicId" = t.id';
+    let query = 'SELECT st.*, t.title as "topicTitle" FROM "SubTopic" st LEFT JOIN "Topic" t ON st."topicId" = t.id';
     const params = [];
     if (topicId) {
       query += ' WHERE st."topicId" = $1';

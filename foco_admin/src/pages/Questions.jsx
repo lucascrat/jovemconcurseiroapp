@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, HelpCircle, Search } from 'lucide-react';
+import { Plus, Edit2, Trash2, HelpCircle, Search, Loader } from 'lucide-react';
 import api from '../api';
 
 export default function Questions() {
-  const [questions, setQuestions] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [topics, setTopics] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  
+  const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
+  
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({
@@ -13,23 +17,39 @@ export default function Questions() {
   });
 
   useEffect(() => {
-    fetchTopics();
+    fetchInitialData();
   }, []);
+
+  useEffect(() => {
+    if (selectedSubject) fetchTopics();
+    else { setTopics([]); setSelectedTopic(''); }
+  }, [selectedSubject]);
 
   useEffect(() => {
     if (selectedTopic) fetchQuestions();
     else setQuestions([]);
   }, [selectedTopic]);
 
-  const fetchTopics = async () => {
+  const fetchInitialData = async () => {
     try {
-      const res = await api.get('/admin/topics');
-      setTopics(res.data);
-      if (res.data.length > 0) setSelectedTopic(res.data[0].id);
+      const res = await api.get('/admin/subjects');
+      setSubjects(res.data);
+      if (res.data.length > 0) setSelectedSubject(res.data[0].id);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTopics = async () => {
+    try {
+      const res = await api.get(`/admin/topics?subjectId=${selectedSubject}`);
+      setTopics(res.data);
+      if (res.data.length > 0) setSelectedTopic(res.data[0].id);
+      else setSelectedTopic('');
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -57,7 +77,7 @@ export default function Questions() {
       setIsModalOpen(false);
       fetchQuestions();
     } catch (err) {
-      alert('Erro ao salvar question');
+      alert('Erro ao salvar questão');
     }
   };
 
@@ -77,7 +97,7 @@ export default function Questions() {
     setCurrentQuestion({ ...currentQuestion, options: newOptions });
   };
 
-  if (loading && topics.length === 0) return <div className="loader">Carregando tópicos...</div>;
+  if (loading && subjects.length === 0) return <div className="loader">Carregando...</div>;
 
   return (
     <div>
@@ -89,17 +109,26 @@ export default function Questions() {
             correctAnswer: 0, type: 'multiple', explanation: '', concurso: '', ano: new Date().getFullYear() 
           }); 
           setIsModalOpen(true); 
-        }}>
+        }} disabled={!selectedTopic}>
           <Plus size={20} /> Nova Questão
         </button>
       </div>
 
       <div className="card" style={{ marginTop: 24, padding: 20 }}>
-        <div className="form-group" style={{ maxWidth: 400 }}>
-          <label><Search size={14} /> Filtrar por Tópico</label>
-          <select className="form-control" value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)}>
-            {topics.map(t => <option key={t.id} value={t.id}>{t.subjectName} - {t.title}</option>)}
-          </select>
+        <div className="grid-2">
+          <div className="form-group">
+            <label>Filtrar por Matéria</label>
+            <select className="form-control" value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
+              {subjects.map(s => <option key={s.id} value={s.id}>{s.name} ({s.level})</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Filtrar por Tópico</label>
+            <select className="form-control" value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)} disabled={topics.length === 0}>
+              <option value="">Selecione o tópico</option>
+              {topics.map(t => <option key={t.id} value={t.id}>{t.title}</option>)}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -128,7 +157,7 @@ export default function Questions() {
                   </td>
                 </tr>
               ))}
-              {questions.length === 0 && <tr><td colSpan="4" style={{ textAlign: 'center', padding: 40 }}>Nenhuma questão para este tópico.</td></tr>}
+              {questions.length === 0 && <tr><td colSpan="4" style={{ textAlign: 'center', padding: 40 }}>{selectedTopic ? 'Nenhuma questão para este tópico.' : 'Selecione um tópico para ver as questões.'}</td></tr>}
             </tbody>
           </table>
         )}
