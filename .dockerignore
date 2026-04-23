@@ -1,0 +1,7 @@
+node_modules
+.git
+*.md
+foco_admin/node_modules
+foco_concurso_app/.dart_tool
+foco_concurso_app/.idea
+foco_concurso_app/build
