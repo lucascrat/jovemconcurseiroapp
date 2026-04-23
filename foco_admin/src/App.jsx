@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import { BookOpen, Layers, FileText, UploadCloud, LayoutDashboard, LogOut, Key, HelpCircle } from 'lucide-react';
+import { BookOpen, Layers, FileText, UploadCloud, LayoutDashboard, LogOut, Key, HelpCircle, Shield, Brain } from 'lucide-react';
 import SubTopics from './pages/SubTopics';
 import Subjects from './pages/Subjects';
 import Topics from './pages/Topics';
 import Questions from './pages/Questions';
+import ExamBoards from './pages/ExamBoards';
+import ExamUploader from './pages/ExamUploader';
 import api from './api';
 
 function Sidebar({ onLogout }) {
   const location = useLocation();
   const navs = [
     { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
+    { name: 'Bancas', path: '/boards', icon: <Shield size={20} /> },
     { name: 'Matérias', path: '/subjects', icon: <BookOpen size={20} /> },
     { name: 'Tópicos', path: '/topics', icon: <Layers size={20} /> },
-    { name: 'Conteúdo (Subtópicos)', path: '/subtopics', icon: <FileText size={20} /> },
+    { name: 'Conteúdo', path: '/subtopics', icon: <FileText size={20} /> },
     { name: 'Questões', path: '/questions', icon: <HelpCircle size={20} /> },
+    { name: 'Upload de Provas IA', path: '/uploader', icon: <Brain size={20} /> },
   ];
 
   return (
@@ -108,35 +112,37 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={
                     <div>
-                      <h1 className="page-title">Dashboard</h1>
+                      <h1 className="page-title">Painel de Controle</h1>
                       <div className="grid-2" style={{ marginTop: 24 }}>
+                        <Link to="/boards" className="card card-link">
+                          <Shield size={32} color="var(--primary)" />
+                          <h3>Bancas</h3>
+                          <p>Principais bancas e análise de padrões.</p>
+                        </Link>
+                        <Link to="/uploader" className="card card-link">
+                          <Brain size={32} color="var(--accent)" />
+                          <h3>Extração IA (Gemini)</h3>
+                          <p>Suba provas e deixe a IA criar as questões.</p>
+                        </Link>
                         <Link to="/subjects" className="card card-link">
                           <BookOpen size={32} color="var(--primary)" />
                           <h3>Matérias</h3>
-                          <p>Gerencie as disciplinas e níveis de ensino.</p>
-                        </Link>
-                        <Link to="/topics" className="card card-link">
-                          <Layers size={32} color="var(--secondary)" />
-                          <h3>Tópicos</h3>
-                          <p>Organize os temas dentro de cada matéria.</p>
+                          <p>Disciplinas e níveis de ensino.</p>
                         </Link>
                         <Link to="/subtopics" className="card card-link">
-                          <FileText size={32} color="var(--accent)" />
+                          <FileText size={32} color="var(--success)" />
                           <h3>Conteúdo</h3>
-                          <p>Edite teorias, vídeos, áudios e mapas mentais.</p>
-                        </Link>
-                        <Link to="/questions" className="card card-link">
-                          <HelpCircle size={32} color="var(--danger)" />
-                          <h3>Questões</h3>
-                          <p>Gerencie o banco de questões e resoluções.</p>
+                          <p>Teorias e mídias (R2).</p>
                         </Link>
                       </div>
                     </div>
                   } />
+                  <Route path="/boards" element={<ExamBoards />} />
                   <Route path="/subjects" element={<Subjects />} />
                   <Route path="/topics" element={<Topics />} />
                   <Route path="/subtopics" element={<SubTopics />} />
                   <Route path="/questions" element={<Questions />} />
+                  <Route path="/uploader" element={<ExamUploader />} />
                 </Routes>
               </main>
             </div>

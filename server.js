@@ -6,6 +6,7 @@ const path = require('path');
 const multer = require('multer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { v4: uuidv4 } = require('uuid');
+const gemini = require('./gemini_service');
 
 const app = express();
 const port = process.env.PORT || 80;
@@ -136,6 +137,90 @@ app.get('/api/questions/:topicId', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// ==========================================
+// ADMIN EXAM BOARD & GEMINI AI ROUTES
+// ==========================================
+
+// --- Exam Boards ---
+app.get('/api/admin/boards', adminAuth, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM "ExamBoard" ORDER BY name');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.post('/api/admin/boards', adminAuth, async (req, res) => {
+  try {
+    const { id, name, difficulty, style, analysis, logoUrl } = req.body;
+    await pool.query(
+      'INSERT INTO "ExamBoard" (id, name, difficulty, style, analysis, "logoUrl") VALUES ($1, $2, $3, $4, $5, $6)',
+      [id, name, difficulty, style, analysis, logoUrl]
+    );
+    res.json({ id, name });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.put('/api/admin/boards/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, difficulty, style, analysis, logoUrl } = req.body;
+    await pool.query(
+      'UPDATE "ExamBoard" SET name = $1, difficulty = $2, style = $3, analysis = $4, "logoUrl" = $5 WHERE id = $6',
+      [name, difficulty, style, analysis, logoUrl, id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// --- Gemini Extraction ---
+app.post('/api/admin/extract-questions', adminAuth, upload.single('file'), async (req, res) => {
+  try {
+    const { banca } = req.body;
+    const file = req.file;
+    
+    if (!file) return res.status(400).json({ error: 'No file uploaded' });
+    
+    const questions = await gemini.extractQuestions(
+      file.buffer, 
+      file.mimetype, 
+      banca || 'Desconhecida'
+    );
+    
+    res.json({ 
+      extractedCount: questions.length,
+      questions 
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'AI processing error: ' + err.message });
+  }
+});
+
+app.post('/api/admin/analyze-board', adminAuth, async (req, res) => {
+  try {
+    const { questions, boardName, boardId } = req.body;
+    const analysis = await gemini.analyzeBoardStyle(questions, boardName);
+    
+    if (boardId) {
+      await pool.query('UPDATE "ExamBoard" SET analysis = $1 WHERE id = $2', [analysis, boardId]);
+    }
+    
+    res.json({ analysis });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Analysis error' });
   }
 });
 
