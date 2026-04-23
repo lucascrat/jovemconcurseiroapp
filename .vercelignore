@@ -1,0 +1,8 @@
+foco_admin/node_modules
+foco_admin/src
+foco_concurso_app
+node_modules
+.env
+.git
+*.js
+!server.js
