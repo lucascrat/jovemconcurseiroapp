@@ -273,8 +273,14 @@ app.delete('/api/admin/subtopics/:id', adminAuth, async (req, res) => {
 
 // Serve Admin Panel Static Files
 const adminDist = path.join(__dirname, 'foco_admin/dist');
-app.use('/admin', express.static(adminDist));
-app.get('/admin*', (req, res) => {
+
+app.use('/admin', (req, res, next) => {
+    console.log(`Admin Request: ${req.url}`);
+    next();
+}, express.static(adminDist));
+
+app.all('/admin*', (req, res) => {
+    console.log(`Admin Fallback: ${req.url}`);
     res.sendFile(path.join(adminDist, 'index.html'));
 });
 
