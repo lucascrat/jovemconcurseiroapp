@@ -426,5 +426,3 @@ class _PrfQuizScreenState extends State<PrfQuizScreen> {
     );
   }
 }
-
-}

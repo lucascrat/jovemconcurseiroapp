@@ -8,6 +8,7 @@ class AppTheme {
   static const Color onSurfaceColor = Color(0xFF171C22);
   static const Color primaryContainer = Color(0xFF1A4173);
   static const Color accentColor = Color(0xFF00D1FF);
+  static const Color secondaryContainer = Color(0xFFE0F2F1);
   static const Color cardShadow = Color(0x1A000000);
   
   static LinearGradient get primaryGradient => const LinearGradient(
