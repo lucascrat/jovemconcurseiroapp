@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import { BookOpen, Layers, FileText, UploadCloud, LayoutDashboard, LogOut, Key } from 'lucide-react';
+import { BookOpen, Layers, FileText, UploadCloud, LayoutDashboard, LogOut, Key, HelpCircle } from 'lucide-react';
 import SubTopics from './pages/SubTopics';
+import Subjects from './pages/Subjects';
+import Topics from './pages/Topics';
+import Questions from './pages/Questions';
 import api from './api';
 
 function Sidebar({ onLogout }) {
@@ -10,7 +13,8 @@ function Sidebar({ onLogout }) {
     { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
     { name: 'Matérias', path: '/subjects', icon: <BookOpen size={20} /> },
     { name: 'Tópicos', path: '/topics', icon: <Layers size={20} /> },
-    { name: 'Subtópicos (Conteúdo)', path: '/subtopics', icon: <FileText size={20} /> },
+    { name: 'Conteúdo (Subtópicos)', path: '/subtopics', icon: <FileText size={20} /> },
+    { name: 'Questões', path: '/questions', icon: <HelpCircle size={20} /> },
   ];
 
   return (
@@ -27,7 +31,7 @@ function Sidebar({ onLogout }) {
           </Link>
         ))}
       </div>
-      <button className="nav-item" style={{ marginTop: 'auto', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }} onClick={onLogout}>
+      <button className="nav-item" style={{ marginTop: 'auto', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', color: 'white' }} onClick={onLogout}>
         <LogOut size={20} /> Sair
       </button>
     </div>
@@ -104,16 +108,35 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={
                     <div>
-                      <h1 className="page-title">Bem-vindo, Holanda!</h1>
+                      <h1 className="page-title">Dashboard</h1>
                       <div className="grid-2" style={{ marginTop: 24 }}>
-                        <div className="card"><h3>Matérias</h3><p>Gerencie as disciplinas do app.</p></div>
-                        <div className="card"><h3>Mídia R2</h3><p>Envie vídeos, áudios e mapas mentais.</p></div>
+                        <Link to="/subjects" className="card card-link">
+                          <BookOpen size={32} color="var(--primary)" />
+                          <h3>Matérias</h3>
+                          <p>Gerencie as disciplinas e níveis de ensino.</p>
+                        </Link>
+                        <Link to="/topics" className="card card-link">
+                          <Layers size={32} color="var(--secondary)" />
+                          <h3>Tópicos</h3>
+                          <p>Organize os temas dentro de cada matéria.</p>
+                        </Link>
+                        <Link to="/subtopics" className="card card-link">
+                          <FileText size={32} color="var(--accent)" />
+                          <h3>Conteúdo</h3>
+                          <p>Edite teorias, vídeos, áudios e mapas mentais.</p>
+                        </Link>
+                        <Link to="/questions" className="card card-link">
+                          <HelpCircle size={32} color="var(--danger)" />
+                          <h3>Questões</h3>
+                          <p>Gerencie o banco de questões e resoluções.</p>
+                        </Link>
                       </div>
                     </div>
                   } />
-                  <Route path="/subjects" element={<div><h1 className="page-title">Matérias</h1><p>Em breve: CRUD de matérias.</p></div>} />
-                  <Route path="/topics" element={<div><h1 className="page-title">Tópicos</h1><p>Em breve: CRUD de tópicos.</p></div>} />
+                  <Route path="/subjects" element={<Subjects />} />
+                  <Route path="/topics" element={<Topics />} />
                   <Route path="/subtopics" element={<SubTopics />} />
+                  <Route path="/questions" element={<Questions />} />
                 </Routes>
               </main>
             </div>

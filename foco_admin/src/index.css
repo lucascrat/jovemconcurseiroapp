@@ -302,3 +302,78 @@ textarea.form-control {
   justify-content: flex-end;
   gap: 12px;
 }
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.card-link:hover {
+  transform: translateY(-5px);
+  background: rgba(59, 130, 246, 0.05);
+  border-color: var(--primary);
+}
+
+.card-link h3 {
+  margin-top: 8px;
+  font-size: 1.25rem;
+}
+
+.card-link p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  padding: 8px;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.btn-icon:hover {
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+.badge-outline {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}

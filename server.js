@@ -144,6 +144,16 @@ app.get('/api/questions/:topicId', async (req, res) => {
 // ==========================================
 
 // --- Subjects ---
+app.get('/api/admin/subjects', adminAuth, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM "Subject" ORDER BY name');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
 app.post('/api/admin/subjects', adminAuth, async (req, res) => {
   try {
     const { name, level, description } = req.body;
@@ -186,6 +196,24 @@ app.delete('/api/admin/subjects/:id', adminAuth, async (req, res) => {
 });
 
 // --- Topics ---
+app.get('/api/admin/topics', adminAuth, async (req, res) => {
+  try {
+    const { subjectId } = req.query;
+    let query = 'SELECT t.*, s.name as "subjectName" FROM "Topic" t JOIN "Subject" s ON t."subjectId" = s.id';
+    const params = [];
+    if (subjectId) {
+      query += ' WHERE t."subjectId" = $1';
+      params.push(subjectId);
+    }
+    query += ' ORDER BY s.name, t."order"';
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
 app.post('/api/admin/topics', adminAuth, async (req, res) => {
   try {
     const { subjectId, title, videoUrl, content, order, audioUrl, mindMapUrl } = req.body;
@@ -228,6 +256,24 @@ app.delete('/api/admin/topics/:id', adminAuth, async (req, res) => {
 });
 
 // --- SubTopics ---
+app.get('/api/admin/subtopics', adminAuth, async (req, res) => {
+  try {
+    const { topicId } = req.query;
+    let query = 'SELECT st.*, t.title as "topicTitle" FROM "SubTopic" st JOIN "Topic" t ON st."topicId" = t.id';
+    const params = [];
+    if (topicId) {
+      query += ' WHERE st."topicId" = $1';
+      params.push(topicId);
+    }
+    query += ' ORDER BY t.title, st.name';
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
 app.post('/api/admin/subtopics', adminAuth, async (req, res) => {
   try {
     const { topicId, name, content, videoUrl, audioUrl, mindMapUrl } = req.body;
@@ -263,6 +309,66 @@ app.delete('/api/admin/subtopics/:id', adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
     await pool.query('DELETE FROM "SubTopic" WHERE id = $1', [id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// --- Questions ---
+app.get('/api/admin/questions', adminAuth, async (req, res) => {
+  try {
+    const { topicId } = req.query;
+    let query = 'SELECT q.*, t.title as "topicTitle" FROM "Question" q JOIN "Topic" t ON q."topicId" = t.id';
+    const params = [];
+    if (topicId) {
+      query += ' WHERE q."topicId" = $1';
+      params.push(topicId);
+    }
+    query += ' ORDER BY t.title, q.id LIMIT 100'; // Limit to avoid massive payload
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.post('/api/admin/questions', adminAuth, async (req, res) => {
+  try {
+    const { topicId, banca, statement, options, correctAnswer, type, explanation, concurso, ano } = req.body;
+    const id = uuidv4().replace(/-/g, '');
+    await pool.query(
+      'INSERT INTO "Question" (id, "topicId", banca, statement, options, "correctAnswer", type, explanation, concurso, ano) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+      [id, topicId, banca, statement, JSON.stringify(options), correctAnswer, type, explanation, concurso, ano]
+    );
+    res.json({ id, topicId, statement });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.put('/api/admin/questions/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { banca, statement, options, correctAnswer, type, explanation, concurso, ano } = req.body;
+    await pool.query(
+      'UPDATE "Question" SET banca = $1, statement = $2, options = $3, "correctAnswer" = $4, type = $5, explanation = $6, concurso = $7, ano = $8 WHERE id = $9',
+      [banca, statement, JSON.stringify(options), correctAnswer, type, explanation, concurso, ano, id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+app.delete('/api/admin/questions/:id', adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM "Question" WHERE id = $1', [id]);
     res.json({ success: true });
   } catch (err) {
     console.error(err);

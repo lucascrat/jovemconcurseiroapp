@@ -1,24 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { Edit2, UploadCloud, Video, Mic, Map, FileText, Loader, CheckCircle } from 'lucide-react';
+import { Edit2, UploadCloud, Video, Mic, Map, FileText, Loader, CheckCircle, Search, Trash2 } from 'lucide-react';
 
 export default function SubTopics() {
   const [topics, setTopics] = useState([]);
   const [subtopics, setSubtopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState('');
-  
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSub, setEditingSub] = useState(null);
+  const [uploading, setUploading] = useState({ video: false, audio: false, map: false });
 
   useEffect(() => {
-    // Para simplificar, buscamos de uma matéria hardcoded ou deixamos o usuário escolher.
-    // Como temos /api/topics/:subjectId, vamos apenas simular ou buscar todos (isso exigiria uma nova rota).
-    // Para resolver rápido, podemos buscar os subtopicos diretamente (precisaríamos de uma rota getAllSubTopics).
-    // Mas vamos usar um topicId fictício ou deixar em branco se não carregou.
-    // Vamos adicionar uma rota rápida no server se precisarmos ou apenas listar de um assunto fixo para demo.
+    fetchTopics();
   }, []);
 
-  const [uploading, setUploading] = useState({ video: false, audio: false, map: false });
+  useEffect(() => {
+    if (selectedTopic) fetchSubtopics();
+    else setSubtopics([]);
+  }, [selectedTopic]);
+
+  const fetchTopics = async () => {
+    try {
+      const res = await api.get('/admin/topics');
+      setTopics(res.data);
+      if (res.data.length > 0) setSelectedTopic(res.data[0].id);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSubtopics = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get(`/admin/subtopics?topicId=${selectedTopic}`);
+      setSubtopics(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
@@ -42,178 +66,145 @@ export default function SubTopics() {
         if (type === 'map') next.mindMapUrl = url;
         return next;
       });
-
     } catch (err) {
-      alert('Erro ao fazer upload para o R2');
-      console.error(err);
+      alert('Erro ao fazer upload');
     } finally {
       setUploading({ ...uploading, [type]: false });
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (e) => {
+    e.preventDefault();
     try {
+      const payload = { ...editingSub, topicId: selectedTopic };
       if (editingSub.id) {
-        await api.put(`/admin/subtopics/${editingSub.id}`, editingSub);
-        setSubtopics(subtopics.map(s => s.id === editingSub.id ? editingSub : s));
+        await api.put(`/admin/subtopics/${editingSub.id}`, payload);
       } else {
-        // Create (needs topicId which we might not have in this simplified view, but assume it exists)
+        await api.post('/admin/subtopics', payload);
       }
       setIsModalOpen(false);
-      alert('Salvo com sucesso!');
+      fetchSubtopics();
     } catch (err) {
       alert('Erro ao salvar');
     }
   };
 
-  // Carregar dados (Mock inicial se a API falhar para demonstração, mas ideal é ler da API)
-  const fetchMock = async () => {
+  const handleDelete = async (id) => {
+    if (!confirm('Deseja excluir este conteúdo?')) return;
     try {
-        // Fetch subtopics from a specific topic to edit, e.g., using a random one
-        // We'll skip for now and just show an empty or loaded state
-    } catch (e) {
-        
+      await api.delete(`/admin/subtopics/${id}`);
+      fetchSubtopics();
+    } catch (err) {
+      alert('Erro ao excluir');
     }
   };
 
+  if (loading && topics.length === 0) return <div className="loader">Carregando tópicos...</div>;
+
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Gerenciar Subtópicos e Mídia</h1>
+      <div className="flex-between">
+        <h1 className="page-title">Gerenciar Conteúdo (Subtópicos)</h1>
         <button className="btn btn-primary" onClick={() => {
           setEditingSub({ name: '', content: '', videoUrl: '', audioUrl: '', mindMapUrl: '' });
           setIsModalOpen(true);
         }}>
-          + Criar Subtópico
+          <Plus size={20} /> Novo Conteúdo
         </button>
       </div>
 
-      <div className="card">
-        <p className="mb-4" style={{color: 'var(--text-muted)'}}>
-          Nesta tela você pode editar os conteúdos teóricos e fazer o upload de vídeos, áudios e mapas mentais diretamente para o <strong>Cloudflare R2</strong>.
-        </p>
-        
-        {/* Mocking a list of items for demonstration */}
-        <div className="list-group">
-          <div className="list-item">
-            <div className="item-info">
-              <h3>Dinâmicas Rurais e Urbanas</h3>
-              <p>ID: 7bb1eb80eb005945540a7a924326618a</p>
-            </div>
-            <div className="item-actions">
-              <button className="btn btn-primary" onClick={() => {
-                setEditingSub({ 
-                  id: '7bb1eb80eb005945540a7a924326618a', 
-                  name: 'Dinâmicas Rurais e Urbanas', 
-                  content: 'Conteúdo premium...',
-                  videoUrl: '', audioUrl: '', mindMapUrl: ''
-                });
-                setIsModalOpen(true);
-              }}>
-                <Edit2 size={16} /> Editar Conteúdo / Mídia
-              </button>
-            </div>
-          </div>
+      <div className="card" style={{ marginTop: 24, padding: 20 }}>
+        <div className="form-group" style={{ maxWidth: 400 }}>
+          <label><Search size={14} /> Selecione o Tópico</label>
+          <select className="form-control" value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)}>
+            {topics.map(t => <option key={t.id} value={t.id}>{t.subjectName} - {t.title}</option>)}
+          </select>
         </div>
+      </div>
+
+      <div className="card" style={{ marginTop: 20 }}>
+        {loading ? <div className="loader">Buscando conteúdos...</div> : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Mídias</th>
+                <th style={{ textAlign: 'right' }}>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {subtopics.map(s => (
+                <tr key={s.id}>
+                  <td><div className="flex-center"><FileText size={16} /> {s.name}</div></td>
+                  <td>
+                    <div className="flex-center" style={{ gap: 12 }}>
+                      {s.videoUrl && <Video size={16} color="var(--primary)" title="Vídeo" />}
+                      {s.audioUrl && <Mic size={16} color="var(--success)" title="Áudio" />}
+                      {s.mindMapUrl && <Map size={16} color="var(--accent)" title="Mapa Mental" />}
+                    </div>
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <button className="btn btn-icon" onClick={() => { setEditingSub(s); setIsModalOpen(true); }}><Edit2 size={16} /></button>
+                    <button className="btn btn-icon" style={{ color: 'var(--danger)' }} onClick={() => handleDelete(s.id)}><Trash2 size={16} /></button>
+                  </td>
+                </tr>
+              ))}
+              {subtopics.length === 0 && <tr><td colSpan="3" style={{ textAlign: 'center', padding: 40 }}>Nenhum conteúdo para este tópico.</td></tr>}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {isModalOpen && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="card modal-content" style={{ width: 850 }}>
             <div className="modal-header">
-              <h2>{editingSub.id ? 'Editar Subtópico' : 'Novo Subtópico'}</h2>
+              <h2>{editingSub.id ? 'Editar Conteúdo' : 'Novo Conteúdo'}</h2>
             </div>
             <div className="modal-body">
               <div className="form-group">
                 <label>Nome do Subtópico</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  value={editingSub.name} 
-                  onChange={e => setEditingSub({...editingSub, name: e.target.value})} 
-                />
+                <input className="form-control" value={editingSub.name} onChange={e => setEditingSub({...editingSub, name: e.target.value})} required />
               </div>
-
               <div className="form-group">
-                <label>Conteúdo Teórico (Markdown)</label>
-                <textarea 
-                  className="form-control" 
-                  value={editingSub.content} 
-                  onChange={e => setEditingSub({...editingSub, content: e.target.value})} 
-                />
+                <label>Teoria (Markdown)</label>
+                <textarea className="form-control" value={editingSub.content} onChange={e => setEditingSub({...editingSub, content: e.target.value})} rows={10} />
               </div>
 
               <div className="grid-2">
-                {/* VÍDEO */}
                 <div>
-                  <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Video size={18}/> Vídeo (R2 ou YouTube)</h3>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Cole a URL ou faça upload..." 
-                    value={editingSub.videoUrl || ''} 
-                    onChange={e => setEditingSub({...editingSub, videoUrl: e.target.value})} 
-                    style={{marginBottom: 10}}
-                  />
+                  <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Video size={18}/> Vídeo</h3>
+                  <input className="form-control" placeholder="URL do vídeo..." value={editingSub.videoUrl || ''} onChange={e => setEditingSub({...editingSub, videoUrl: e.target.value})} style={{marginBottom: 10}} />
                   <label className="upload-zone" style={{display: 'block'}}>
                     {uploading.video ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>{uploading.video ? 'Enviando...' : 'Fazer Upload de Vídeo'}</p>
-                    <input type="file" accept="video/mp4" style={{display:'none'}} onChange={e => handleUpload(e, 'video')} />
+                    <p style={{marginTop: 8}}>Upload de Vídeo R2</p>
+                    <input type="file" accept="video/*" style={{display:'none'}} onChange={e => handleUpload(e, 'video')} />
                   </label>
-                  {editingSub.videoUrl && <span className="badge"><CheckCircle size={12}/> Vídeo Adicionado</span>}
                 </div>
-
-                {/* ÁUDIO */}
                 <div>
-                  <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Mic size={18}/> Áudio MP3</h3>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="URL do Áudio..." 
-                    value={editingSub.audioUrl || ''} 
-                    onChange={e => setEditingSub({...editingSub, audioUrl: e.target.value})} 
-                    style={{marginBottom: 10}}
-                  />
+                  <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Mic size={18}/> Áudio</h3>
+                  <input className="form-control" placeholder="URL do áudio..." value={editingSub.audioUrl || ''} onChange={e => setEditingSub({...editingSub, audioUrl: e.target.value})} style={{marginBottom: 10}} />
                   <label className="upload-zone" style={{display: 'block'}}>
                     {uploading.audio ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>{uploading.audio ? 'Enviando...' : 'Fazer Upload de Áudio MP3'}</p>
+                    <p style={{marginTop: 8}}>Upload de Áudio R2</p>
                     <input type="file" accept="audio/*" style={{display:'none'}} onChange={e => handleUpload(e, 'audio')} />
                   </label>
-                  {editingSub.audioUrl && (
-                    <div className="media-preview">
-                      <audio controls src={editingSub.audioUrl} />
-                    </div>
-                  )}
                 </div>
-
-                {/* MAPA MENTAL */}
                 <div style={{gridColumn: '1 / -1'}}>
-                  <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Map size={18}/> Mapa Mental (Imagem)</h3>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="URL da Imagem do Mapa Mental..." 
-                    value={editingSub.mindMapUrl || ''} 
-                    onChange={e => setEditingSub({...editingSub, mindMapUrl: e.target.value})} 
-                    style={{marginBottom: 10}}
-                  />
+                  <h3 style={{marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8}}><Map size={18}/> Mapa Mental</h3>
+                  <input className="form-control" placeholder="URL do mapa mental..." value={editingSub.mindMapUrl || ''} onChange={e => setEditingSub({...editingSub, mindMapUrl: e.target.value})} style={{marginBottom: 10}} />
                   <label className="upload-zone" style={{display: 'block'}}>
                     {uploading.map ? <Loader className="spin" /> : <UploadCloud />}
-                    <p style={{marginTop: 8}}>{uploading.map ? 'Enviando...' : 'Fazer Upload de Imagem (PNG/JPG)'}</p>
+                    <p style={{marginTop: 8}}>Upload de Imagem R2</p>
                     <input type="file" accept="image/*" style={{display:'none'}} onChange={e => handleUpload(e, 'map')} />
                   </label>
-                  {editingSub.mindMapUrl && (
-                    <div className="media-preview" style={{textAlign: 'center'}}>
-                      <img src={editingSub.mindMapUrl} alt="Mapa Mental Preview" />
-                    </div>
-                  )}
+                  {editingSub.mindMapUrl && <div className="media-preview" style={{textAlign: 'center'}}><img src={editingSub.mindMapUrl} alt="Preview" /></div>}
                 </div>
               </div>
-
             </div>
             <div className="modal-footer">
-              <button className="btn" onClick={() => setIsModalOpen(false)}>Cancelar</button>
-              <button className="btn btn-primary" onClick={handleSave}>Salvar no Banco</button>
+              <button type="button" className="btn btn-outline" onClick={() => setIsModalOpen(false)}>Cancelar</button>
+              <button className="btn btn-primary" onClick={handleSave}>Salvar Tudo</button>
             </div>
           </div>
         </div>
@@ -221,3 +212,5 @@ export default function SubTopics() {
     </div>
   );
 }
+
+const Plus = ({ size }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
